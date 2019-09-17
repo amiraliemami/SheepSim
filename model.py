@@ -31,6 +31,7 @@ if len(sys.argv) > 1:
 else:
     print('#### USING DEFAULT ARGUMENTS: ',num_of_agents,num_steps,neighbourhood)
 
+
 #### INITIALISE
 environment = []
 with open('data/in.txt') as f:
