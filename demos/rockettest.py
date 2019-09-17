@@ -1,13 +1,12 @@
 class Rocket():
-
-    current_coordinates = [0,0]
+    # FIXED
+    #current_coordinates = [0,0]
     launched = False
     start = [0,0]
     
     def set_start_location(self,coordinates):
         self.start = coordinates
-        self.current_coordinates[0] = coordinates[0]
-        self.current_coordinates[1] = coordinates[1]
+        self.current_coordinates = coordinates
         # now try uncommenting the following:
         # self.current_coordinates = [coordinates[0],coordinates[1]]
         # Why do you think there's a difference?
