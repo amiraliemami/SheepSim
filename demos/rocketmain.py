@@ -23,4 +23,3 @@ for i in range(minutes_to_detonation, 0, -1):
 # Explode rocket 1
 print("rocket 1 detonated at " + str(rocket_target1.current_coordinates))
 print("rocket 2 at " + str(rocket_target2.current_coordinates)) 
-
