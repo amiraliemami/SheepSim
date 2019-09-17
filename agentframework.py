@@ -5,9 +5,13 @@ def perturb(x):
 
 class Agent():
     # protect self.x and y using 'property': https://docs.python.org/3/library/functions.html#property
-    def __init__(self):
+    def __init__(self, environment:list):
         self.x = random.randint(0,100)
         self.y = random.randint(0,100)
+        
+        self.environment = environment
+        self.store = 0
+        
         
     def set_x(self,x:int):
         self.x = x
@@ -19,12 +23,19 @@ class Agent():
     def get_y(self):
         return self.y
 
-    def move(self,steps=10):
+    def move(self):
+        self.x, self.y = perturb(self.x), perturb(self.y)
 
-        for _ in range(steps):
-            self.x, self.y = perturb(self.x), perturb(self.y)
-
-
+    def eat(self):
+        grass_available = self.environment[self.y][self.x]
+        if grass_available > 10:
+            self.environment[self.y][self.x] -= 10
+            self.store += 10
+        # make it eat what's left
+        else:
+            self.environment[self.y][self.x] = 0
+            self.store += grass_available            
+            
 
 
 
