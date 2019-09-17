@@ -55,7 +55,7 @@ class Agent():
             self.environment[self.y][self.x] += 50
             self.store = 50
     
-    def share_with_neighbours(self,neighbourhood_size): ### EXCLUDE ITSELF!
+    def share_with_neighbours(self,neighbourhood_size):
         #print(neighbourhood_size)
         for agent in self.agents:
             if agent is not self:
