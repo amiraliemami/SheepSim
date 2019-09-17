@@ -4,20 +4,16 @@ import numpy as np
 #### FUNCTIONS
 
 def perturb(x): 
-    return (x + random.choice([-1,1])) % 100
+    return (x + random.choice([-1,1])) % 300
 
-def distance_between(agents_row_a, agents_row_b):
-    return np.sqrt(
-        ((agents_row_a[0] - agents_row_b[0])**2) 
-        + ((agents_row_a[1] - agents_row_b[1])**2))
         
 #### AGENT CLASS
         
 class Agent():
     # protect self.x and y using 'property': https://docs.python.org/3/library/functions.html#property
     def __init__(self, environment:list,agents:list):
-        self.x = random.randint(0,100)
-        self.y = random.randint(0,100)
+        self.x = random.randint(0,300)
+        self.y = random.randint(0,300)
         
         self.environment = environment
         self.store = 0
@@ -55,29 +51,21 @@ class Agent():
             self.environment[self.y][self.x] += 50
             self.store = 50
     
+    def distance_to(self, other):
+        return np.sqrt(((self.x - other.get_x())**2) + ((self.y - other.get_y())**2))
+    ### SHOULD I BE USING .get_x() for safety?
+    
     def share_with_neighbours(self,neighbourhood_size):
         #print(neighbourhood_size)
         for agent in self.agents:
             if agent is not self:
-                if distance_between([self.x,self.y],[agent.get_x(),agent.get_y()]) <= 20:
+                if self.distance_to(agent) <= 20:
                     avg = (self.store + agent.get_store())/2
                     self.store = avg
                     agent.set_store(avg)
 #            else: # CHECK IF SAME as self 
 #                print('The same!',agent,self)
             
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
