@@ -34,7 +34,11 @@ class Agent():
         # make it eat what's left
         else:
             self.environment[self.y][self.x] = 0
-            self.store += grass_available            
+            self.store += grass_available
+        
+        if self.store > 100:
+            self.environment[self.y][self.x] += 50
+            self.store = 50
             
 
 
