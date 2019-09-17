@@ -1,4 +1,3 @@
-
 class Rocket():
 
     current_coordinates = [0,0]
