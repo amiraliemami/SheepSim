@@ -123,9 +123,11 @@ class Agent():
 
     def increment_age_or_die(self,max_age=100):
         if self._age > max_age:
-            self.agents.remove(self)    
+            self.agents.remove(self) 
+            return True   
         else:
             self._age += 1
+            return False
 
 
 

@@ -44,6 +44,8 @@ with open('data/in.txt') as f:
         for value in parsed_line:
             rowlist.append(int(value))
         environment.append(rowlist)
+#print('Max of environment: ',max(max(environment)))
+# max is 245. Choose 250 as max grass level
 
 #### READ POSITIONS FROM FILE
 from_file = False
@@ -95,7 +97,13 @@ def update(frame_number):
         agent.eat()
         #agent.share_with_neighbours(neighbourhood)
         agent.mating()
-        agent.increment_age_or_die(100)
+
+        # check if it dies at the end of this turn
+        dead = agent.increment_age_or_die(10)
+        if dead:
+            plt.scatter(agent.get_x(),agent.get_y(),s=(agent.get_store()),c='red',marker='*')
+        else:
+            plt.scatter(agent.get_x(),agent.get_y(),s=(agent.get_store()),c='white',marker='*')
 
     if len(agents) == 0:
         print('All dead :(')
@@ -103,13 +111,8 @@ def update(frame_number):
     elif np.array(environment).sum() == 0:
         carry_on = False
         print("All grass eaten!")
-    else:
-        for agent in agents:
-            # np_agents = np.array([[agent.get_x(),agent.get_y()] for agent in agents])
-            # plt.scatter(np_agents[:,0],np_agents[:,1],c='white',marker='*')
-            plt.scatter(agent.get_x(),agent.get_y(),s=(agent.get_store()),c='white',marker='*')
 
-    plt.imshow(environment, vmin=0, vmax=max(max(environment))) # environment needs to be plotted every time to show developments
+    plt.imshow(environment, vmin=0, vmax=250) # environment needs to be plotted every time to show developments
     plt.xlim(0,300)
     plt.ylim(0,300)
     plt.axis('off')
