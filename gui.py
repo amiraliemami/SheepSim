@@ -26,7 +26,7 @@ import matplotlib.animation as anim
 
 # set default global variables
 num_agents = 10
-num_iters = 2000
+num_iters = 200
 neighbourhood = 20
 
 ##### COMMANDLINE:
@@ -61,12 +61,14 @@ page = r.text
 soup = BeautifulSoup(page,'html.parser')
 xs = soup.find_all(attrs={"class": "x"})
 ys = soup.find_all(attrs={"class": "y"})
-num_agents = len(xs) # overwrite num_agents
+#num_agents = len(xs) # overwrite num_agents  ########## IMPORTANT
 
 agents = []
 for i in range(num_agents):
-    init_coords = [int(xs[i].text)*3,int(ys[i].text)*3]
-    agents.append(af.Agent(environment,agents,init_coords)) 
+    #### FOR IMPORTING POSITIONS FROM URL
+    # init_coords = [int(xs[i].text)*3,int(ys[i].text)*3]
+    # agents.append(af.Agent(environment,agents,init_coords))
+    agents.append(af.Agent(environment,agents))  
 
 
 #### UPDATING (moving and eating) AND PLOTTING
