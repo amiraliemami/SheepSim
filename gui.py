@@ -25,7 +25,7 @@ import matplotlib.animation as anim
 
 
 # set default global variables
-num_agents = 10
+num_agents = 4
 num_iters = 200
 neighbourhood = 20
 

@@ -15,8 +15,8 @@ class Agent():
         
         # private attributes
         if init_coords is None:
-            self._x = random.randint(0,300)
-            self._y = random.randint(0,300)
+            self._x = random.randint(0,10)
+            self._y = random.randint(0,10)
         else:
             self._x = init_coords[0]
             self._y = init_coords[1]
@@ -93,9 +93,9 @@ class Agent():
             # giving birth if pregnant -- CATCH FOR MULTIPLE BABIES??
             pregnancy = agent.get_pregnancy() 
             if pregnancy == 4:
-                # GIVE BIRTH @ position [agent.get_x()+1,agent.get_y()]
+                self.agents.append(Agent(environment,agents,[agent.get_x()+1,agent.get_y()])) 
                 agent.set_pregnancy(0) # reset after giving birth
-            else if pregnancy > 0:
+            elif pregnancy > 0:
                 agent.set_pregnancy(pregnancy+1)
 
             # mating rules
