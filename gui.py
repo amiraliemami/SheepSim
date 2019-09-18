@@ -65,7 +65,7 @@ num_agents = len(xs) # overwrite num_agents
 
 agents = []
 for i in range(num_agents):
-    init_coords = [xs[i],ys[i]]
+    init_coords = [int(xs[i].text)*3,int(ys[i].text)*3]
     agents.append(af.Agent(environment,agents,init_coords)) 
 
 
