@@ -52,10 +52,21 @@ with open('data/in.txt') as f:
         for value in parsed_line:
             rowlist.append(int(value))
         environment.append(rowlist)
-        
+
+import requests
+from bs4 import BeautifulSoup
+
+r = requests.get('https://www.geog.leeds.ac.uk/courses/computing/practicals/python/agent-framework/part9/data.html',verify=False)
+page = r.text
+soup = BeautifulSoup(page,'html.parser')
+xs = soup.find_all(attrs={"class": "x"})
+ys = soup.find_all(attrs={"class": "y"})
+num_agents = len(xs) # overwrite num_agents
+
 agents = []
-for _ in range(num_agents):
-    agents.append(af.Agent(environment,agents)) 
+for i in range(num_agents):
+    init_coords = [xs[i],ys[i]]
+    agents.append(af.Agent(environment,agents,init_coords)) 
 
 
 #### UPDATING (moving and eating) AND PLOTTING
@@ -78,8 +89,8 @@ def update(frame_number):
 
     plt.imshow(environment, vmin=0, vmax=max(max(environment))) # environment needs to be plotted every time to show developments
     for i in range(num_agents):
-        np_agents = np.array([[agent.x,agent.y] for agent in agents])
-        plt.scatter(np_agents[:,0],np_agents[:,1],c='white')
+        np_agents = np.array([[agent.get_x(),agent.get_y()] for agent in agents])
+        plt.scatter(np_agents[:,0],np_agents[:,1],c='white',marker='*')
         plt.xlim(0,300)
         plt.ylim(0,300)
 
@@ -92,7 +103,7 @@ def gen_function(b = [0]):
    
 def run():
     animation = anim.FuncAnimation(fig, update, frames=gen_function, repeat=False)
-    canvas.show()
+    canvas.draw()
 
 fig = plt.figure(figsize=(10, 10))
 
