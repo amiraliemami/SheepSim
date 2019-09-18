@@ -80,6 +80,8 @@ def update(frame_number):
     for i in range(num_agents):
         np_agents = np.array([[agent.x,agent.y] for agent in agents])
         plt.scatter(np_agents[:,0],np_agents[:,1],c='white')
+        plt.xlim(0,300)
+        plt.ylim(0,300)
 
 def gen_function(b = [0]):
     a = 0
@@ -106,10 +108,5 @@ root.config(menu=menu_bar)
 model_menu = tkinter.Menu(menu_bar)
 menu_bar.add_cascade(label="Model", menu=model_menu)
 model_menu.add_command(label="Run model", command=run)
-
-model_menu.entryconfig("Run model", state="disabled")
-## Until the user has chosen files, then:
-model_menu.entryconfig("Run model", state="normal")
-
 
 tkinter.mainloop() # Wait for interactions.
