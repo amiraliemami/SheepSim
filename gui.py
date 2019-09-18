@@ -53,23 +53,27 @@ with open('data/in.txt') as f:
             rowlist.append(int(value))
         environment.append(rowlist)
 
-import requests
-from bs4 import BeautifulSoup
+#### READ POSITIONS FROM FILE
+# import requests
+# from bs4 import BeautifulSoup
 
-r = requests.get('https://www.geog.leeds.ac.uk/courses/computing/practicals/python/agent-framework/part9/data.html',verify=False)
-page = r.text
-soup = BeautifulSoup(page,'html.parser')
-xs = soup.find_all(attrs={"class": "x"})
-ys = soup.find_all(attrs={"class": "y"})
-#num_agents = len(xs) # overwrite num_agents  ########## IMPORTANT
+# r = requests.get('https://www.geog.leeds.ac.uk/courses/computing/practicals/python/agent-framework/part9/data.html',verify=False)
+# page = r.text
+# soup = BeautifulSoup(page,'html.parser')
+# xs = soup.find_all(attrs={"class": "x"})
+# ys = soup.find_all(attrs={"class": "y"})
+# num_agents = len(xs) # overwrite num_agents  ########## IMPORTANT
+
+# agents = []
+# for i in range(num_agents):
+#     ### FOR IMPORTING POSITIONS FROM URL
+#     init_coords = [int(xs[i].text)*3,int(ys[i].text)*3]
+#     agents.append(af.Agent(environment,agents,init_coords))
+
 
 agents = []
 for i in range(num_agents):
-    #### FOR IMPORTING POSITIONS FROM URL
-    # init_coords = [int(xs[i].text)*3,int(ys[i].text)*3]
-    # agents.append(af.Agent(environment,agents,init_coords))
     agents.append(af.Agent(environment,agents))  
-
 
 #### UPDATING (moving and eating) AND PLOTTING
 carry_on = True
