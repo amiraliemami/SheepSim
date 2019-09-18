@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-#### IMPORTS
+#### IMPORTS #####################################################################
 
 import agentframework as af
 
@@ -16,26 +16,26 @@ import matplotlib.pyplot as plt
 plt.set_cmap('viridis')
 import matplotlib.animation as anim
 
-#### INITIALISE
+###### INITIALISE ###############################################################
 
 # set default global variables
 num_agents = 20
 num_iters = 2000
 neighbourhood = 20
 
-# ##### COMMANDLINE:
-# # python model.py n_agents n_iters neighbourhood_size
-# import sys
-# print(sys.argv)
-# if len(sys.argv) > 1:
-#     args = sys.argv[1:]
-#     print('#### USING COMMANDLINE ARGUMENTS: ',args)
-#     num_agents = int(args[0])
-#     num_iters = int(args[1])
-#     neighbourhood = int(args[2])
-# else:
-#     print('#### USING DEFAULT ARGUMENTS: ',num_agents,num_iters,neighbourhood)
+##### COMMANDLINE: n_agents n_iters neighbourhood_size
+import sys
+print(sys.argv)
+if len(sys.argv) > 1:
+    args = sys.argv[1:]
+    print('#### USING COMMANDLINE ARGUMENTS: ',args)
+    num_agents = int(args[0])
+    num_iters = int(args[1])
+    neighbourhood = int(args[2])
+else:
+    print('#### USING DEFAULT ARGUMENTS: ',num_agents,num_iters,neighbourhood)
 
+#### IMPORT ENVIRONMENT
 environment = []
 with open('data/in.txt') as f:
     for line in f:
@@ -46,21 +46,23 @@ with open('data/in.txt') as f:
         environment.append(rowlist)
 
 #### READ POSITIONS FROM FILE
-# import requests
-# from bs4 import BeautifulSoup
+from_file = False
+if from_file:
+    import requests
+    from bs4 import BeautifulSoup
 
-# r = requests.get('https://www.geog.leeds.ac.uk/courses/computing/practicals/python/agent-framework/part9/data.html',verify=False)
-# page = r.text
-# soup = BeautifulSoup(page,'html.parser')
-# xs = soup.find_all(attrs={"class": "x"})
-# ys = soup.find_all(attrs={"class": "y"})
-# num_agents = len(xs) # overwrite num_agents  ########## IMPORTANT
+    r = requests.get('https://www.geog.leeds.ac.uk/courses/computing/practicals/python/agent-framework/part9/data.html',verify=False)
+    page = r.text
+    soup = BeautifulSoup(page,'html.parser')
+    xs = soup.find_all(attrs={"class": "x"})
+    ys = soup.find_all(attrs={"class": "y"})
+    num_agents = len(xs) # overwrite num_agents  ########## IMPORTANT
 
-# agents = []
-# for i in range(num_agents):
-#     ### FOR IMPORTING POSITIONS FROM URL
-#     init_coords = [int(xs[i].text)*3,int(ys[i].text)*3]
-#     agents.append(af.Agent(environment,agents,init_coords))
+    agents = []
+    for i in range(num_agents):
+        ### FOR IMPORTING POSITIONS FROM URL
+        init_coords = [int(xs[i].text)*3,int(ys[i].text)*3]
+        agents.append(af.Agent(environment,agents,init_coords))
 
 
 #### FOR TESTING OF MATING
@@ -76,9 +78,9 @@ agents = []
 for i in range(num_agents):
     agents.append(af.Agent(environment,agents)) 
 
-#### UPDATING (moving and eating) AND PLOTTING
-carry_on = True
+#### UPDATING (moving, eating, mating, aging, dying) AND PLOTTING
 
+carry_on = True
 def update(frame_number):
     
     fig.clear()
@@ -93,7 +95,7 @@ def update(frame_number):
         agent.eat()
         #agent.share_with_neighbours(neighbourhood)
         agent.mating()
-        agent.increment_age_or_die(10)
+        agent.increment_age_or_die(100)
 
     if len(agents) == 0:
         print('All dead :(')
@@ -102,9 +104,10 @@ def update(frame_number):
         carry_on = False
         print("All grass eaten!")
     else:
-        for _ in range(num_agents):
-            np_agents = np.array([[agent.get_x(),agent.get_y()] for agent in agents])
-            plt.scatter(np_agents[:,0],np_agents[:,1],c='white',marker='*')
+        for agent in agents:
+            # np_agents = np.array([[agent.get_x(),agent.get_y()] for agent in agents])
+            # plt.scatter(np_agents[:,0],np_agents[:,1],c='white',marker='*')
+            plt.scatter(agent.get_x(),agent.get_y(),s=(agent.get_store()),c='white',marker='*')
 
     plt.imshow(environment, vmin=0, vmax=max(max(environment))) # environment needs to be plotted every time to show developments
     plt.xlim(0,300)

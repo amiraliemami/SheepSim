@@ -1,14 +1,12 @@
+#### NECESSARY MODULES AND FUNCTIONS
 import random
 import numpy as np
-
-#### FUNCTIONS
 
 def perturb(x): 
     return (x + random.choice([-1,1])) % 300
 
 #### AGENT CLASS
 class Agent():
-    # protect self.x and y using 'property': https://docs.python.org/3/library/functions.html#property
     def __init__(self, environment:list,agents:list,init_coords=None,gender=None):
         
         # private attributes
@@ -23,6 +21,7 @@ class Agent():
             self._gender = random.choice(['m','f'])
         else:
             self._gender = gender
+
         self._store = 0
         self._pregnancy = 0
         self._age = 0
@@ -49,6 +48,7 @@ class Agent():
         return self._store
     def get_pregnancy(self):
         return self._pregnancy
+
     def get_gender(self): # read-only
         return self._gender
     def get_age(self):
@@ -75,7 +75,7 @@ class Agent():
     
     def distance_to(self, other):
         return np.sqrt(((self._x - other.get_x())**2) + ((self._y - other.get_y())**2))
-  
+
     def share_with_neighbours(self,neighbourhood_size):
         for agent in self.agents:
             if agent is not self:
@@ -83,35 +83,43 @@ class Agent():
                     avg = (self._store + agent.get_store())/2
                     self._store = avg
                     agent.set_store(avg)
-#            else: # CHECK IF SAME as self 
-#                print('The same!',agent,self)
+           #else: # CHECK IF SAME as self
+           #    print('The same!',agent,self)
 
-    def mating(self,duration=30,min_age=30):
+    ## EXTRA - mating and aging
 
+    def mating(self,preg_duration=10,min_age=20):
         for agent in self.agents:
-            # giving birth if pregnant -- CATCH FOR MULTIPLE BABIES??
             pregnancy = agent.get_pregnancy() 
-            if pregnancy == duration:
+
+            # GIVE BIRTH to another sheep to the right
+            if pregnancy == preg_duration:
                 self.agents.append(Agent(self.environment,self.agents,[agent.get_x()+1,agent.get_y()])) 
                 agent.set_pregnancy(0) # reset after giving birth
+            # ADVANCE PREGNANCY if pregnant
             elif pregnancy > 0:
                 agent.set_pregnancy(pregnancy+1)
+            # else stay non-pregnant
             else:
                 pass
 
             # mating rules
             if agent is not self:
+
                 if self.distance_to(agent) <= 5: # only mate if closer than 5
-                    # only mate if of min_age for mating
+                    # only mate if of min_age reached for mating
                     if self._age > min_age and agent.get_age() > min_age: 
                         # only mate if have 50 in stomach
                         if self._store > 50 and agent.get_store() > 50: 
+                            
                             if self._gender == 'f' and agent.get_gender() == 'm':
-                                if self._pregnancy == 0:
+                                if self._pregnancy == 0: # only get pregnant if not already
                                     self._pregnancy = 1
-                            if self._gender == 'm' and agent.get_gender() == 'f':
+                            elif self._gender == 'm' and agent.get_gender() == 'f':
                                 if agent.get_pregnancy() == 0:
                                     agent.set_pregnancy(1)
+                            else:
+                                pass
 
     def increment_age_or_die(self,max_age=100):
         if self._age > max_age:
