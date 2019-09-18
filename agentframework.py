@@ -11,7 +11,7 @@ def perturb(x):
         
 class Agent():
     # protect self.x and y using 'property': https://docs.python.org/3/library/functions.html#property
-    def __init__(self, environment:list,agents:list,init_coords=None):
+    def __init__(self, environment:list,agents:list,init_coords=None,gender=None):
         if init_coords is None:
             self._x = random.randint(0,300)
             self._y = random.randint(0,300)
@@ -19,6 +19,8 @@ class Agent():
             self._x = init_coords[0]
             self._y = init_coords[1]
 
+        if gender is None:
+            self.gender = random.choice(['m','f'])
         self.environment = environment
         self._store = 0
         
