@@ -80,8 +80,9 @@ agents = []
 for i in range(num_agents):
     agents.append(af.Agent(environment,agents)) 
 
-#### UPDATING (moving, eating, mating, aging, dying) AND PLOTTING
+#### UPDATING  ###############################################################
 
+# (moving, eating, mating, aging, dying) AND PLOTTING
 carry_on = True
 def update(frame_number):
     
@@ -100,11 +101,18 @@ def update(frame_number):
 
         # check if it dies at the end of this turn
         dead = agent.increment_age_or_die(10)
-        if dead:
-            plt.scatter(agent.get_x(),agent.get_y(),s=(agent.get_store()),c='red',marker='*')
-        else:
-            plt.scatter(agent.get_x(),agent.get_y(),s=(agent.get_store()),c='white',marker='*')
+        
+        plt.scatter(agent.get_x(),agent.get_y(),
+                    s=(agent.get_store()*0.5),
+                    c=('red' if dead else 'white'),
+                    marker='*')
 
+    plt.imshow(environment, vmin=0, vmax=250) # environment needs to be plotted every run to show developments
+    plt.xlim(0,300)
+    plt.ylim(0,300)
+    plt.axis('off')
+
+    # simulation stopping conditions
     if len(agents) == 0:
         print('All dead :(')
         carry_on = False
@@ -112,10 +120,6 @@ def update(frame_number):
         carry_on = False
         print("All grass eaten!")
 
-    plt.imshow(environment, vmin=0, vmax=250) # environment needs to be plotted every time to show developments
-    plt.xlim(0,300)
-    plt.ylim(0,300)
-    plt.axis('off')
 
 def gen_function():
     a = 0
