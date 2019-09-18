@@ -1,5 +1,4 @@
 import random
-import operator
 import matplotlib.pyplot
 import matplotlib.animation 
 
@@ -34,9 +33,11 @@ def update(frame_number):
                 
     for i in range(num_of_agents):
         matplotlib.pyplot.scatter(agents[i][0],agents[i][1])
+        matplotlib.pyplot.xlim(-20,120)
+        matplotlib.pyplot.ylim(-20,120)     
         print(agents[i][0],agents[i][1])
 
-
-animation = matplotlib.animation.FuncAnimation(fig, update, interval=1)
-
+animation = matplotlib.animation.FuncAnimation(fig, update, interval=1,
+                                               repeat=False,
+                                               frames=num_of_iterations)                                       
 matplotlib.pyplot.show()
