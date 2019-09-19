@@ -150,6 +150,10 @@ def run():
     animation = anim.FuncAnimation(fig, update, frames=gen_function, repeat=False)
     canvas.draw()
 
+def stop():
+    global carry_on
+    carry_on = False
+
 fig = plt.figure(figsize=(5, 5))
 
 ##### TKINTER GUI ############################################################
@@ -181,7 +185,9 @@ for i in range(num_agents):
 tkinter.Label(window, text = "Run?").grid(row = 2,column = 0)
 canvas = matplotlib.backends.backend_tkagg.FigureCanvasTkAgg(fig, master=window)
 canvas._tkcanvas.grid(columnspan=3)
-btn1 = tkinter.Button(window, text = "Run",command = run()).grid(row=2,column=1)
-
+btn1 = tkinter.Button(window,text="Run",command = run)
+btn1.grid(row=2,column=1)
+btn2 = tkinter.Button(window,text="Stop",command = stop)
+btn2.grid(row=2,column=2)
 
 window.mainloop()
