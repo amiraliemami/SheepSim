@@ -26,6 +26,7 @@ def update(frame_number):
     print('Number of Sheep: ', len(agents))
 
     global carry_on
+    global environment
     global breed
 
     # environment needs to be plotted at the start of every run to show developments from last run
@@ -69,7 +70,7 @@ def update(frame_number):
     for dead_agent in the_dead:
         agents.remove(dead_agent)
 
-#### Setup animation and GUI ################################################
+#### Setup animation and GUI ##################################################
 
 def gen_function():
     a = 0
@@ -80,7 +81,19 @@ def gen_function():
 
 def run():
     animation = anim.FuncAnimation(fig, update, frames=gen_function, repeat=False)
-    canvas.draw()
+    plot_area.draw()
+
+def stop():
+    global carry_on
+    carry_on = False
+
+def toggle():
+    if btn1.config('relief')[-1] == 'sunken':
+        run()
+        btn1.config(relief="sunken",text='Stop')
+    else:
+        stop()
+        btn1.config(relief="raised",text='Run')
 
 
 ###### INITIALISE ###############################################################
@@ -91,13 +104,7 @@ num_iters = 2000 # max iterations the sim will run for
 max_age = 50
 min_age_for_preg = 10
 preg_duration = 10
-
 neighbourhood = 20
-
-#### initiate agents based on num_agents required ############
-agents = []
-for i in range(num_agents):
-    agents.append(af.Agent(environment,agents)) 
 
 fig = plt.figure(figsize=(5, 5))
 
@@ -106,45 +113,41 @@ fig = plt.figure(figsize=(5, 5))
 root = tk.Tk()
 root.title("Model")
 
-canvas = tk.Canvas(root,height=700,width=700).pack()
-frame = tk.Frame(root,bg='#ffffff').place(relx=0.05,rely=0.05,relheight=0.90,relwidth=0.90)
 
-label = tk.Label(canvas, text = "Run?")
-label.pack()
+tk.Label(root, text = "Number of Agents").grid(row=0,column=0)
+n_agents_entry = tk.Entry(root).grid(row=0,column=1)
+
+chck_var = tk.IntVar()
+chck = tk.Checkbutton(root, text = "Breeding",variable=chck_var).grid(row=1,column=0)
+breed = (chck_var.get() == 1)
+
+# set number of agents based on user input
+if n_agents_entry is not None:
+    print(n_agents_entry)
+    num_agents = int(n_agents_entry)
+else:
+    num_agents = 30 # DEFAULT
+
+#### initiate agents based on num_agents required ############
+agents = []
+for i in range(num_agents):
+    agents.append(af.Agent(environment,agents)) 
 
 
-#chck_var = tk.IntVar()
-#chck = tk.Checkbutton(frame, text = "Breeding",variable=chck_var)
-#chck.pack()
-#
-#breed = (chck_var.get() == 1)
-#
-#tk.Label(frame, text = "Number of Agents").pack()
-#n_agents_entry = tk.Entry(frame).pack()
-#
-## set number of agents based on user input
-#if n_agents_entry is not None:
-#    print(n_agents_entry)
-#    num_agents = int(n_agents_entry)
-#else:
-#    num_agents = 30 # DEFAULT
-#    
-#tk.Label(frame, text = "Run?").pack() # this is placed in 0 0 
-#btn1 = tk.Button(frame, text = "Run",command = run).pack()
-#
-#plot_area = matplotlib.backends.backend_tkagg.FigureCanvasTkAgg(fig, master=root)
-#plot_area._tkcanvas.pack()
+tk.Label(root, text = "Run?").grid(row=2,column=0)
+btn1 = tk.Button(root, text = "Run", relief="raised", command = toggle)
+btn1.grid(row=2,column=1)
+
+plot_area = matplotlib.backends.backend_tkagg.FigureCanvasTkAgg(fig, master=root)
+plot_area._tkcanvas.grid(columnspan=3)
 
 root.mainloop()
 
 
 
-## Showing menu elements
-#menu_bar = tk.Menu(root)
-#root.config(menu=menu_bar)
-#model_menu = tk.Menu(menu_bar)
-#menu_bar.add_cascade(label="Model", menu=model_menu)
-#model_menu.add_command(label="Run model", command=run)
 
-# Run GUI
-#tk.mainloop()
+
+
+
+
+

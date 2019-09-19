@@ -23,9 +23,9 @@ import matplotlib.animation as anim
 num_agents = 50
 num_iters = 2000
 
-max_age = 50
-min_age_for_preg = 10
-preg_duration = 10
+max_age = 30
+min_age_for_preg = 5
+preg_duration = 1
 
 neighbourhood = 20
 
