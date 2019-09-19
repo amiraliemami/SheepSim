@@ -43,25 +43,6 @@ with open('data/in.txt') as f:
 #print('Max of environment: ',max(max(environment)))
 # max is 245. Choose 250 as max grass level
 
-#### READ POSITIONS FROM FILE
-from_file = False
-if from_file:
-    import requests
-    from bs4 import BeautifulSoup
-
-    r = requests.get('https://www.geog.leeds.ac.uk/courses/computing/practicals/python/agent-framework/part9/data.html',verify=False)
-    page = r.text
-    soup = BeautifulSoup(page,'html.parser')
-    xs = soup.find_all(attrs={"class": "x"})
-    ys = soup.find_all(attrs={"class": "y"})
-    num_agents = len(xs) # overwrite num_agents  ########## IMPORTANT
-
-    agents = []
-    for i in range(num_agents):
-        ### FOR IMPORTING POSITIONS FROM URL
-        init_coords = [int(xs[i].text)*3,int(ys[i].text)*3]
-        agents.append(af.Agent(environment,agents,init_coords))
-
 
 #### initiate agents based on num_agents required ############
 agents = []
@@ -137,24 +118,7 @@ def gen_function():
     while (a < num_iters) and carry_on:
         yield a	  # Returns control and waits next call.
         a += 1
-   
-def run():
-    animation = anim.FuncAnimation(fig, update, frames=gen_function, repeat=False)
-    canvas.draw()
 
 fig = plt.figure(figsize=(10, 10))
-
-root = tkinter.Tk()
-root.wm_title("Model")
-canvas = matplotlib.backends.backend_tkagg.FigureCanvasTkAgg(fig, master=root)
-canvas._tkcanvas.pack(side=tkinter.TOP, fill=tkinter.BOTH, expand=1)
-
-# Showing menu elements
-menu_bar = tkinter.Menu(root)
-root.config(menu=menu_bar)
-model_menu = tkinter.Menu(menu_bar)
-menu_bar.add_cascade(label="Model", menu=model_menu)
-model_menu.add_command(label="Run model", command=run)
-
-# Run GUI
-tkinter.mainloop()
+animation = anim.FuncAnimation(fig, update, frames=gen_function, repeat=False)
+plt.show()
