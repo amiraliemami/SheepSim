@@ -1,72 +1,130 @@
+#### NECESSARY MODULES AND FUNCTIONS
 import random
 import numpy as np
-
-#### FUNCTIONS
 
 def perturb(x): 
     return (x + random.choice([-1,1])) % 300
 
-        
 #### AGENT CLASS
-        
 class Agent():
-    # protect self.x and y using 'property': https://docs.python.org/3/library/functions.html#property
-    def __init__(self, environment:list,agents:list):
-        self.x = random.randint(0,300)
-        self.y = random.randint(0,300)
+    def __init__(self, environment:list,agents:list,init_coords=None,gender=None):
         
+        # private attributes
+        if init_coords is None:
+            self._x = random.randint(0,300)
+            self._y = random.randint(0,300)
+        else:
+            self._x = init_coords[0]
+            self._y = init_coords[1]
+
+        if gender is None:
+            self._gender = random.choice(['m','f'])
+        else:
+            self._gender = gender
+
+        self._store = 0
+        self._pregnancy = 0
+        self._age = 0
+
+        # public attributes
         self.environment = environment
-        self.store = 0
-        
         self.agents = agents
         
+    # functions for accessing private attributes
     def set_x(self,x:int):
-        self.x = x
+        self._x = x
     def set_y(self,y:int):
-        self.y = y
+        self._y = y
     def set_store(self,val:int):
-        self.store = val
+        self._store = val
+    def set_pregnancy(self,val:int):
+        self._pregnancy = val
         
     def get_x(self):
-        return self.x
+        return self._x
     def get_y(self):
-        return self.y
+        return self._y
     def get_store(self):
-        return self.store
+        return self._store
+    def get_pregnancy(self):
+        return self._pregnancy
 
+    def get_gender(self): # read-only
+        return self._gender
+    def get_age(self):
+        return self._age
+    
+    # actions
     def move(self):
-        self.x, self.y = perturb(self.x), perturb(self.y)
+        self._x, self._y = perturb(self._x), perturb(self._y)
 
     def eat(self):
-        grass_available = self.environment[self.y][self.x]
+        grass_available = self.environment[self._y][self._x]
         if grass_available > 10:
-            self.environment[self.y][self.x] -= 10
-            self.store += 10
+            self.environment[self._y][self._x] -= 10
+            self._store += 10
         # make it eat what's left
         else:
-            self.environment[self.y][self.x] = 0
-            self.store += grass_available
+            self.environment[self._y][self._x] = 0
+            self._store += grass_available
         
-        if self.store > 100:
-            self.environment[self.y][self.x] += 50
-            self.store = 50
+        # # sick up 50 of store if store goes above 100
+        # if self._store > 100:
+        #     self.environment[self._y][self._x] += 50
+        #     self._store = 50
     
     def distance_to(self, other):
-        return np.sqrt(((self.x - other.get_x())**2) + ((self.y - other.get_y())**2))
-    ### SHOULD I BE USING .get_x() for safety?
-    
+        return np.sqrt(((self._x - other.get_x())**2) + ((self._y - other.get_y())**2))
+
     def share_with_neighbours(self,neighbourhood_size):
-        #print(neighbourhood_size)
         for agent in self.agents:
             if agent is not self:
-                if self.distance_to(agent) <= 20:
-                    avg = (self.store + agent.get_store())/2
-                    self.store = avg
+                if self.distance_to(agent) <= neighbourhood_size:
+                    avg = (self._store + agent.get_store())/2
+                    self._store = avg
                     agent.set_store(avg)
-#            else: # CHECK IF SAME as self 
-#                print('The same!',agent,self)
-            
+           #else: # CHECK IF SAME as self
+           #    print('The same!',agent,self)
 
+    ## EXTRA - mating and aging
+
+    def mating(self,preg_duration=10,min_age=20):
+
+        pregnancy = self._pregnancy
+        # GIVE BIRTH to another sheep to the right
+        if pregnancy == preg_duration:
+            self.agents.append(Agent(self.environment,self.agents,[self._x+1,self._y]))
+            self._pregnancy = 0 # reset after giving birth
+        # ADVANCE PREGNANCY if pregnant
+        elif pregnancy > 0:
+            self._pregnancy += 1
+        # else stay non-pregnant
+        else:
+            pass
+        
+        # if of age and enough food consumed (50), try to mate with other sheep:
+        if (self._age > min_age) and (self._store > 50):
+            for agent in self.agents:
+                if agent is not self:
+                    # only mate if closer than 10
+                    if self.distance_to(agent) <= 10: 
+                        # only mate if other sheep is also of min_age and food
+                        if (agent.get_age() > min_age) and (agent.get_store() > 50):
+                            
+                            if self._gender == 'f' and agent.get_gender() == 'm':
+                                if self._pregnancy == 0: # only get pregnant if not already
+                                    self._pregnancy = 1
+                            elif self._gender == 'm' and agent.get_gender() == 'f':
+                                if agent.get_pregnancy() == 0:
+                                    agent.set_pregnancy(1)
+                            else:
+                                pass
+
+    def is_dead(self,max_age=100):
+        return (self._age > max_age)
+
+    def increment_age(self):
+            self._age += 1
 
 
 
