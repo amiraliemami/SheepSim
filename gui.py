@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-#### IMPORTS #####################################################################
+#### IMPORTS ##################################################################
 
 import agentframework as af
 
@@ -16,7 +16,7 @@ import matplotlib.pyplot as plt
 plt.set_cmap('YlGn')
 import matplotlib.animation as anim
 
-###### INITIALISE ###############################################################
+###### INITIALISE #############################################################
 
 # set default global variables #################
 
@@ -73,13 +73,6 @@ if from_file:
         ### FOR IMPORTING POSITIONS FROM URL
         init_coords = [int(xs[i].text)*3,int(ys[i].text)*3]
         agents.append(af.Agent(environment,agents,init_coords))
-
-
-#### initiate agents based on num_agents required ############
-agents = []
-for i in range(num_agents):
-    agents.append(af.Agent(environment,agents)) 
-
 
 # #### FOR TESTING OF MATING
 # positions = [[50,50],[52,52]]
@@ -159,8 +152,6 @@ def run():
 
 fig = plt.figure(figsize=(5, 5))
 
-
-
 ##### TKINTER GUI ############################################################
 
 window = tkinter.Tk()
@@ -173,28 +164,24 @@ breed = (chck_var.get() == 1)
 tkinter.Label(window, text = "Number of Agents").grid(row = 1,column = 1)
 n_agents_entry = tkinter.Entry(window).grid(row = 1, column = 2)
 
-tkinter.Label(window, text = "Run?").grid(row = 2,column = 0) # this is placed in 0 0
 
+##################################################################
 if n_agents_entry is not None:
     num_agents = int(n_agents_entry)
 else:
     num_agents = 30 # DEFAULT
-    
+
+#### initiate agents based on num_agents required ############
+agents = []
+for i in range(num_agents):
+    agents.append(af.Agent(environment,agents)) 
+##################################################################
+
+
+tkinter.Label(window, text = "Run?").grid(row = 2,column = 0)
+canvas = matplotlib.backends.backend_tkagg.FigureCanvasTkAgg(fig, master=window)
+canvas._tkcanvas.grid(columnspan=3)
 btn1 = tkinter.Button(window, text = "Run",command = run()).grid(row=2,column=1)
 
-canvas = matplotlib.backends.backend_tkagg.FigureCanvasTkAgg(fig, master=window)
-canvas._tkcanvas.grid(row=3)
 
 window.mainloop()
-
-
-
-## Showing menu elements
-#menu_bar = tkinter.Menu(window)
-#window.config(menu=menu_bar)
-#model_menu = tkinter.Menu(menu_bar)
-#menu_bar.add_cascade(label="Model", menu=model_menu)
-#model_menu.add_command(label="Run model", command=run)
-
-# Run GUI
-#tkinter.mainloop()
