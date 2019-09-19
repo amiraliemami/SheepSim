@@ -156,32 +156,17 @@ def run():
 
 fig = plt.figure(figsize=(10, 10))
 
+root = tkinter.Tk()
+root.wm_title("Model")
+canvas = matplotlib.backends.backend_tkagg.FigureCanvasTkAgg(fig, master=root)
+canvas._tkcanvas.pack(side=tkinter.TOP, fill=tkinter.BOTH, expand=1)
 
-
-##### TKINTER GUI ############################################################
-
-window = tkinter.Tk()
-window.title("Model")
-
-tkinter.Label(window, text = "Run?").grid(row = 0) # this is placed in 0 0
-btn1 = tkinter.Button(window, text = "Run").grid(row=0,column=1)
-btn1.add_command(command=run)
-
-#chck = tkinter.Checkbutton(window, text = "Breeding").grid(row=2,column=0)
-
-canvas = matplotlib.backends.backend_tkagg.FigureCanvasTkAgg(fig, master=window)
-canvas._tkcanvas.grid(row=1)
-
-window.mainloop()
-
-
-
-## Showing menu elements
-#menu_bar = tkinter.Menu(window)
-#window.config(menu=menu_bar)
-#model_menu = tkinter.Menu(menu_bar)
-#menu_bar.add_cascade(label="Model", menu=model_menu)
-#model_menu.add_command(label="Run model", command=run)
+# Showing menu elements
+menu_bar = tkinter.Menu(root)
+root.config(menu=menu_bar)
+model_menu = tkinter.Menu(menu_bar)
+menu_bar.add_cascade(label="Model", menu=model_menu)
+model_menu.add_command(label="Run model", command=run)
 
 # Run GUI
-#tkinter.mainloop()
+tkinter.mainloop()
