@@ -5,9 +5,20 @@ Created on Wed Sep 18 11:31:30 2019
 @author: gyae
 """
 
-import socket
+from flask import Flask
+app = Flask(__name__)
 
-socket_1 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-socket_1.connect(("localhost", 5555)) # Address tuple
 
-socket_1.send(bytes("hello world", encoding="UTF-8"))
+
+
+@app.route('/')
+def hello_world():
+    return 'Hello, World!'
+
+if __name__ == '__main__':
+    app.run()
+    
+    
+    
+# always at the end
+from app import routes
