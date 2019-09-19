@@ -18,10 +18,18 @@ import matplotlib.animation as anim
 
 ###### INITIALISE ###############################################################
 
-# set default global variables
-num_agents = 20
+# set default global variables #################
+
+num_agents = 50
 num_iters = 2000
+
+max_age = 20
+min_age_for_preg = 20
+preg_duration = 10
+
 neighbourhood = 20
+
+###############################################
 
 ##### COMMANDLINE: n_agents n_iters neighbourhood_size
 import sys
@@ -67,18 +75,20 @@ if from_file:
         agents.append(af.Agent(environment,agents,init_coords))
 
 
-#### FOR TESTING OF MATING
+#### initiate agents based on num_agents required ############
+agents = []
+for i in range(num_agents):
+    agents.append(af.Agent(environment,agents)) 
 
-# positions = [[50,50],[52,52],[55,55]]
-# genders = ['m','f','f']
+
+# #### FOR TESTING OF MATING
+# positions = [[50,50],[52,52]]
+# genders = ['m','f']
 # num_agents = len(positions)
 # agents = []
 # for i in range(num_agents):
 #     agents.append(af.Agent(environment,agents,positions[i],genders[i]))  
 
-agents = []
-for i in range(num_agents):
-    agents.append(af.Agent(environment,agents)) 
 
 #### UPDATING  ###############################################################
 
@@ -86,28 +96,14 @@ for i in range(num_agents):
 carry_on = True
 def update(frame_number):
     
-    fig.clear()
+    print('Frame: ', frame_number)
+    print('Number of Sheep: ', len(agents))
+
     global carry_on
-    
-    random.shuffle(agents) # shuffle agents before each iteration
-    num_agents = len(agents) # update num_agents
-    print('Number of sheep: ',num_agents)
 
-    for agent in agents:
-        agent.move()
-        agent.eat()
-        #agent.share_with_neighbours(neighbourhood)
-        agent.mating()
-
-        # check if it dies at the end of this turn
-        dead = agent.increment_age_or_die(10)
-        
-        plt.scatter(agent.get_x(),agent.get_y(),
-                    s=(agent.get_store()*0.5),
-                    c=('red' if dead else 'white'),
-                    marker='*')
-
-    plt.imshow(environment, vmin=0, vmax=250) # environment needs to be plotted every run to show developments
+    # environment needs to be plotted at the start of every run to show developments from last run
+    fig.clear()
+    plt.imshow(environment, vmin=0, vmax=250)
     plt.xlim(0,300)
     plt.ylim(0,300)
     plt.axis('off')
@@ -120,6 +116,24 @@ def update(frame_number):
         carry_on = False
         print("All grass eaten!")
 
+    # shuffle agents before each iteration
+    random.shuffle(agents) 
+
+    for agent in agents:
+        agent.move()
+        agent.eat()
+        #agent.share_with_neighbours(neighbourhood)
+        agent.mating(preg_duration,min_age_for_preg)
+
+        # check if it dies at the end of this turn
+        dead = agent.increment_age_or_die(max_age)
+        
+        plt.scatter(agent.get_x(),agent.get_y(),
+                    s=(agent.get_store()*0.5),      # make size proportional to stored food
+                    c=('red' if dead else 'white'),
+                    marker='*')
+
+#### Setup animation and GUI ################################################
 
 def gen_function():
     a = 0
@@ -139,12 +153,12 @@ root.wm_title("Model")
 canvas = matplotlib.backends.backend_tkagg.FigureCanvasTkAgg(fig, master=root)
 canvas._tkcanvas.pack(side=tkinter.TOP, fill=tkinter.BOTH, expand=1)
 
-
-# Just showing menu elements
+# Showing menu elements
 menu_bar = tkinter.Menu(root)
 root.config(menu=menu_bar)
 model_menu = tkinter.Menu(menu_bar)
 menu_bar.add_cascade(label="Model", menu=model_menu)
 model_menu.add_command(label="Run model", command=run)
 
-tkinter.mainloop() # Wait for interactions.
+# Run GUI
+tkinter.mainloop()

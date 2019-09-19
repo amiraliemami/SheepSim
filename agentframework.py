@@ -106,7 +106,7 @@ class Agent():
             # mating rules
             if agent is not self:
 
-                if self.distance_to(agent) <= 5: # only mate if closer than 5
+                if self.distance_to(agent) <= 10: # only mate if closer than 5
                     # only mate if of min_age reached for mating
                     if self._age > min_age and agent.get_age() > min_age: 
                         # only mate if have 50 in stomach
