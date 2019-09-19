@@ -13,7 +13,7 @@ import tkinter
 import matplotlib
 matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
-plt.set_cmap('viridis')
+plt.set_cmap('YlGn')
 import matplotlib.animation as anim
 
 ###### INITIALISE ###############################################################
@@ -23,8 +23,8 @@ import matplotlib.animation as anim
 num_agents = 50
 num_iters = 2000
 
-max_age = 20
-min_age_for_preg = 20
+max_age = 50
+min_age_for_preg = 10
 preg_duration = 10
 
 neighbourhood = 20
@@ -119,19 +119,27 @@ def update(frame_number):
     # shuffle agents before each iteration
     random.shuffle(agents) 
 
+    the_dead = []
     for agent in agents:
-        agent.move()
         agent.eat()
-        #agent.share_with_neighbours(neighbourhood)
         agent.mating(preg_duration,min_age_for_preg)
+        agent.move()
+        #agent.share_with_neighbours(neighbourhood)
+
+        c = ('black' if agent.get_gender() == 'm' else 'white') # coloured based on gender
+        s = (agent.get_age()/max_age)*300 # size based on age
 
         # check if it dies at the end of this turn
-        dead = agent.increment_age_or_die(max_age)
-        
-        plt.scatter(agent.get_x(),agent.get_y(),
-                    s=(agent.get_store()*0.5),      # make size proportional to stored food
-                    c=('red' if dead else 'white'),
-                    marker='*')
+        if agent.is_dead(max_age):
+            the_dead.append(agent)
+            plt.scatter(agent.get_x(),agent.get_y(),s=s,c=c,marker='1')
+        else:
+            agent.increment_age()
+            plt.scatter(agent.get_x(),agent.get_y(),s=s,c=c,marker='*')
+    
+    # remove all who died in this round at once
+    for dead_agent in the_dead:
+        agents.remove(dead_agent)
 
 #### Setup animation and GUI ################################################
 

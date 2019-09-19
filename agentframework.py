@@ -89,28 +89,27 @@ class Agent():
     ## EXTRA - mating and aging
 
     def mating(self,preg_duration=10,min_age=20):
-        for agent in self.agents:
-            pregnancy = agent.get_pregnancy() 
 
-            # GIVE BIRTH to another sheep to the right
-            if pregnancy == preg_duration:
-                self.agents.append(Agent(self.environment,self.agents,[agent.get_x()+1,agent.get_y()])) 
-                agent.set_pregnancy(0) # reset after giving birth
-            # ADVANCE PREGNANCY if pregnant
-            elif pregnancy > 0:
-                agent.set_pregnancy(pregnancy+1)
-            # else stay non-pregnant
-            else:
-                pass
-
-            # mating rules
-            if agent is not self:
-
-                if self.distance_to(agent) <= 10: # only mate if closer than 5
-                    # only mate if of min_age reached for mating
-                    if self._age > min_age and agent.get_age() > min_age: 
-                        # only mate if have 50 in stomach
-                        if self._store > 50 and agent.get_store() > 50: 
+        pregnancy = self._pregnancy
+        # GIVE BIRTH to another sheep to the right
+        if pregnancy == preg_duration:
+            self.agents.append(Agent(self.environment,self.agents,[self._x+1,self._y]))
+            self._pregnancy = 0 # reset after giving birth
+        # ADVANCE PREGNANCY if pregnant
+        elif pregnancy > 0:
+            self._pregnancy += 1
+        # else stay non-pregnant
+        else:
+            pass
+        
+        # if of age and enough food consumed (50), try to mate with other sheep:
+        if (self._age > min_age) and (self._store > 50):
+            for agent in self.agents:
+                if agent is not self:
+                    # only mate if closer than 10
+                    if self.distance_to(agent) <= 10: 
+                        # only mate if other sheep is also of min_age and food
+                        if (agent.get_age() > min_age) and (agent.get_store() > 50):
                             
                             if self._gender == 'f' and agent.get_gender() == 'm':
                                 if self._pregnancy == 0: # only get pregnant if not already
@@ -121,13 +120,11 @@ class Agent():
                             else:
                                 pass
 
-    def increment_age_or_die(self,max_age=100):
-        if self._age > max_age:
-            self.agents.remove(self) 
-            return True   
-        else:
+    def is_dead(self,max_age=100):
+        return (self._age > max_age)
+
+    def increment_age(self):
             self._age += 1
-            return False
 
 
 
