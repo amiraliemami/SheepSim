@@ -26,6 +26,7 @@ num_iters = 2000
 max_age = 50
 min_age_for_preg = 10
 preg_duration = 10
+breed = True
 
 neighbourhood = 20
 
@@ -145,21 +146,33 @@ def gen_function():
         yield a	  # Returns control and waits next call.
         a += 1
 
+def initialise():
+    
+    global num_agents
+    global breed
+    
+    breed = (chck_var.get() == 1)
+    n_agents_entry = tkinter.Entry(window).grid(row = 1, column = 2)
+    
+    if n_agents_entry is not None:
+        num_agents = int(n_agents_entry)
+    else:
+        num_agents = 30 # DEFAULT
+        
+    agents = []
+    for i in range(num_agents):
+        agents.append(af.Agent(environment,agents)) 
+    
 
 def run():
+    global carry_on
+    carry_on = True
     animation = anim.FuncAnimation(fig, update, frames=gen_function, repeat=False)
     canvas.draw()
 
 def stop():
     global carry_on
     carry_on = False
-
-def cont():
-    global carry_on
-    carry_on = True
-    
-    animation = anim.FuncAnimation(fig, update, frames=gen_function, repeat=False)
-    canvas.draw()
 
 fig = plt.figure(figsize=(5, 5))
 
@@ -170,33 +183,33 @@ window.title("Model")
 
 chck_var = tkinter.IntVar()
 chck = tkinter.Checkbutton(window, text = "Breeding",variable=chck_var).grid(row=0,column=0)
-breed = (chck_var.get() == 1)
+#breed = (chck_var.get() == 1)
 
-tkinter.Label(window, text = "Number of Agents").grid(row = 1,column = 1)
-n_agents_entry = tkinter.Entry(window).grid(row = 1, column = 2)
+tkinter.Label(window, text = "Number of Agents").grid(row = 0,column = 1)
+n_agents_entry = tkinter.Entry(window).grid(row = 0, column = 2)
 
 
 ##################################################################
-if n_agents_entry is not None:
-    num_agents = int(n_agents_entry)
-else:
-    num_agents = 30 # DEFAULT
-
-#### initiate agents based on num_agents required ############
-agents = []
-for i in range(num_agents):
-    agents.append(af.Agent(environment,agents)) 
+#if n_agents_entry is not None:
+#    num_agents = int(n_agents_entry)
+#else:
+#    num_agents = 30 # DEFAULT
+#
+##### initiate agents based on num_agents required ############
+#agents = []
+#for i in range(num_agents):
+#    agents.append(af.Agent(environment,agents)) 
 ##################################################################
 
-
-tkinter.Label(window, text = "Run?").grid(row = 2,column = 0)
 canvas = matplotlib.backends.backend_tkagg.FigureCanvasTkAgg(fig, master=window)
 canvas._tkcanvas.grid(columnspan=3)
+
+btn0 = tkinter.Button(window,text="Apply Settings",command = initialise)
+btn0.grid(row=0,column=3)
+
 btn1 = tkinter.Button(window,text="Run",command = run)
 btn1.grid(row=2,column=1)
 btn2 = tkinter.Button(window,text="Stop",command = stop)
 btn2.grid(row=2,column=2)
-btn2 = tkinter.Button(window,text="Continue",command = cont)
-btn2.grid(row=2,column=3)
 
 window.mainloop()
