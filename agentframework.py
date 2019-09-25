@@ -11,12 +11,11 @@ import numpy as np
 def perturb(x): 
 	"""Given a number, returns a perturbed version of it with equal chance of increase or decrease by 1, mod300.	
 	
-	Input:
-		x -- an integer or float
+	Arguments:
+		x (integer or float): a number
 	Returns:
 		Either (x+1)mod300 or (x-1)mod300, with equal probability.
 	"""
-
     return (x + random.choice([-1,1])) % 300
 
 #### AGENT CLASS
@@ -129,7 +128,7 @@ class Agent():
     def get_age(self):
 		"""Returns the private _age attribute"""
         return self._age
-    
+
     # actions
     def move(self):
 		"""Perturbs the agent's x and y coordinates independantly using the perturb() function. Takes no arguments."""
@@ -175,9 +174,17 @@ class Agent():
 		"""
         return np.sqrt(((self._x - other.get_x())**2) + ((self._y - other.get_y())**2))
 
-    def share_with_neighbours(self,neighbourhood_size):
-		""""""
+    def share_with_neighbours(self,neighbourhood_size=20):
+		"""Share store with nearby sheep by splitting resources with them.
+		
+		Check if any other sheep are within a given radius of self, and if so, share stores by setting the value of the stores for self and
+		the other sheep to the average of the stores between the two.
+		
+		Arguments:
+			neighbourhood_size (int or float): Radius below which sharing is triggered (default 20)
+		"""
         for agent in self.agents:
+			# do not perform action with oneself (not necessary as avg of x and x is x, but is good practice in case we generalise)
             if agent is not self:
                 if self.distance_to(agent) <= neighbourhood_size:
                     avg = (self._store + agent.get_store())/2
@@ -186,10 +193,18 @@ class Agent():
            #else: # CHECK IF SAME as self
            #    print('The same!',agent,self)
 
-    ## EXTRA - mating and aging
+
+    ######### EXTRAS - Mating, Aging and Dying #################################################################################################
 
     def mating(self,preg_duration=10,min_age=20):
+		"""Enables mating for the sheep, meaning that female sheep get pregnant if they come close enough to male sheep and give birth to new sheep after a given pegnancy duration.
+		
 
+		Arguments:
+			preg_duration (integer): 
+		
+		
+		"""
         pregnancy = self._pregnancy
         # GIVE BIRTH to another sheep to the right
         if pregnancy == preg_duration:
