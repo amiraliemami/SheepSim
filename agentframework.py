@@ -1,14 +1,73 @@
+"""
+Module requirements:
+- 'numpy'
+- 'random'
+"""
+
 #### NECESSARY MODULES AND FUNCTIONS
 import random
 import numpy as np
 
 def perturb(x): 
+	"""Given a number, returns a perturbed version of it with equal chance of increase or decrease by 1, mod300.	
+	
+	Input:
+		x -- an integer or float
+	Returns:
+		Either (x+1)mod300 or (x-1)mod300, with equal probability.
+	"""
+
     return (x + random.choice([-1,1])) % 300
 
 #### AGENT CLASS
 class Agent():
+		"""Provides the framework for sheep agents and their associated actions.
+		
+		Arguments:
+			environment (matrix): list of lists of numbers corresponding to grass height at each pixel of environment
+			agents (list): list of Agent objects in the simulation
+			init_coords (2-tuple of ints): Determines (x,y) at which this agent is spawned. If None, random x and y are chosen between 0 and 300. (default None)
+			gender (str): 'm' or 'f', the sheep's gender (default: None, causes _gender below to be set randomely).
+
+		Attributes:
+			_x (int): The sheep's x coordinate, between 0 and 300
+			_y (int): The sheep's y coordinate, between 0 and 300
+			_gender (str): 'm' or 'f', the sheep's gender (default: random if gender argument is None)
+			_store (int): Amount of grass eaten and stored by the sheep. Initiates at 0.
+			_pregnancy (int): Stage of pregnancy the sheep is at. Initiates at 0.
+			_age (int): Number of runs the sheep has lived for. Initiates at 0.
+
+		Methods:
+			Set methods: 
+				set_x, set_y, set_store, set_pregnancy
+			Get methods: 
+				get_x, get_y, get_store, get_pregnancy, get_gender, get_age
+			Action methods: 
+				move, eat, share_neighbours, mating
+			Other methods:
+				is_dead, increment_age, distance_to
+        """
+	
     def __init__(self, environment:list,agents:list,init_coords=None,gender=None):
-        
+        """Initiates the agent upon creation.
+
+		Arguments:
+			environment (list): list of lists of numbers corresponding to grass height at each pixel of environment
+			agents (list): list of Agent objects in the simulation
+			init_coords (2-tuple of ints): Determines (x,y) at which this agent is spawned. If None, random x and y are chosen between 0 and 300. (default None)
+			gender (str): 'm' or 'f', the sheep's gender (default: None, causes _gender below to be set randomely).
+
+		Attributes:
+			_x (int): The sheep's x coordinate, between 0 and 300
+			_y (int): The sheep's y coordinate, between 0 and 300
+			_gender (str): 'm' or 'f', the sheep's gender (default: random if gender argument is None)
+			_store (int): Amount of grass eaten and stored by the sheep. Initiates at 0.
+			_pregnancy (int): Stage of pregnancy the sheep is at. Initiates at 0.
+			_age (int): Number of runs the sheep has lived for. Initiates at 0.
+			environment (list): store given environment as internal attribute
+			agents (list): store given agents as internal attribute
+		"""
+
         # private attributes
         if init_coords is None:
             self._x = random.randint(0,300)
@@ -32,51 +91,92 @@ class Agent():
         
     # functions for accessing private attributes
     def set_x(self,x:int):
+		"""Sets the private _x attribute to given integer."""
         self._x = x
+
     def set_y(self,y:int):
+		"""Sets the private _y attribute to given integer."""
         self._y = y
+
     def set_store(self,val:int):
+		"""Sets the private _store attribute to given integer."""
         self._store = val
+
     def set_pregnancy(self,val:int):
+		"""Sets the private _pregnancy attribute to given integer."""
         self._pregnancy = val
         
     def get_x(self):
+		"""Returns the private _x attribute"""
         return self._x
+
     def get_y(self):
+		"""Returns the private _y attribute"""
         return self._y
+
     def get_store(self):
+		"""Returns the private _store attribute"""
         return self._store
+
     def get_pregnancy(self):
+		"""Returns the private _pregnancy attribute"""
         return self._pregnancy
 
     def get_gender(self): # read-only
+		"""Returns the private _gender attribute. Note: This attribute does not have a set method - it is read-only."""
         return self._gender
+
     def get_age(self):
+		"""Returns the private _age attribute"""
         return self._age
     
     # actions
     def move(self):
+		"""Perturbs the agent's x and y coordinates independantly using the perturb() function. Takes no arguments."""
         self._x, self._y = perturb(self._x), perturb(self._y)
 
-    def eat(self):
+    def eat(self, sick_enabled=False):
+		"""Calling this will cause the sheep to "eat grass" from the coordinate it is standing on in the environment. 
+		
+		If the environment has value equal to or more than 10 at the coordinate at which the sheep is currently standing, the sheep will increase its
+		store by 10, and the environment's value here will decrease by 10. If the value here is less than 10, the sheep will add this value to its store
+		and reduce the environment to 0 at this spot. If environment is at 0 at this coordinate, the sheep will not eat.
+		
+		Arguments:
+			sick_enabled (bool): if True, sheep sick up 50 onto their current coordinate in the environment if their store reaches 100 (default False)
+		"""
+
         grass_available = self.environment[self._y][self._x]
-        if grass_available > 10:
+		# eat 10 if grass abundant
+        if grass_available >= 10:
             self.environment[self._y][self._x] -= 10
             self._store += 10
-        # make it eat what's left
-        else:
+		# do nothing if no grass
+        elif grass_available == 0:
+			pass
+		# eat what's left if less than 10
+		else:
             self.environment[self._y][self._x] = 0
             self._store += grass_available
         
-        # # sick up 50 of store if store goes above 100
-        # if self._store > 100:
-        #     self.environment[self._y][self._x] += 50
-        #     self._store = 50
+		if sick_enabled:
+        # sick up 50 of store if store goes above 100
+			if self._store > 100:
+				self.environment[self._y][self._x] += 50
+				self._store = 50
     
     def distance_to(self, other):
+		"""Given another agent, get the Euclidean distance between self and the given agent.
+		
+		Arguments:
+			other (Agent class): Other sheep to get distance to.
+		Returns:
+			Euclidean distance (float) to the other sheep.
+		"""
         return np.sqrt(((self._x - other.get_x())**2) + ((self._y - other.get_y())**2))
 
     def share_with_neighbours(self,neighbourhood_size):
+		""""""
         for agent in self.agents:
             if agent is not self:
                 if self.distance_to(agent) <= neighbourhood_size:
