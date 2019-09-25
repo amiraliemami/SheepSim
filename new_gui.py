@@ -190,10 +190,7 @@ anim_placeholder._tkcanvas.pack()
 root.mainloop()
 
 
-
-
 ###############################################################################
-
 
 #btn1 = tk.Button(root, text = "Run", relief="raised", command = toggle)
 #def toggle():
