@@ -199,83 +199,67 @@ class Agent():
     def mating(self, preg_duration=10, min_age=20, min_dist=10, min_store=50):
 		"""Enables mating for the sheep, meaning that female sheep get pregnant if they come close enough to male sheep and give birth to new sheep after a given pegnancy duration.
 		
+		Must be run at each iteration of the simulation. If both self and other sheep are of age, have enough food store, are close enough, 
+		and are also of opposite sexes, the female one will get pregnant. Pregnancies progress with each iteration of the simulation and once 
+		the correct duration is reached, a new sheep (new instance of the Agent class) is initiated immediately to the right of the mother. 
 
+		NOTES:
+		- At each run of this mating function on an agent (i.e. agent.mating()), that agent looks around it for possible mates.
+		- A pregnant sheep cannot get re-pregnant until it gives birth.
 
 		Arguments:
 			preg_duration (integer): number of turns that a pregnancy lasts from conception to giving birth (default 10)
 			min_age (integer): both sheep (male and female) must be of this age or more to be able to mate (default 20)
 			min_dist (float): must be closer than this distance to be able to mate (default 10)
 			min_store (float): both sheep must have this much store or more to be able to mate (default 50)
+		Raises:
+			Exception: if pregnancy value becomes negative or goes above preg_duration
 		"""
 
         pregnancy = self._pregnancy
 
-        if pregnancy == preg_duration:
+		if pregnancy == 0: 
+			# if self has pregnancy 0, look for a mate (always true if male, and a necessary condition if female).
+			# proceed if self is of age and has consumed enough food
+			if (self._age > min_age) and (self._store > min_store) and (self._pregnancy == 0):
+			# loop through all sheep in simulation
+				for agent in self.agents:
+					# do not self-mate, please
+					if agent is not self:
+						# only mate if distance between self and other sheep is less than the given minimum
+						if self.distance_to(agent) <= min_dist: 
+							# only mate if other sheep is also of min_age and store
+							if (agent.get_age() > min_age) and (agent.get_store() > min_store):
+                            
+								# only mate if opposite genders
+								if self._gender == 'f' and agent.get_gender() == 'm':
+								self._pregnancy = 1 
+
+								elif self._gender == 'm' and agent.get_gender() == 'f':
+									# only get other sheep pregnant if it's not already
+									if agent.get_pregnancy() == 0:
+										agent.set_pregnancy(1)
+        
+		elif pregnancy == preg_duration:
 			# Give birth to another sheep to the right if pregnancy duration reached
             self.agents.append(Agent(self.environment,self.agents,[self._x+1,self._y]))
-            # reset after giving birth
+            # reset pregnancy after giving birth, ready for the next
 			self._pregnancy = 0
-
-        elif pregnancy > 0:
+		
+		elif pregnancy > 0 and pregnancy < preg_duration:
 			# Advance pregnancy if already pregnant
             self._pregnancy += 1
-        else:
-			# else stay non-pregnant
-            pass
-        
-        # if self is of age and enough food has been consumed, try to mate with other sheep:
-        if (self._age > min_age) and (self._store > min_store):
-            for agent in self.agents:
-				# do not self-mate, please
-                if agent is not self:
-                    # only mate if distance between self and other sheep is less than the given minimum
-                    if self.distance_to(agent) <= min_dist: 
-                        # only mate if other sheep is also of min_age and store
-                        if (agent.get_age() > min_age) and (agent.get_store() > min_store):
-                            
-							# only mate if opposite genders
-                            if self._gender == 'f' and agent.get_gender() == 'm':
-								# only get pregnant if not already
-                                if self._pregnancy == 0:
-                                    self._pregnancy = 1
-                            elif self._gender == 'm' and agent.get_gender() == 'f':
-                                if agent.get_pregnancy() == 0:
-                                    agent.set_pregnancy(1)
-                            else:
-                                pass
+
+		elif pregnancy > preg_duration:
+			raise Exception("Pregnancy duration exceeded... Something's wrong!")
+		elif pregnancy < 0:
+			raise Exception("Negative value for pregnancy duration... Something's wrong!'")
+
 
     def is_dead(self,max_age=100):
+		"""Checks if age has reached the maximum age (default 100) and returns a bool answer."""
         return (self._age > max_age)
 
     def increment_age(self):
-            self._age += 1
-
-
-
-    # class_attribute = ... don't use this or global variables.
-
-#    def __init__(self,x=None,y=None):
-
-#        # DON'T NEED TO MAKE THESE VARIABLES
-#        # as python will do it for you upon use, but it's better practice
-#        self.x = x
-#        self.y = y
-#
-#        # method_local_variable = ...
-#        # ^ can only be used above
-#
-#        # get class name to access class attribute:
-#        # Agent.class_attribute
-#
-#    def speak(self):
-#        print('Hello!')
-#    
-#    def randomise(self):
-#        self.x = random.randint(0,100)
-#        self.y = random.randint(0,100)
-#        
-#    def has_bigger_x(self,other):
-#        if self.x > other.x:
-#            print('TRUE!')
-#        else:
-#            print('FALSE!')
+		"""Increments the agent's age on which it was called."""
+		self._age += 1
