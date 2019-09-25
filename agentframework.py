@@ -16,7 +16,7 @@ def perturb(x):
 	Returns:
 		Either (x+1)mod300 or (x-1)mod300, with equal probability.
 	"""
-    return (x + random.choice([-1,1])) % 300
+	return (x + random.choice([-1,1])) % 300
 
 #### AGENT CLASS
 class Agent():
@@ -47,7 +47,7 @@ class Agent():
 				is_dead, increment_age, distance_to
         """
 	
-    def __init__(self, environment:list,agents:list,init_coords=None,gender=None):
+	def __init__(self, environment:list,agents:list,init_coords=None,gender=None):
         """Initiates the agent upon creation.
 
 		Arguments:
