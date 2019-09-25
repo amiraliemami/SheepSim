@@ -194,7 +194,7 @@ class Agent():
 			#else: # CHECK IF SAME as self
 			#    print('The same!',agent,self)
 
-######### EXTRAS - Mating, Aging and Dying #################################################################################################
+	######### EXTRAS - Mating, Aging and Dying #################################################################################################
 
 
 	def mating(self, preg_duration=10, min_age=20, min_dist=10, min_store=50):
