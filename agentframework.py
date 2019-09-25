@@ -25,16 +25,16 @@ class Agent():
 		Arguments:
 			environment (matrix): list of lists of numbers corresponding to grass height at each pixel of environment
 			agents (list): list of Agent objects in the simulation
-			init_coords (2-tuple of ints): Determines (x,y) at which this agent is spawned. If None, random x and y are chosen between 0 and 300. (default None)
+			init_coords (2-tuple of integers): Determines (x,y) at which this agent is spawned. If None, random x and y are chosen between 0 and 300. (default None)
 			gender (str): 'm' or 'f', the sheep's gender (default: None, causes _gender below to be set randomely).
 
 		Attributes:
-			_x (int): The sheep's x coordinate, between 0 and 300
-			_y (int): The sheep's y coordinate, between 0 and 300
+			_x (integer): The sheep's x coordinate, between 0 and 300
+			_y (integer): The sheep's y coordinate, between 0 and 300
 			_gender (str): 'm' or 'f', the sheep's gender (default: random if gender argument is None)
-			_store (int): Amount of grass eaten and stored by the sheep. Initiates at 0.
-			_pregnancy (int): Stage of pregnancy the sheep is at. Initiates at 0.
-			_age (int): Number of runs the sheep has lived for. Initiates at 0.
+			_store (integer): Amount of grass eaten and stored by the sheep. Initiates at 0.
+			_pregnancy (integer): Stage of pregnancy the sheep is at. Initiates at 0.
+			_age (integer): Number of runs the sheep has lived for. Initiates at 0.
 
 		Methods:
 			Set methods: 
@@ -53,16 +53,16 @@ class Agent():
 		Arguments:
 			environment (list): list of lists of numbers corresponding to grass height at each pixel of environment
 			agents (list): list of Agent objects in the simulation
-			init_coords (2-tuple of ints): Determines (x,y) at which this agent is spawned. If None, random x and y are chosen between 0 and 300. (default None)
+			init_coords (2-tuple of integers): Determines (x,y) at which this agent is spawned. If None, random x and y are chosen between 0 and 300. (default None)
 			gender (str): 'm' or 'f', the sheep's gender (default: None, causes _gender below to be set randomely).
 
 		Attributes:
-			_x (int): The sheep's x coordinate, between 0 and 300
-			_y (int): The sheep's y coordinate, between 0 and 300
+			_x (integer): The sheep's x coordinate, between 0 and 300
+			_y (integer): The sheep's y coordinate, between 0 and 300
 			_gender (str): 'm' or 'f', the sheep's gender (default: random if gender argument is None)
-			_store (int): Amount of grass eaten and stored by the sheep. Initiates at 0.
-			_pregnancy (int): Stage of pregnancy the sheep is at. Initiates at 0.
-			_age (int): Number of runs the sheep has lived for. Initiates at 0.
+			_store (integer): Amount of grass eaten and stored by the sheep. Initiates at 0.
+			_pregnancy (integer): Stage of pregnancy the sheep is at. Initiates at 0.
+			_age (integer): Number of runs the sheep has lived for. Initiates at 0.
 			environment (list): store given environment as internal attribute
 			agents (list): store given agents as internal attribute
 		"""
@@ -181,7 +181,7 @@ class Agent():
 		the other sheep to the average of the stores between the two.
 		
 		Arguments:
-			neighbourhood_size (int or float): Radius below which sharing is triggered (default 20)
+			neighbourhood_size (integer or float): Radius below which sharing is triggered (default 20)
 		"""
         for agent in self.agents:
 			# do not perform action with oneself (not necessary as avg of x and x is x, but is good practice in case we generalise)
@@ -196,38 +196,47 @@ class Agent():
 
     ######### EXTRAS - Mating, Aging and Dying #################################################################################################
 
-    def mating(self,preg_duration=10,min_age=20):
+    def mating(self, preg_duration=10, min_age=20, min_dist=10, min_store=50):
 		"""Enables mating for the sheep, meaning that female sheep get pregnant if they come close enough to male sheep and give birth to new sheep after a given pegnancy duration.
 		
 
+
 		Arguments:
-			preg_duration (integer): 
-		
-		
+			preg_duration (integer): number of turns that a pregnancy lasts from conception to giving birth (default 10)
+			min_age (integer): both sheep (male and female) must be of this age or more to be able to mate (default 20)
+			min_dist (float): must be closer than this distance to be able to mate (default 10)
+			min_store (float): both sheep must have this much store or more to be able to mate (default 50)
 		"""
+
         pregnancy = self._pregnancy
-        # GIVE BIRTH to another sheep to the right
+
         if pregnancy == preg_duration:
+			# Give birth to another sheep to the right if pregnancy duration reached
             self.agents.append(Agent(self.environment,self.agents,[self._x+1,self._y]))
-            self._pregnancy = 0 # reset after giving birth
-        # ADVANCE PREGNANCY if pregnant
+            # reset after giving birth
+			self._pregnancy = 0
+
         elif pregnancy > 0:
+			# Advance pregnancy if already pregnant
             self._pregnancy += 1
-        # else stay non-pregnant
         else:
+			# else stay non-pregnant
             pass
         
-        # if of age and enough food consumed (50), try to mate with other sheep:
-        if (self._age > min_age) and (self._store > 50):
+        # if self is of age and enough food has been consumed, try to mate with other sheep:
+        if (self._age > min_age) and (self._store > min_store):
             for agent in self.agents:
+				# do not self-mate, please
                 if agent is not self:
-                    # only mate if closer than 10
-                    if self.distance_to(agent) <= 10: 
-                        # only mate if other sheep is also of min_age and food
-                        if (agent.get_age() > min_age) and (agent.get_store() > 50):
+                    # only mate if distance between self and other sheep is less than the given minimum
+                    if self.distance_to(agent) <= min_dist: 
+                        # only mate if other sheep is also of min_age and store
+                        if (agent.get_age() > min_age) and (agent.get_store() > min_store):
                             
+							# only mate if opposite genders
                             if self._gender == 'f' and agent.get_gender() == 'm':
-                                if self._pregnancy == 0: # only get pregnant if not already
+								# only get pregnant if not already
+                                if self._pregnancy == 0:
                                     self._pregnancy = 1
                             elif self._gender == 'm' and agent.get_gender() == 'f':
                                 if agent.get_pregnancy() == 0:
