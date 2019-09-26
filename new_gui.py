@@ -5,7 +5,7 @@
 import agentframework as af
 
 import random
-#random.seed(100)
+random.seed(100)
 import numpy as np
 
 import matplotlib
