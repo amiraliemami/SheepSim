@@ -200,7 +200,10 @@ right_frame.place(relx=0.64, rely=0.02, relwidth=0.68, relheight=0.96, anchor='n
 # prepare plotting area
 fig = plt.figure(figsize=(15, 15)) 
 fig.set_facecolor('#F0F0F0')
+fig.clear()
 plt.imshow(environment, vmin=0, vmax=250)
+plt.xlim(0,300)
+plt.ylim(0,300)
 plt.axis('off')
 
 anim_placeholder = matplotlib.backends.backend_tkagg.FigureCanvasTkAgg(fig, master=right_frame)
