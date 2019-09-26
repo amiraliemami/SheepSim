@@ -27,17 +27,20 @@ preg_duration = 10
 #neighbourhood = 20
 
 #### IMPORT ENVIRONMENT
-environment = []
-with open('data/in.txt') as f:
-    for line in f:
-        parsed_line = line.split(',')
-        rowlist = []
-        for value in parsed_line:
-            rowlist.append(int(value))
-        environment.append(rowlist)
-#print('Max of environment: ',max(max(environment)))
-# max is 245. Choose 250 as max grass level
 
+def import_environment():
+    environment = []
+    with open('data/in.txt') as f:
+        for line in f:
+            parsed_line = line.split(',')
+            rowlist = []
+            for value in parsed_line:
+                rowlist.append(int(value))
+            environment.append(rowlist)
+    #print('Max of environment: ',max(max(environment)))
+    # max is 245. Choose 250 as max grass level
+    return environment
+environment = import_environment()
 #### UPDATING  ################################################################
 
 # (moving, eating, mating, aging, dying) AND PLOTTING
@@ -112,6 +115,12 @@ def run():
     global preg_duration
     global agents
 
+    global carry_on
+    carry_on = True
+
+    global environment
+    environment = import_environment()
+
     breed = breed_slider.get()
     max_age = max_age_slider.get()
     min_age_for_preg = min_preg_age_slider.get()
@@ -119,7 +128,7 @@ def run():
     
     num_agents = n_slider.get()
     agents = []
-    for i in range(num_agents):
+    for _ in range(num_agents):
         agents.append(af.Agent(environment,agents)) 
         
     # run animation
