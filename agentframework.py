@@ -162,8 +162,10 @@ class Agent():
 						x_best, y_best = x, y
 					else:
 						pass
-
-			self._x, self._y = x_best, y_best
+			if max_grass_val == 0:
+				self._x, self._y = perturb(self._x), perturb(self._y)
+			else:
+				self._x, self._y = x_best, y_best
 			### print('BEST', max_grass_val, [x_best, y_best])
 		else:
 			#Perturb the agent's x and y coordinates randomely and independantly using the perturb() function.
