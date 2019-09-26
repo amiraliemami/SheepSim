@@ -5,7 +5,7 @@
 import agentframework as af
 
 import random
-random.seed(100)
+#random.seed(100)
 import numpy as np
 
 import matplotlib
@@ -72,14 +72,14 @@ def update(frame_number):
 
     the_dead = []
     for agent in agents:
+        agent.move()
         agent.eat()
         if breed:
             agent.mating(preg_duration,min_age_for_preg)
-        agent.move()
         #agent.share_with_neighbours(neighbourhood)
 
         c = ('black' if agent.get_gender() == 'm' else 'white') # coloured based on gender
-        s = (agent.get_age()/max_age)*300 # size based on age
+        s = (agent.get_age()/max_age)*100 # size based on age
 
         # check if it dies at the end of this turn
         if agent.is_dead(max_age):
@@ -140,49 +140,59 @@ def cont():
 
 #### TKINTER GUI ##############################################################
 
-fig = plt.figure(figsize=(10, 10)) # to be used for plotting the animation into
 import tkinter as tk
 
 root = tk.Tk()
+root.title('Sheep Sim - Amir')
 
-canvas = tk.Canvas(root, height=400, width=600)
+canvas = tk.Canvas(root, height=450, width=620)
 canvas.pack()
 
 left_frame = tk.Frame(root, bd=5)
 left_frame.place(relx=0.15, rely=0.05, relwidth=0.25, relheight=0.9, anchor='n')
 
-main_title = tk.Label(left_frame, text="~ Sheep Sim ~")
-main_title.place(relx=0.05,rely=0.0,relwidth=0.9,relheight=0.08)
-main_title.config(font=("Poor Richard", 15))
+main_title = tk.Label(left_frame, text="Sheep  °ꈊ°  Sim")
+main_title.place(relx=0,rely=-0.02,relwidth=1,relheight=0.08)
+main_title.config(font=("Poor Richard", 17))
 
-n_slider = tk.Scale(left_frame, from_=0, to=100, orient=tk.HORIZONTAL,label='Number of Agents')
+n_slider = tk.Scale(left_frame, from_=1, to=100, orient=tk.HORIZONTAL,label='Number of Agents')
 n_slider.set(50) # SET DEFAULT NUM AGENTS
 n_slider.place(relx=0.05,rely=0.08,relwidth=0.9, relheight=0.18)
 
 max_age_slider = tk.Scale(left_frame, from_=0, to=50, orient=tk.HORIZONTAL,label='Life Expectancy')
-max_age_slider.set(30) # SET DEFAULT breed on or off
+max_age_slider.set(30) # SET DEFAULT 
 max_age_slider.place(relx=0.05,rely=0.25,relwidth=0.9, relheight=0.18)
 
-breed_slider = tk.Scale(left_frame, from_=0, to=1, orient=tk.HORIZONTAL,label='Babies?',showvalue=0)
+separator_line = tk.Frame(left_frame,bg='grey')
+separator_line.place(relx=0.05,rely=0.44,relheight=0.001,relwidth=0.9)
+
+main_title = tk.Label(left_frame, text='Babies?',justify=tk.LEFT)
+main_title.place(relx=-0.05,rely=0.485,relwidth=0.6,relheight=0.05)
+
+breed_slider = tk.Scale(left_frame, from_=0, to=1, orient=tk.HORIZONTAL,showvalue=0)
 breed_slider.set(1) # SET DEFAULT breed on or off
-breed_slider.place(relx=0.2,rely=0.42,relwidth=0.55,relheight=0.15)
+breed_slider.place(relx=0.45,rely=0.48,relwidth=0.46,relheight=0.1)
 
 min_preg_age_slider = tk.Scale(left_frame, from_=0, to=50, orient=tk.HORIZONTAL,label='Fertility Age')
-min_preg_age_slider.set(20) # SET DEFAULT breed on or off
+min_preg_age_slider.set(20) # SET DEFAULT 
 min_preg_age_slider.place(relx=0.05,rely=0.57,relwidth=0.9,relheight=0.18)
 
 preg_duration_slider = tk.Scale(left_frame, from_=0, to=50, orient=tk.HORIZONTAL,label='Pregnancy Duration')
-preg_duration_slider.set(10) # SET DEFAULT breed on or off
+preg_duration_slider.set(10) # SET DEFAULT 
 preg_duration_slider.place(relx=0.05,rely=0.73,relwidth=0.9,relheight=0.17)
-
 
 button = tk.Button(left_frame, text="Run", font=40, command=run)
 button.place(relx=0.15, rely=0.92, relheight=0.08, relwidth=0.6)
 
 
-right_frame = tk.Frame(root, bd=10)
-right_frame.place(relx=0.64, rely=0.05, relwidth=0.68, relheight=0.9, anchor='n')
+right_frame = tk.Frame(root,bd=5)
+right_frame.place(relx=0.64, rely=0.02, relwidth=0.68, relheight=0.96, anchor='n')
 
+# prepare plotting area
+fig = plt.figure(figsize=(15, 15)) 
+fig.set_facecolor('#F0F0F0')
+plt.imshow(environment, vmin=0, vmax=250)
+plt.axis('off')
 
 anim_placeholder = matplotlib.backends.backend_tkagg.FigureCanvasTkAgg(fig, master=right_frame)
 anim_placeholder._tkcanvas.pack()

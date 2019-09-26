@@ -130,9 +130,44 @@ class Agent():
 		return self._age
 
 	# actions
-	def move(self):
-		"""Perturbs the agent's x and y coordinates independantly using the perturb() function. Takes no arguments."""
-		self._x, self._y = perturb(self._x), perturb(self._y)
+	def move(self,optimised=True):
+		"""Moves the sheep it is called on one step.
+		
+		Can be random (optimised=False), or towards the direction of most grass (unless current position has
+		more than surrounding areas, in which case the sheep does not move. Optimised=True)
+
+		Arguments:
+			optimised (bool): 
+			If False, sheep moves randomely to a neighbouring pixel. If True, sheep moves towards
+			direction of most grass, or does not move if current pixel has most grass (default True)
+		"""
+
+		if optimised:
+
+			# initialise
+			x_current, y_current = self._x, self._y
+			max_grass_val = self.environment[x_current][y_current]
+			x_best, y_best = x_current, y_current
+
+			# run loop on the 3x3 block around the sheep's current position
+			for i in [0,1,-1]:
+				for j in [0,1,-1]:
+					x = (x_current + i) % 300
+					y = (y_current + j) % 300
+					grass_val_here = self.environment[y][x]
+					### print(grass_val_here, [x,y])
+					# only update if more grass found than before
+					if grass_val_here > max_grass_val:
+						max_grass_val = grass_val_here
+						x_best, y_best = x, y
+					else:
+						pass
+
+			self._x, self._y = x_best, y_best
+			### print('BEST', max_grass_val, [x_best, y_best])
+		else:
+			#Perturb the agent's x and y coordinates randomely and independantly using the perturb() function.
+			self._x, self._y = perturb(self._x), perturb(self._y)
 
 	def eat(self, sick_enabled=False):
 		"""Calling this will cause the sheep to "eat grass" from the coordinate it is standing on in the environment. 
