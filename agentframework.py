@@ -6,6 +6,7 @@ Module requirements:
 
 #### NECESSARY MODULES AND FUNCTIONS
 import random
+random.seed(100)
 import numpy as np
 
 def perturb(x): 

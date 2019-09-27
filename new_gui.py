@@ -161,7 +161,7 @@ import tkinter as tk
 root = tk.Tk()
 root.title('Sheep Sim - Amir')
 
-canvas = tk.Canvas(root, height=500, width=640)
+canvas = tk.Canvas(root, height=470, width=660)
 canvas.pack()
 left_frame = tk.Frame(root, bd=5)
 left_frame.place(relx=0.15, rely=0.05, relwidth=0.25, relheight=0.9, anchor='n')
@@ -174,30 +174,34 @@ right_frame.place(relx=0.64, rely=0.02, relwidth=0.68, relheight=0.96, anchor='n
 main_title = tk.Label(left_frame, text="Sheep  °ꈊ°  Sim")
 main_title.place(relx=0,rely=-0.02,relwidth=1,relheight=0.08)
 main_title.config(font=("Poor Richard", 17))
+
 # line
 separator_line0 = tk.Frame(left_frame,bg='grey')
 separator_line0.place(relx=0.05,rely=0.08,relheight=0.001,relwidth=0.9)
-# optimised eating checkbox
-opt_var = tk.IntVar()
-opt_var.set(1)
-optimised_chck = tk.Checkbutton(left_frame, variable = opt_var, text='Optimised eating')
-optimised_chck.place(relx=0.05,rely=0.16,relwidth=0.9,relheight=0.1)
+
 # number of agents slide
 n_slider = tk.Scale(left_frame, from_=1, to=120, orient=tk.HORIZONTAL,label='Number of Agents')
 n_slider.set(50) # SET DEFAULT NUM AGENTS
-n_slider.place(relx=0.05,rely=0.25,relwidth=0.9, relheight=0.18)
+n_slider.place(relx=0.05,rely=0.095,relwidth=0.9, relheight=0.18)
 # max age slider
 max_age_slider = tk.Scale(left_frame, from_=0, to=100, orient=tk.HORIZONTAL,label='Life Expectancy')
 max_age_slider.set(30) # SET DEFAULT 
-max_age_slider.place(relx=0.05,rely=0.40,relwidth=0.9, relheight=0.18)
+max_age_slider.place(relx=0.05,rely=0.24,relwidth=0.9, relheight=0.18)
+# optimised eating checkbox
+opt_var = tk.IntVar()
+opt_var.set(1)
+optimised_chck = tk.Checkbutton(left_frame, variable = opt_var, text='Optimised Eating')
+optimised_chck.place(relx=0.05,rely=0.4,relwidth=0.9,relheight=0.06)
+
 # line
 separator_line = tk.Frame(left_frame,bg='grey')
-separator_line.place(relx=0.05,rely=0.44,relheight=0.001,relwidth=0.9)
+separator_line.place(relx=0.05,rely=0.47,relheight=0.001,relwidth=0.9)
+
 # reproduction checkbox
 babies_var = tk.IntVar()
 babies_var.set(1)
 optimised_chck = tk.Checkbutton(left_frame, variable = babies_var, text='Reproduction')
-optimised_chck.place(relx=0.05,rely=0.48,relwidth=0.9,relheight=0.1)
+optimised_chck.place(relx=-0.01,rely=0.475,relwidth=0.9,relheight=0.1)
 # min age for pregnancy slider
 min_preg_age_slider = tk.Scale(left_frame, from_=0, to=50, orient=tk.HORIZONTAL,label='Fertility Age')
 min_preg_age_slider.set(20) # SET DEFAULT 
