@@ -54,8 +54,10 @@ def update(frame_number):
     global carry_on
     #global agents
 
-    # print('Frame: ', frame_number)
-    # print('Number of Sheep: ', len(agents))
+    # print number of sheep every 5 frames:
+    if frame_number%5 == 0:
+        print('Frame: ', frame_number)
+        print('Number of Sheep: ', len(agents))
     
     # environment needs to be plotted at the start of every run to show developments from last run
     fig.clear()
@@ -127,7 +129,6 @@ def run():
 
     optimised_movement = opt_var.get()
     breed = babies_var.get()
-    print(optimised_movement,'breed: ',breed)
     max_age = max_age_slider.get()
     min_age_for_preg = min_preg_age_slider.get()
     preg_duration = preg_duration_slider.get()
@@ -136,7 +137,8 @@ def run():
     agents = []
     for _ in range(num_agents):
         agents.append(af.Agent(environment,agents)) 
-        
+    
+    print('Run started with {} agents'.format(num_agents))
     # run animation
     animation = anim.FuncAnimation(fig, update, frames=gen_function, repeat=False)
     anim_placeholder.draw()
