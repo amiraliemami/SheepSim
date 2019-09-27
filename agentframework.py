@@ -145,7 +145,7 @@ class Agent():
 		if optimised:
 
 			# initialise
-			x_current, y_current = self._x, self._y
+			x_current, y_current = self._x % 300, self._y % 300
 			max_grass_val = self.environment[y_current][x_current]
 			x_best, y_best = x_current, y_current
 			# run loop on the 3x3 block around the sheep's current position
