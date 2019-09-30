@@ -11,28 +11,12 @@ import numpy as np # for getting sum of values in the environment matrix easily
 
 import matplotlib
 matplotlib.use('TkAgg')
-import matplotlib.pyplot as plt
-#plt.set_cmap('YlGn') ## CAUSES tk CHECKBUTTON TO NOT WORK!!!!!
+import matplotlib.pyplot as plt     #plt.set_cmap('YlGn') ## CAUSES tk CHECKBUTTON TO NOT WORK!!!!!
 import matplotlib.animation as anim
 
 ###### INITIALISE #############################################################
 
-# set default global variables #################
-
-num_agents = 50
-num_iters = 2000
-
-max_age = 30
-min_age_for_preg = 20
-preg_duration = 10
-#neighbourhood = 20
-
-# set variables for display in the GUI
-num_agents_for_display = "--"
-frame_for_display = "--"
-
-#### IMPORT ENVIRONMENT
-
+#### function for importing the environment from file
 def import_environment():
     environment = []
     with open('data/in.txt') as f:
@@ -42,43 +26,53 @@ def import_environment():
             for value in parsed_line:
                 rowlist.append(int(value))
             environment.append(rowlist)
-    #print('Max of environment: ',max(max(environment)))
-    # max is 245. Choose 250 as max grass level
+    #print('Max of environment: ',max(max(environment))) 
+    # we find that max is 245. Choose 250 as max grass level for imshow().
     return environment
-environment = import_environment()
-#### UPDATING  ################################################################
 
-# (moving, eating, mating, aging, dying) AND PLOTTING
+# set default global variables #################
+
+#neighbourhood = 20
+
+# set variables for display in the GUI
+num_agents_for_display = "--"
+frame_for_display = "--"
+
+# variable to control animation start/stop
 carry_on = True
 
+#### functions for running the model and GUI  ######## moving, eating, mating, aging, dying ##########################
+
 def update(frame_number):
+    """To be used by FuncAnimation from matplotlib to update the simulation."""
     
     global optimised_movement
     global breed
+
     global carry_on
 
-    # update variables to be picked up ater and displayed in the GUI
     global frame_for_display
-    frame_for_display = frame_number
-
     global num_agents_for_display
+
+    # update variables to be picked up later and displayed in the GUI
+    frame_for_display = frame_number
     num_agents_for_display = len(agents)
 
-    # # print number of sheep every 5 frames:
+    # # print number of sheep to console every 5 frames:
     # if frame_number%5 == 0:
-    #     print('Frame: ', frame_for_display)
+    #     print('Frame: ', frame_number)
     #     print('Number of Sheep: ', num_agents_for_display)
     
-    # environment needs to be plotted at the start of every run to show developments from last run
+    # environment needs to be re-plotted at the start of every update to show developments during last update
     fig.clear()
-    plt.imshow(environment, cmap='YlGn',vmin=0, vmax=250)
+    plt.imshow(environment, cmap='YlGn', vmin=0, vmax=250)
     plt.xlim(0,300)
     plt.ylim(0,300)
     plt.axis('off')
 
     # simulation stopping conditions
     if len(agents) == 0:
-        print('All dead :(')
+        print('All dead!')
         carry_on = False
     elif np.array(environment).sum() == 0:
         carry_on = False
@@ -88,17 +82,26 @@ def update(frame_number):
     random.shuffle(agents)
 
     the_dead = []
+
+    # run through each sheep and perform actions and plot it on the environment
     for agent in agents:
+
+        ######### perform actions
+
         agent.move(optimised=optimised_movement)
         agent.eat(max_grass_per_turn=20, sick_enabled=False)
         if breed:
             agent.mating(preg_duration,min_age_for_preg)
         #agent.share_with_neighbours(neighbourhood)
 
-        c = ('black' if agent.get_gender() == 'm' else 'white') # colour based on gender
-        s = (agent.get_age()/max_age)*100 # size based on age
+        ######### plot this sheep
 
-        # check if it dies at the end of this turn
+        # set colour based on gender
+        c = ('black' if agent.get_gender() == 'm' else 'white')
+        # set size relative to maximum age (oldest = biggest)
+        s = (agent.get_age()/max_age)*100
+
+        # check if this sheep dies at the end of this turn
         if agent.is_dead(max_age):
             the_dead.append(agent)
             plt.scatter(agent.get_x(),agent.get_y(),s=s,c=c,marker='1')
@@ -106,21 +109,24 @@ def update(frame_number):
             agent.increment_age()
             plt.scatter(agent.get_x(),agent.get_y(),s=s,c=c,marker='*')
     
-    # remove all who died in this round at once
+    # remove all who died in this round in one go
     for dead_agent in the_dead:
         agents.remove(dead_agent)
 
-#### Setup animation and GUI ################################################
 
 def gen_function():
+    """To be used by FuncAnimation from matplotlib to progress the simulation."""
     a = 0
     global carry_on
-    while (a < num_iters) and carry_on:
-        yield a # Returns control and waits next call.
-        a += 1
+    while carry_on: 
+        # maximum number of frames for a given simulation set at 2,000
+        if a < 2000:
+            yield a # Returns control and awaits next call.
+            a += 1
 
 def run():
-    
+    """Reads in parameters from silders and checkboxes and initiates the animation to be plotted."""
+
     # initialise
     global num_agents
     global max_age
@@ -130,33 +136,37 @@ def run():
     global preg_duration
     global agents
 
+    # makes the button reusable
     global carry_on
     carry_on = True
-
-    global environment
+    # re-import the clean environment for every run of the simulation
+    global environment 
     environment = import_environment()
 
-
+    # read in simulation parameters from the GUI widgets
     optimised_movement = opt_var.get()
     breed = babies_var.get()
     max_age = max_age_slider.get()
     min_age_for_preg = min_preg_age_slider.get()
     preg_duration = preg_duration_slider.get()
-    
     num_agents = n_slider.get()
+
+    # create initial list of agents
     agents = []
     for _ in range(num_agents):
         agents.append(af.Agent(environment,agents)) 
     
     print('Run started with {} agents'.format(num_agents))
+
     # run animation
     animation = anim.FuncAnimation(fig, update, frames=gen_function, repeat=False)
+    # and place it into the GUI
     anim_placeholder.draw()
+
 
 def stop():
     global carry_on
     carry_on = False
-
 def cont():
     global carry_on
     carry_on = True
@@ -217,7 +227,7 @@ min_preg_age_slider.place(relx=0.05,rely=0.57,relwidth=0.9,relheight=0.18)
 preg_duration_slider = tk.Scale(left_frame, from_=1, to=50, orient=tk.HORIZONTAL,label='Pregnancy Duration')
 preg_duration_slider.place(relx=0.05,rely=0.73,relwidth=0.9,relheight=0.17)
 
-# set to defaults
+# set defaults
 def set_defaults():
     n_slider.set(50)
     max_age_slider.set(30)
@@ -226,7 +236,7 @@ def set_defaults():
     babies_var.set(1)
     min_preg_age_slider.set(20)
     preg_duration_slider.set(10)
-# call to set defaults upon loading
+# call to set defaults upon loading the GUI
 set_defaults()
 
 # reset to defaults button
@@ -243,6 +253,8 @@ button.place(relx=0.54, rely=0.92, relwidth=0.36, relheight=0.09)
 fig = plt.figure(figsize=(15, 15)) 
 fig.set_facecolor('#F0F0F0')
 fig.clear()
+# plot environment to fill empty space/give a sense of the simulation pre-run
+environment = import_environment()
 plt.imshow(environment, cmap='YlGn', vmin=0, vmax=250)
 plt.xlim(0,300)
 plt.ylim(0,300)
@@ -251,8 +263,7 @@ plt.axis('off')
 anim_placeholder = matplotlib.backends.backend_tkagg.FigureCanvasTkAgg(fig, master=right_frame)
 anim_placeholder._tkcanvas.place(relx=0,rely=0,relwidth=1,relheight=1)
 
-
-# label displays to update
+# show number of agents beneath the animation window
 n_label = tk.Label(right_frame,text="",anchor=tk.E)
 n_label.place(relx=0.4,rely=0.9,relwidth=0.5,relheight=0.05)
 # frame_label = tk.Label(right_frame, text="",anchor=tk.E)
@@ -268,9 +279,9 @@ def update_labels():
     # frame_label.configure(text=frame_text)
 
     root.after(100, update_labels)
+
 # run updates
 update_labels()
-
 
 # start gui
 root.mainloop()
