@@ -15,6 +15,8 @@ import matplotlib.pyplot as plt
 #plt.set_cmap('YlGn') ## CAUSES tk CHECKBUTTON TO NOT WORK!!!!!
 import matplotlib.animation as anim
 
+import time
+
 ###### INITIALISE #############################################################
 
 # set default global variables #################
@@ -26,6 +28,10 @@ max_age = 30
 min_age_for_preg = 20
 preg_duration = 10
 #neighbourhood = 20
+
+# set variables for display in the GUI
+num_agents_for_display = "--"
+frame_for_display = "--"
 
 #### IMPORT ENVIRONMENT
 
@@ -52,12 +58,18 @@ def update(frame_number):
     global optimised_movement
     global breed
     global carry_on
-    #global agents
 
-    # print number of sheep every 5 frames:
-    if frame_number%5 == 0:
-        print('Frame: ', frame_number)
-        print('Number of Sheep: ', len(agents))
+    # update variables to be picked up ater and displayed in the GUI
+    global frame_for_display
+    frame_for_display = frame_number
+
+    global num_agents_for_display
+    num_agents_for_display = len(agents)
+
+    # # print number of sheep every 5 frames:
+    # if frame_number%5 == 0:
+    #     print('Frame: ', frame_for_display)
+    #     print('Number of Sheep: ', num_agents_for_display)
     
     # environment needs to be plotted at the start of every run to show developments from last run
     fig.clear()
@@ -214,7 +226,7 @@ preg_duration_slider.set(10) # SET DEFAULT
 preg_duration_slider.place(relx=0.05,rely=0.73,relwidth=0.9,relheight=0.17)
 # run button
 button = tk.Button(left_frame, text="Run", font=40, command=run)
-button.place(relx=0.15, rely=0.92, relheight=0.08, relwidth=0.6)
+button.place(relx=0.15, rely=0.92, relwidth=0.6, relheight=0.08)
 
 
 # fill plotting panel (right_frame) ##########
@@ -228,7 +240,28 @@ plt.ylim(0,300)
 plt.axis('off')
 
 anim_placeholder = matplotlib.backends.backend_tkagg.FigureCanvasTkAgg(fig, master=right_frame)
-anim_placeholder._tkcanvas.pack()
+anim_placeholder._tkcanvas.place(relx=0,rely=0,relwidth=1,relheight=1)
+
+
+# label displays to update
+n_label = tk.Label(right_frame,text="",anchor=tk.W)
+n_label.place(relx=0.13,rely=0.05,relwidth=0.5,relheight=0.05)
+frame_label = tk.Label(right_frame, text="",anchor=tk.E)
+frame_label.place(relx=0.4,rely=0.05,relwidth=0.5,relheight=0.05)
+
+def update_labels():
+    n_text = "Sheep Population: {}".format(num_agents_for_display)
+    if num_agents_for_display == 0:
+        n_text = "All dead!"
+    n_label.configure(text=n_text)
+
+    frame_text = "Frame {}".format(frame_for_display)
+    frame_label.configure(text=frame_text)
+
+    root.after(100, update_labels)
+# run updates
+update_labels()
+
 
 # start gui
 root.mainloop()
