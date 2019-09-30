@@ -125,7 +125,7 @@ def gen_function():
             a += 1
 
 def run():
-    """Reads in parameters from silders and checkboxes and initiates the animation to be plotted. Used by run_stop_toggle to initiate simulation on buttonpress."""
+    """Reads in parameters from silders and checkboxes and initiates the animation to be plotted."""
 
     # initialise
     global num_agents
@@ -181,14 +181,15 @@ def run():
     anim_placeholder.draw()
 
 
-def run_stop_toggle():
-    if run_button.config("text")[-1] == 'Run':
-        run()
-        run_button.config(text='Stop')
-    elif run_button.config("text")[-1] == 'Stop':
-        global carry_on
-        carry_on = False
-        run_button.config(text='Run')
+def stop():
+    global carry_on
+    carry_on = False
+def cont():
+    global carry_on
+    carry_on = True
+    
+    animation = anim.FuncAnimation(fig, update, frames=gen_function, repeat=False)
+    anim_placeholder.draw()
 
 
 #### TKINTER GUI ##############################################################
@@ -260,7 +261,7 @@ defaults_button = tk.Button(left_frame, text="Defaults", command=set_defaults)
 defaults_button.place(relx=0.1, rely=0.935, relwidth=0.37, relheight=0.07)
 
 # run button
-run_button = tk.Button(left_frame, text="Run", font=100, command=run_stop_toggle, relief="raised")
+run_button = tk.Button(left_frame, text="►", font=100, command=run)
 run_button.place(relx=0.54, rely=0.92, relwidth=0.36, relheight=0.09)
 
 
@@ -282,8 +283,8 @@ anim_placeholder._tkcanvas.place(relx=0,rely=0,relwidth=1,relheight=1)
 # show number of agents beneath the animation window
 n_label = tk.Label(right_frame,text="",anchor=tk.E)
 n_label.place(relx=0.4,rely=0.9,relwidth=0.5,relheight=0.05)
-frame_label = tk.Label(right_frame, text="",anchor=tk.E)
-frame_label.place(relx=0.4,rely=0.05,relwidth=0.5,relheight=0.05)
+# frame_label = tk.Label(right_frame, text="",anchor=tk.E)
+# frame_label.place(relx=0.4,rely=0.05,relwidth=0.5,relheight=0.05)
 
 def update_labels():
     n_text = "{} sheep grazing".format(num_agents_for_display)
@@ -291,8 +292,8 @@ def update_labels():
         n_text = "All dead!"
     n_label.configure(text=n_text)
 
-    frame_text = "Frame {}".format(frame_for_display)
-    frame_label.configure(text=frame_text)
+    # frame_text = "Frame {}".format(frame_for_display)
+    # frame_label.configure(text=frame_text)
 
     root.after(100, update_labels)
 
