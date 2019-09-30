@@ -258,23 +258,33 @@ class Agent():
 		Arguments:
 			preg_duration (integer): number of turns that a pregnancy lasts from conception to giving birth (default 10)
 			min_age (integer): both sheep (male and female) must be of this age or more to be able to mate (default 20)
-			min_dist (float): must be closer than this distance to be able to mate (default 10)
-			min_store (float): both sheep must have this much store or more to be able to mate (default 50)
+			min_dist (integer or float): must be closer than this distance to be able to mate (default 10)
+			min_store (integer or float): both sheep must have this much store or more to be able to mate (default 50)
 		Raises:
-			Exception: if pregnancy value becomes negative or goes above preg_duration
+			ValueError: if pregnancy value becomes negative or goes above preg_duration
 		"""
 
+		# type checking
+		if type(preg_duration) != int:
+			raise TypeError("preg_duration must be an integer.")
+		if type(min_age) != int:
+			raise TypeError("min_age must be an integer.")
+		if type(min_dist) not in [float, int]:
+			raise TypeError("min_dist must be a number.")
+		if type(min_store) not in [float, int]:
+			raise TypeError("min_store must be a number.")
+
+		# if self has pregnancy 0, look for a mate (always true if male, and a necessary condition if female)
 		pregnancy = self._pregnancy
-		if pregnancy == 0: 
-			# if self has pregnancy 0, look for a mate (always true if male, and a necessary condition if female).
+		if pregnancy == 0:
 			# proceed if self is of age and has consumed enough food
 			if (self._age > min_age) and (self._store > min_store) and (self._pregnancy == 0):
 			# loop through all sheep in simulation
 				for agent in self.agents:
-					# do not self-mate, please
+					# do not self-mate, please (not needed as opposite genders required, but good practice in case we generalise to parthenogenesis)
 					if agent is not self:
-						# only mate if distance between self and other sheep is less than the given minimum
-						if self.distance_to(agent) <= min_dist: 
+						# only mate if distance between self and other sheep is less than the given minimum distance
+						if self.distance_to(agent) <= min_dist:
 							# only mate if other sheep is also of min_age and store
 							if (agent.get_age() > min_age) and (agent.get_store() > min_store):
 
@@ -297,14 +307,16 @@ class Agent():
 			# Advance pregnancy if already pregnant
 			self._pregnancy += 1
 
+		# pregnancy value checking
 		elif pregnancy > preg_duration:
-			raise Exception("Pregnancy duration exceeded... Something's wrong!")
+			raise ValueError("Pregnancy duration exceeded... Something's wrong!")
 		elif pregnancy < 0:
-			raise Exception("Negative value for pregnancy duration... Something's wrong!'")
-
+			raise ValueError("Negative value for pregnancy duration... Something's wrong!'")
 
 	def is_dead(self,max_age=100):
-		"""Checks if age has reached the maximum age (default 100) and returns a bool answer."""
+		"""Checks if age has reached the maximum age (integer, default 100) and returns a bool answer."""
+		if type(max_age) != int:
+			raise TypeError("max_age must be an integer.")
 		return (self._age > max_age)
 
 	def increment_age(self):
