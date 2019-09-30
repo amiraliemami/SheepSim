@@ -16,7 +16,12 @@ def perturb(x):
 		x (integer or float): a number
 	Returns:
 		Either (x+1)mod300 or (x-1)mod300, with equal probability.
+	Raises:
+		TypeError: if non-number is passed as argument.
 	"""
+	if type(x) not in [float, int]:
+		raise TypeError("Can only perturb a number.")
+
 	return (x + random.choice([-1,1])) % 300
 
 #### AGENT CLASS
@@ -54,7 +59,7 @@ class Agent():
 		Arguments:
 			environment (list): list of lists of numbers corresponding to grass height at each pixel of environment
 			agents (list): list of Agent objects in the simulation
-			init_coords (2-tuple of integers): Determines (x,y) at which this agent is spawned. If None, random x and y are chosen between 0 and 300. (default None)
+			init_coords (2-tuple of integers): Determines (x,y) at which this agent is spawned. If None, random x and y are chosen between 0 and 300 (default None).
 			gender (str): 'm' or 'f', the sheep's gender (default: None, causes _gender below to be set randomely).
 
 		Attributes:
@@ -134,8 +139,8 @@ class Agent():
 	def move(self,optimised=True):
 		"""Moves the sheep it is called on one step.
 		
-		Can be random (optimised=False), or towards the direction of most grass unless current position has
-		more than surrounding areas, in which case the sheep does not move (optimised=True).
+		Can be random (random walk, optimised=False), or towards the direction of most grass unless current position has
+		more than surrounding areas, in which case the sheep does not move (greedy search, optimised=True).
 
 		Arguments:
 			optimised (bool): 
@@ -147,42 +152,45 @@ class Agent():
 
 			# initialise
 			x_current, y_current = self._x % 300, self._y % 300
-			max_grass_val = self.environment[y_current][x_current]
 			x_best, y_best = x_current, y_current
+			max_grass_val = self.environment[y_current][x_current]
 			# run loop on the 3x3 block around the sheep's current position
 			for i in [-1,0,1]:
 				for j in [-1,0,1]:
 					x = (x_current + i) % 300
 					y = (y_current + j) % 300
 					grass_val_here = self.environment[y][x]
-					### print(grass_val_here, [x,y])
-					# only update if more grass found than before
+					# only update if more grass found here than so far
 					if grass_val_here > max_grass_val:
 						max_grass_val = grass_val_here
 						x_best, y_best = x, y
-					else:
-						pass
+
 			if max_grass_val == 0:
-				# if current position and all directions are at 0, take a random step
+				# if best grass is 0, means that current position and all directions are at 0
+				# in this case, take a random step
 				self._x, self._y = perturb(self._x), perturb(self._y)
 			else:
 				self._x, self._y = x_best, y_best	
 		else:
-			#Perturb the agent's x and y coordinates randomely and independantly using the perturb() function.
+			# If not optimised, perturb the agent's x and y coordinates randomely and independantly using the perturb() function.
 			self._x, self._y = perturb(self._x), perturb(self._y)
 
-	def eat(self, sick_enabled=False, max_grass_per_turn=20):
+	def eat(self, max_grass_per_turn=20, sick_enabled=False):
 		"""Calling this will cause the sheep to "eat grass" from the coordinate it is standing on in the environment. 
 
-		If the environment has value equal to or more than 10 at the coordinate at which the sheep is currently standing, the sheep will increase its
-		store by 10, and the environment's value here will decrease by 10. If the value here is less than 10, the sheep will add this value to its store
-		and reduce the environment to 0 at this spot. If environment is at 0 at this coordinate, the sheep will not eat.
+		If the environment has value equal to or more than max_grass_per_turn at the coordinate at which the sheep is currently standing, the sheep will increase its
+		store by max_grass_per_turn, and the environment's value here will decrease by max_grass_per_turn. If the value here is less than max_grass_per_turn, the sheep 
+		will add this value to its store and reduce the environment to 0 at this spot. If environment is at 0 at this coordinate, the sheep will not eat.
 
 		Arguments:
+			max_grass_per_turn (int or float): the maximum amount each sheep can eat per turn, if current coordinate has this available. Otherwise, the sheep consumes
+				what's left of the grass beneath it (default 20)
 			sick_enabled (bool): if True, sheep sick up 50 onto their current coordinate in the environment if their store reaches 100 (default False)
-			max_grass_per_turn (int): the maximum amount each sheep can eat per turn, if current coordinate has this available. Otherwise, the sheep consumes
-			what's left of the grass beneath it (default 20)
 		"""
+
+		if type(max_grass_per_turn) not in [float, int]:
+			raise TypeError("max_grass_per_turn must be a number.")
+
 		grass_available = self.environment[self._y][self._x]
 		# eat max_grass_per_turn if grass abundant
 		if grass_available >= max_grass_per_turn:
@@ -203,7 +211,7 @@ class Agent():
 				self._store = 50
     
 	def distance_to(self, other):
-		"""Given another agent, get the Euclidean distance between self and the given agent.
+		"""Given another agent, return the Euclidean distance between self and the given agent.
 
 		Arguments:
 			other (Agent class): Other sheep to get distance to.
@@ -222,28 +230,29 @@ class Agent():
 			neighbourhood_size (integer or float): Radius below which sharing is triggered (default 20)
 		"""
 
+		if type(neighbourhood_size) not in [float, int]:
+			raise TypeError("neighbourhood_size must be a number.")	
+
 		for agent in self.agents:
-			# do not perform action with oneself (not necessary as avg of x and x is x, but is good practice in case we generalise)
+			# do not perform action with oneself (not necessary as avg of x and x is x, but is good practice in case we generalise, 
+			# e.g. if a fight is involved and resources are lost per interaction)
 			if agent is not self:
 				if self.distance_to(agent) <= neighbourhood_size:
 					avg = (self._store + agent.get_store())/2
 					self._store = avg
 					agent.set_store(avg)
-			#else: # CHECK IF SAME as self
-			#    print('The same!',agent,self)
 
 	######### EXTRAS - Mating, Aging and Dying #################################################################################################
 
-
 	def mating(self, preg_duration=10, min_age=20, min_dist=10, min_store=50):
-		"""Enables mating for the sheep, meaning that female sheep get pregnant if they come close enough to male sheep and give birth to new sheep after a given pegnancy duration.
+		"""Enables mating for the sheep, meaning that female sheep get pregnant if they come close enough to male sheep and thus give birth to new sheep after a given pegnancy duration.
 
-		Must be run at each iteration of the simulation. If both self and other sheep are of age, have enough food store, are close enough, 
-		and are also of opposite sexes, the female one will get pregnant. Pregnancies progress with each iteration of the simulation and once 
-		the correct duration is reached, a new sheep (new instance of the Agent class) is initiated immediately to the right of the mother. 
+		If both self and other sheep are of age, have enough food store, are close enough, and are also of opposite sexes, the female one will get pregnant. 
+		Pregnancies progress with each iteration of the simulation and once the correct duration is reached, a new sheep (new instance of the Agent class) 
+		is initiated immediately to the right of the mother. 
 
 		NOTES:
-		- At each run of this mating function on an agent (i.e. agent.mating()), that agent looks around it for possible mates.
+		- At each run of this mating function on an agent (i.e. agent.mating()), that agent looks around it for possible mates. Thus must be run on each agent per update of the simulation.
 		- A pregnant sheep cannot get re-pregnant until it gives birth.
 
 		Arguments:

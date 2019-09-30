@@ -15,8 +15,6 @@ import matplotlib.pyplot as plt
 #plt.set_cmap('YlGn') ## CAUSES tk CHECKBUTTON TO NOT WORK!!!!!
 import matplotlib.animation as anim
 
-import time
-
 ###### INITIALISE #############################################################
 
 # set default global variables #################
@@ -92,7 +90,7 @@ def update(frame_number):
     the_dead = []
     for agent in agents:
         agent.move(optimised=optimised_movement)
-        agent.eat()
+        agent.eat(max_grass_per_turn=20, sick_enabled=False)
         if breed:
             agent.mating(preg_duration,min_age_for_preg)
         #agent.share_with_neighbours(neighbourhood)
