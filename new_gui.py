@@ -232,15 +232,3 @@ anim_placeholder._tkcanvas.pack()
 
 # start gui
 root.mainloop()
-
-
-###############################################################################
-
-#btn1 = tk.Button(root, text = "Run", relief="raised", command = toggle)
-#def toggle():
-#    if btn1.config('relief')[-1] == 'sunken':
-#        run()
-#        btn1.config(relief="sunken",text='Stop')
-#    else:
-#        stop()
-#        btn1.config(relief="raised",text='Run')
