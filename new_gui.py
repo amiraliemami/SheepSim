@@ -97,7 +97,7 @@ def update(frame_number):
             agent.mating(preg_duration,min_age_for_preg)
         #agent.share_with_neighbours(neighbourhood)
 
-        c = ('black' if agent.get_gender() == 'm' else 'white') # coloured based on gender
+        c = ('black' if agent.get_gender() == 'm' else 'white') # colour based on gender
         s = (agent.get_age()/max_age)*100 # size based on age
 
         # check if it dies at the end of this turn
@@ -244,19 +244,19 @@ anim_placeholder._tkcanvas.place(relx=0,rely=0,relwidth=1,relheight=1)
 
 
 # label displays to update
-n_label = tk.Label(right_frame,text="",anchor=tk.W)
-n_label.place(relx=0.13,rely=0.05,relwidth=0.5,relheight=0.05)
-frame_label = tk.Label(right_frame, text="",anchor=tk.E)
-frame_label.place(relx=0.4,rely=0.05,relwidth=0.5,relheight=0.05)
+n_label = tk.Label(right_frame,text="",anchor=tk.E)
+n_label.place(relx=0.4,rely=0.9,relwidth=0.5,relheight=0.05)
+# frame_label = tk.Label(right_frame, text="",anchor=tk.E)
+# frame_label.place(relx=0.4,rely=0.05,relwidth=0.5,relheight=0.05)
 
 def update_labels():
-    n_text = "Sheep Population: {}".format(num_agents_for_display)
+    n_text = "{} sheep grazing".format(num_agents_for_display)
     if num_agents_for_display == 0:
         n_text = "All dead!"
     n_label.configure(text=n_text)
 
-    frame_text = "Frame {}".format(frame_for_display)
-    frame_label.configure(text=frame_text)
+    # frame_text = "Frame {}".format(frame_for_display)
+    # frame_label.configure(text=frame_text)
 
     root.after(100, update_labels)
 # run updates
