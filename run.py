@@ -181,11 +181,11 @@ def run():
     anim_placeholder.draw()
 
 
-def run_stop_toggle():
+def run_kill_toggle():
     if run_button.config("text")[-1] == 'Run':
         run()
-        run_button.config(text='Stop')
-    elif run_button.config("text")[-1] == 'Stop':
+        run_button.config(text='Kill')
+    elif run_button.config("text")[-1] == 'Kill':
         global carry_on
         carry_on = False
         run_button.config(text='Run')
@@ -260,7 +260,7 @@ defaults_button = tk.Button(left_frame, text="Defaults", command=set_defaults)
 defaults_button.place(relx=0.1, rely=0.935, relwidth=0.37, relheight=0.07)
 
 # run button
-run_button = tk.Button(left_frame, text="Run", font=100, command=run_stop_toggle, relief="raised")
+run_button = tk.Button(left_frame, text="Run", font=100, command=run_kill_toggle, relief="raised")
 run_button.place(relx=0.54, rely=0.92, relwidth=0.36, relheight=0.09)
 
 
