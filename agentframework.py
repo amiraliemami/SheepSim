@@ -171,7 +171,7 @@ class Agent():
 			#Perturb the agent's x and y coordinates randomely and independantly using the perturb() function.
 			self._x, self._y = perturb(self._x), perturb(self._y)
 
-	def eat(self, sick_enabled=False):
+	def eat(self, sick_enabled=False, max_grass_per_turn=20):
 		"""Calling this will cause the sheep to "eat grass" from the coordinate it is standing on in the environment. 
 
 		If the environment has value equal to or more than 10 at the coordinate at which the sheep is currently standing, the sheep will increase its
@@ -180,17 +180,18 @@ class Agent():
 
 		Arguments:
 			sick_enabled (bool): if True, sheep sick up 50 onto their current coordinate in the environment if their store reaches 100 (default False)
+			max_grass_per_turn (int): the maximum amount each sheep can eat per turn, if current coordinate has this available. Otherwise, the sheep consumes
+			what's left of the grass beneath it (default 20)
 		"""
-
 		grass_available = self.environment[self._y][self._x]
-		# eat 10 if grass abundant
-		if grass_available >= 10:
-			self.environment[self._y][self._x] -= 10
-			self._store += 10
+		# eat max_grass_per_turn if grass abundant
+		if grass_available >= max_grass_per_turn:
+			self.environment[self._y][self._x] -= max_grass_per_turn
+			self._store += max_grass_per_turn
 		# do nothing if no grass
 		elif grass_available == 0:
 			pass
-		# eat what's left if less than 10
+		# eat what's left if less than max_grass_per_turn
 		else:
 			self.environment[self._y][self._x] = 0
 			self._store += grass_available
