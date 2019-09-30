@@ -156,7 +156,24 @@ def run():
     for _ in range(num_agents):
         agents.append(af.Agent(environment,agents)) 
     
-    print('Run started with {} agents'.format(num_agents))
+    # print parameters to console
+    print(
+    '\n#### Run started with parameters:\n\
+    {} agents\n\
+    {} max age\n\
+    {} movement\n\
+    {} breeding\n\
+    {} minimum age for pregnancy\n\
+    {} duration of pregnancy\n'\
+        .format(
+        num_agents,
+        max_age,
+        ('Optimised' if optimised_movement else 'Random'),
+        ('Enabled' if breed else 'Disabled'),
+        min_age_for_preg,
+        preg_duration
+        )
+    )
 
     # run animation
     animation = anim.FuncAnimation(fig, update, frames=gen_function, repeat=False)
@@ -208,7 +225,7 @@ n_slider.place(relx=0.05,rely=0.095,relwidth=0.9, relheight=0.18)
 max_age_slider = tk.Scale(left_frame, from_=1, to=100, orient=tk.HORIZONTAL,label='Life Expectancy')
 max_age_slider.place(relx=0.05,rely=0.24,relwidth=0.9, relheight=0.18)
 # optimised eating checkbox
-opt_var = tk.IntVar()
+opt_var = tk.IntVar(root)
 optimised_chck = tk.Checkbutton(left_frame, variable = opt_var, text='Optimised Eating')
 optimised_chck.place(relx=0.05,rely=0.4,relwidth=0.9,relheight=0.06)
 
@@ -217,7 +234,7 @@ separator_line = tk.Frame(left_frame,bg='grey')
 separator_line.place(relx=0.05,rely=0.47,relheight=0.001,relwidth=0.9)
 
 # reproduction checkbox
-babies_var = tk.IntVar()
+babies_var = tk.IntVar(root)
 optimised_chck = tk.Checkbutton(left_frame, variable = babies_var, text='Reproduction')
 optimised_chck.place(relx=-0.01,rely=0.475,relwidth=0.9,relheight=0.1)
 # min age for pregnancy slider
