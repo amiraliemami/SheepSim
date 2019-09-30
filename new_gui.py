@@ -195,15 +195,12 @@ separator_line0.place(relx=0.05,rely=0.08,relheight=0.001,relwidth=0.9)
 
 # number of agents slide
 n_slider = tk.Scale(left_frame, from_=1, to=120, orient=tk.HORIZONTAL,label='Number of Agents')
-n_slider.set(50) # SET DEFAULT NUM AGENTS
 n_slider.place(relx=0.05,rely=0.095,relwidth=0.9, relheight=0.18)
 # max age slider
 max_age_slider = tk.Scale(left_frame, from_=1, to=100, orient=tk.HORIZONTAL,label='Life Expectancy')
-max_age_slider.set(30) # SET DEFAULT 
 max_age_slider.place(relx=0.05,rely=0.24,relwidth=0.9, relheight=0.18)
 # optimised eating checkbox
 opt_var = tk.IntVar()
-opt_var.set(1)
 optimised_chck = tk.Checkbutton(left_frame, variable = opt_var, text='Optimised Eating')
 optimised_chck.place(relx=0.05,rely=0.4,relwidth=0.9,relheight=0.06)
 
@@ -213,20 +210,34 @@ separator_line.place(relx=0.05,rely=0.47,relheight=0.001,relwidth=0.9)
 
 # reproduction checkbox
 babies_var = tk.IntVar()
-babies_var.set(1)
 optimised_chck = tk.Checkbutton(left_frame, variable = babies_var, text='Reproduction')
 optimised_chck.place(relx=-0.01,rely=0.475,relwidth=0.9,relheight=0.1)
 # min age for pregnancy slider
 min_preg_age_slider = tk.Scale(left_frame, from_=0, to=50, orient=tk.HORIZONTAL,label='Fertility Age')
-min_preg_age_slider.set(20) # SET DEFAULT 
 min_preg_age_slider.place(relx=0.05,rely=0.57,relwidth=0.9,relheight=0.18)
 # pregnancy duration slider
-preg_duration_slider = tk.Scale(left_frame, from_=0, to=50, orient=tk.HORIZONTAL,label='Pregnancy Duration')
-preg_duration_slider.set(10) # SET DEFAULT 
+preg_duration_slider = tk.Scale(left_frame, from_=1, to=50, orient=tk.HORIZONTAL,label='Pregnancy Duration')
 preg_duration_slider.place(relx=0.05,rely=0.73,relwidth=0.9,relheight=0.17)
+
+# set to defaults
+def set_defaults():
+    n_slider.set(50)
+    max_age_slider.set(30)
+    max_age_slider.set(30)
+    opt_var.set(1)
+    babies_var.set(1)
+    min_preg_age_slider.set(20)
+    preg_duration_slider.set(10)
+# call to set defaults upon loading
+set_defaults()
+
+# reset to defaults button
+button = tk.Button(left_frame, text="Defaults", command=set_defaults)
+button.place(relx=0.1, rely=0.935, relwidth=0.37, relheight=0.07)
+
 # run button
-button = tk.Button(left_frame, text="Run", font=40, command=run)
-button.place(relx=0.15, rely=0.92, relwidth=0.6, relheight=0.08)
+button = tk.Button(left_frame, text="►", font=100, command=run)
+button.place(relx=0.54, rely=0.92, relwidth=0.36, relheight=0.09)
 
 
 # fill plotting panel (right_frame) ##########
