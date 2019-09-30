@@ -198,7 +198,7 @@ n_slider = tk.Scale(left_frame, from_=1, to=120, orient=tk.HORIZONTAL,label='Num
 n_slider.set(50) # SET DEFAULT NUM AGENTS
 n_slider.place(relx=0.05,rely=0.095,relwidth=0.9, relheight=0.18)
 # max age slider
-max_age_slider = tk.Scale(left_frame, from_=0, to=100, orient=tk.HORIZONTAL,label='Life Expectancy')
+max_age_slider = tk.Scale(left_frame, from_=1, to=100, orient=tk.HORIZONTAL,label='Life Expectancy')
 max_age_slider.set(30) # SET DEFAULT 
 max_age_slider.place(relx=0.05,rely=0.24,relwidth=0.9, relheight=0.18)
 # optimised eating checkbox
