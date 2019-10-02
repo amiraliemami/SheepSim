@@ -6,7 +6,6 @@
 import agentframework as af
 
 import random
-random.seed(100)
 
 import numpy as np # for getting sum of values in the environment matrix easily
 
@@ -19,7 +18,6 @@ import tkinter as tk
 
 ### global variable to control animation start/stop
 carry_on = True
-
 
 #### functions for running the model and GUI: moving, eating, mating, aging, dying
 
@@ -38,35 +36,33 @@ def update_labels(frame_for_display,num_agents_for_display):
     n_text = "{} sheep grazing".format(num_agents_for_display)
     if num_agents_for_display == 0:
         n_text = "All dead!"
-        run_button.config(text='Restart', fg='white', bg='#268B49')
+        run_button.config(text='Restart', bg='#268B49')
     n_label.configure(text=n_text)
 
     frame_text = "Frame {}".format(frame_for_display)
     frame_label.configure(text=frame_text)
 
 
-def update(frame_number,num_agents, max_age, optimised_movement, breed, min_age_for_preg, preg_duration, agents, environment):
+def update(frame_number, max_age, optimised_movement, breed, min_age_for_preg, preg_duration, agents, environment):
     """To be used by FuncAnimation from matplotlib to update the simulation.
     
-    Argument:
+    Arguments passed through by the run() function which calls this update() function.
+    
+    Argument: 
         frame_number (int): provided by FuncAnimate()
-        agents
-        optimised_movement
-        breed
-        environment
+        max_age (int)
+        optimised_movement (bool)
+        breed (bool)
+        min_age_for_preg (int)
+        preg_duration (int)
+        agents (list of Agent classes)
+        environment (list of list of numbers)
+
     Global:
         carry_on (bool)
     """
 
     global carry_on
-
-    # update the frame number and number of sheep displayed in the GUI
-    update_labels(frame_number,len(agents))
-
-    ##### print number of sheep to console every 5 frames:
-    if frame_number%1 == 0:
-        print('Frame: ', frame_number)
-        print('Number of Sheep: ', len(agents))
     
     # re-plot environment at the start of every update to show developments during last update
     fig.clear()
@@ -83,7 +79,7 @@ def update(frame_number,num_agents, max_age, optimised_movement, breed, min_age_
         carry_on = False
         print("All grass eaten!")
 
-    # shuffle agents before each iteration
+    # shuffle agents before each iteration to try to avoid artifacts caused by order of execution
     random.shuffle(agents)
 
     # make an empty list to populate with sheep that die this round, if any
@@ -92,15 +88,18 @@ def update(frame_number,num_agents, max_age, optimised_movement, breed, min_age_
     # run through each sheep and perform actions and plot it on the environment
     for agent in agents:
 
-        ######### perform actions
+        ######### perform actions ##################################
 
         agent.move(optimised=optimised_movement)
-        agent.eat(max_grass_per_turn=20, sick_enabled=False) # change sick_enabled to True to activate throwing up
+
+        # change sick_enabled to True to activate throwing up
+        agent.eat(max_grass_per_turn=20, sick_enabled=False)
         if breed:
             agent.mating(preg_duration,min_age_for_preg)
+
         #agent.share_with_neighbours(20) # un-comment to activate sharing with neighbours.
 
-        ######### plot this sheep
+        ######### plot this sheep ##################################
 
         # set colour based on gender
         c = ('black' if agent.get_gender() == 'm' else 'white')
@@ -118,6 +117,14 @@ def update(frame_number,num_agents, max_age, optimised_movement, breed, min_age_
     # remove all who died in this round in one go
     for dead_agent in the_dead:
         agents.remove(dead_agent)
+
+    # update the frame number and number of sheep displayed in the GUI
+    update_labels(frame_number,len(agents))
+
+    ##### print number of sheep to console every 5 frames:
+    if frame_number%1 == 0:
+        print('Frame: ', frame_number)
+        print('Number of Sheep: ', len(agents))
 
 
 def gen_function():
@@ -175,14 +182,20 @@ def run():
     )
 
     # create initial list of agents
+    random.seed(0)
     agents = []
     for _ in range(num_agents):
         agents.append(af.Agent(environment,agents)) 
     
     # run animation, passing the parameters initiated here to the update() function through 'fargs'
-    animation = anim.FuncAnimation(fig, 
-                                    update, fargs=(num_agents, max_age, optimised_movement, breed, min_age_for_preg, preg_duration, agents, environment), # arguments for update()
-                                    frames=gen_function, repeat=False)
+    animation = anim.FuncAnimation(
+        fig, 
+        update, 
+        # arguments for update():
+        fargs=(max_age, optimised_movement, breed, min_age_for_preg, preg_duration, agents, environment),
+        frames=gen_function, 
+        repeat=False
+        )
     # and place it into the GUI
     anim_placeholder.draw()
 
@@ -194,16 +207,18 @@ def start_kill_toggle():
     2. If the now "Kill" button is pressed, simulation is stopped and text changed to "Restart" and to green colour.
     3. If the now "Restart" button is pressed, the simulation is re-run with new parameters from the GUI, and text changed to "Kill" and colour to normal. 
     4. 2 and 3 are then repeated.
+
+    Functionality for returning this button to "Restart" if all sheep die is implemented in update_labels().
     """
     
     current_text = run_button.config("text")[-1]
     if current_text == 'Start' or current_text == 'Restart':
         run()
-        run_button.config(text='Kill', fg='black', bg='SystemButtonFace')
+        run_button.config(text='Kill', bg='red3')
     elif current_text == 'Kill':
         global carry_on
         carry_on = False
-        run_button.config(text='Restart', fg='white', bg='#268B49')
+        run_button.config(text='Restart', bg='#268B49')
 
 
 #### TKINTER GUI SETUP ##############################################################
@@ -222,9 +237,9 @@ right_frame.place(relx=0.64, rely=0.02, relwidth=0.68, relheight=0.96, anchor='n
 # fill options panel (lef_frame) ##########
 
 # title
-main_title = tk.Label(left_frame, text="Sheep  °ꈊ°  Sim")
+main_title = tk.Label(left_frame, text="Sheep  (°ꈊ°)  Sim")
 main_title.place(relx=0,rely=-0.02,relwidth=1,relheight=0.08)
-main_title.config(font=("Poor Richard", 17))
+main_title.config(font=("Poor Richard", 16))
 
 # line
 separator_line0 = tk.Frame(left_frame,bg='grey')
@@ -258,6 +273,7 @@ preg_duration_slider.place(relx=0.05,rely=0.73,relwidth=0.9,relheight=0.17)
 
 # set defaults
 def set_defaults():
+    """Requires the GUI widgets to exist before it is called."""
     n_slider.set(50)
     max_age_slider.set(30)
     max_age_slider.set(30)
@@ -266,14 +282,13 @@ def set_defaults():
     min_preg_age_slider.set(20)
     preg_duration_slider.set(10)
 
-# call to set the defaults upon first loading the GUI
-set_defaults()
+set_defaults() # initiate to set the defaults upon first loading the GUI
 
-# reset to defaults button
+# add reset to defaults button
 defaults_button = tk.Button(left_frame, text="Defaults", command=set_defaults)
 defaults_button.place(relx=0.07, rely=0.93, relwidth=0.37, relheight=0.07)
 
-# run button
+# add run button
 run_button = tk.Button(left_frame, text="Start", font=100, fg='white', bg='#268B49', command=start_kill_toggle)
 run_button.place(relx=0.50, rely=0.92, relwidth=0.42, relheight=0.09)
 
@@ -296,8 +311,8 @@ anim_placeholder._tkcanvas.place(relx=0,rely=0,relwidth=1,relheight=1)
 # show number of agents beneath the animation window, these will be updated by the update_labels() function within the update() function
 n_label = tk.Label(right_frame,text="",anchor=tk.E)
 n_label.place(relx=0.4,rely=0.9,relwidth=0.5,relheight=0.05)
-frame_label = tk.Label(right_frame, text="",anchor=tk.E)
-frame_label.place(relx=0.4,rely=0.05,relwidth=0.5,relheight=0.05)
+frame_label = tk.Label(right_frame, text="",anchor=tk.W)
+frame_label.place(relx=0.12,rely=0.9,relwidth=0.5,relheight=0.05)
 
 # start gui
 root.mainloop()

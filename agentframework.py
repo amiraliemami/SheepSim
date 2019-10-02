@@ -10,7 +10,6 @@ Includes:
 
 #### NECESSARY MODULES AND FUNCTIONS
 import random
-random.seed(100)
 import numpy as np
 
 def perturb(x): 
@@ -199,7 +198,7 @@ class Agent():
 			else:
 				self._x, self._y = x_best, y_best	
 		else:
-			# If not optimised, perturb the agent's x and y coordinates randomely and independantly using the perturb() function.
+			# If not optimised, perturb the agent's x and y coordinates randomly and independantly using the perturb() function
 			self._x, self._y = perturb(self._x), perturb(self._y)
 
 	def eat(self, max_grass_per_turn=20, sick_enabled=False):
@@ -301,6 +300,10 @@ class Agent():
 		if type(min_store) not in [float, int]:
 			raise TypeError("min_store must be a number.")
 
+		# add 1 to preg_duration since the iteration in which the baby is conceived counts as +1 in the agentframework
+		# this ensures that if (min_age_for_preg + preg_duration > max_age) then no babies are born
+		preg_duration += 1
+
 		# if self has pregnancy 0, look for a mate (always true if male, and a necessary condition if female)
 		pregnancy = self._pregnancy
 		if pregnancy == 0:
@@ -317,7 +320,7 @@ class Agent():
 
 								# only mate if opposite genders
 								if self._gender == 'f' and agent.get_gender() == 'm':
-									self._pregnancy = 1 
+									self._pregnancy = 1
 
 								elif self._gender == 'm' and agent.get_gender() == 'f':
 									# only get other sheep pregnant if it's not already
