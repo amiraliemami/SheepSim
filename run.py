@@ -39,9 +39,6 @@ def import_environment(path='data/in.txt'):
     # we find that max is 245. Choose 250 as max grass level for imshow().
     return environment
 
-# set default global variables #################
-
-#neighbourhood = 20
 
 # variable to control animation start/stop
 carry_on = True
@@ -94,10 +91,10 @@ def update(frame_number):
         ######### perform actions
 
         agent.move(optimised=optimised_movement)
-        agent.eat(max_grass_per_turn=20, sick_enabled=False)
+        agent.eat(max_grass_per_turn=20, sick_enabled=True)
         if breed:
             agent.mating(preg_duration,min_age_for_preg)
-        #agent.share_with_neighbours(neighbourhood)
+        agent.share_with_neighbours(20) # remove 
 
         ######### plot this sheep
 
@@ -186,15 +183,17 @@ def run():
     anim_placeholder.draw()
 
 
-def run_kill_toggle():
+def start_kill_toggle():
+    """Function to be used by the run_button to start, kill, and restart the simulation."""
+    
     current_text = run_button.config("text")[-1]
     if current_text == 'Start' or current_text == 'Restart':
         run()
-        run_button.config(text='Kill')
+        run_button.config(text='Kill', fg='black', bg='SystemButtonFace')
     elif current_text == 'Kill':
         global carry_on
         carry_on = False
-        run_button.config(text='Restart')
+        run_button.config(text='Restart', fg='white', bg='#268B49')
 
 
 #### TKINTER GUI ##############################################################
@@ -266,8 +265,10 @@ defaults_button = tk.Button(left_frame, text="Defaults", command=set_defaults)
 defaults_button.place(relx=0.1, rely=0.935, relwidth=0.37, relheight=0.07)
 
 # run button
-run_button = tk.Button(left_frame, text="Start", font=100, command=run_kill_toggle)
-run_button.place(relx=0.54, rely=0.92, relwidth=0.4, relheight=0.09)
+run_button = tk.Button(left_frame, text="Start",
+                        font=100, fg='white', bg='#268B49', 
+                        command=start_kill_toggle)
+run_button.place(relx=0.54, rely=0.92, relwidth=0.42, relheight=0.09)
 
 
 # fill plotting panel (right_frame) ##########
@@ -300,7 +301,7 @@ def update_labels():
     n_text = "{} sheep grazing".format(num_agents_for_display)
     if num_agents_for_display == 0:
         n_text = "All dead!"
-        run_button.config(text='Restart')
+        run_button.config(text='Restart', fg='white', bg='#268B49')
     n_label.configure(text=n_text)
 
     frame_text = "Frame {}".format(frame_for_display)
