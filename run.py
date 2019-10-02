@@ -17,9 +17,18 @@ import matplotlib.animation as anim
 ###### INITIALISE #############################################################
 
 #### function for importing the environment from file
-def import_environment():
+def import_environment(path='data/in.txt'):
+    """Imports the 300x300 pixel environment from the given file path.
+    
+    Arguments:
+        path (str): path to environment file (default 'data/in.txt')
+    Returns
+        environment (matrix of numbers): list of list of numbers imported from the file
+    Raises:
+        IOError: if file not found at the given path
+    """
     environment = []
-    with open('data/in.txt') as f:
+    with open(path) as f:
         for line in f:
             parsed_line = line.split(',')
             rowlist = []
@@ -33,10 +42,6 @@ def import_environment():
 # set default global variables #################
 
 #neighbourhood = 20
-
-# set variables for display in the GUI
-num_agents_for_display = "--"
-frame_for_display = "--"
 
 # variable to control animation start/stop
 carry_on = True
@@ -280,16 +285,22 @@ plt.axis('off')
 anim_placeholder = matplotlib.backends.backend_tkagg.FigureCanvasTkAgg(fig, master=right_frame)
 anim_placeholder._tkcanvas.place(relx=0,rely=0,relwidth=1,relheight=1)
 
+
 # show number of agents beneath the animation window
 n_label = tk.Label(right_frame,text="",anchor=tk.E)
 n_label.place(relx=0.4,rely=0.9,relwidth=0.5,relheight=0.05)
 frame_label = tk.Label(right_frame, text="",anchor=tk.E)
 frame_label.place(relx=0.4,rely=0.05,relwidth=0.5,relheight=0.05)
 
+# set variables for display in the GUI
+num_agents_for_display = "--"
+frame_for_display = "--"
+
 def update_labels():
     n_text = "{} sheep grazing".format(num_agents_for_display)
     if num_agents_for_display == 0:
         n_text = "All dead!"
+        run_button.config(text='Restart')
     n_label.configure(text=n_text)
 
     frame_text = "Frame {}".format(frame_for_display)
