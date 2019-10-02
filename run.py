@@ -62,8 +62,18 @@ def update(frame_number, max_age, optimised_movement, breed, min_age_for_preg, p
         carry_on (bool)
     """
 
+    if frame_number == 0:
+        # frame 0 occurs twice, and first call does not draw, hence exclude
+        return
+
     global carry_on
     
+    # update the frame number and number of sheep displayed in the GUI
+    update_labels(frame_number-1,len(agents))
+    ##### print number of sheep to console
+    print('Frame: ', frame_number-1)
+    print('Number of Sheep: ', len(agents))
+
     # re-plot environment at the start of every update to show developments during last update
     fig.clear()
     plt.imshow(environment, cmap='YlGn', vmin=0, vmax=250)
@@ -71,13 +81,15 @@ def update(frame_number, max_age, optimised_movement, breed, min_age_for_preg, p
     plt.ylim(0,300)
     plt.axis('off')
 
-    # simulation stopping conditions
+    # simulation stopping conditions. Exit function using 'return'.
     if len(agents) == 0:
         print('All dead!')
         carry_on = False
+        return
     elif np.array(environment).sum() == 0:
-        carry_on = False
         print("All grass eaten!")
+        carry_on = False
+        return
 
     # shuffle agents before each iteration to try to avoid artifacts caused by order of execution
     random.shuffle(agents)
@@ -88,43 +100,38 @@ def update(frame_number, max_age, optimised_movement, breed, min_age_for_preg, p
     # run through each sheep and perform actions and plot it on the environment
     for agent in agents:
 
-        ######### perform actions ##################################
-
-        agent.move(optimised=optimised_movement)
-
-        # change sick_enabled to True to activate throwing up
-        agent.eat(max_grass_per_turn=20, sick_enabled=False)
-        if breed:
-            agent.mating(preg_duration,min_age_for_preg)
-
-        #agent.share_with_neighbours(20) # un-comment to activate sharing with neighbours.
-
-        ######### plot this sheep ##################################
-
         # set colour based on gender
         c = ('black' if agent.get_gender() == 'm' else 'white')
         # set size relative to maximum age (oldest = biggest)
-        s = (agent.get_age()/max_age)*100
+        s = ((agent.get_age()+1)/(max_age+1))*100
 
-        # check if this sheep dies at the end of this turn
         if agent.is_dead(max_age):
+            # check if this sheep is at max age, and let it die peacefully if so.
             the_dead.append(agent)
-            plt.scatter(agent.get_x(),agent.get_y(),s=s,c=c,marker='1')
+            plt.scatter(agent.get_x(),agent.get_y(),s=s,c=c,marker='1') # Plot him as a skeleton
+            print('plotted skeleton',s)
         else:
-            agent.increment_age()
+            # if still alive, let him live and PERFORM ACTIONS
+
+            # plot it (first round, plots initial position)
             plt.scatter(agent.get_x(),agent.get_y(),s=s,c=c,marker='*')
-    
+            print('plotted sheep',s)
+            #print('POSITON:  ',agent.get_x(),agent.get_y())
+
+            # change sick_enabled to True to activate throwing up
+            agent.eat(max_grass_per_turn=20, sick_enabled=False)
+            # perform actions
+            agent.move(optimised=optimised_movement)
+            if breed:
+                agent.mating(preg_duration,min_age_for_preg)
+            #agent.share_with_neighbours(20) # un-comment to activate sharing with neighbours.
+
+            # age it
+            agent.increment_age()
+            
     # remove all who died in this round in one go
     for dead_agent in the_dead:
         agents.remove(dead_agent)
-
-    # update the frame number and number of sheep displayed in the GUI
-    update_labels(frame_number,len(agents))
-
-    ##### print number of sheep to console every 5 frames:
-    if frame_number%1 == 0:
-        print('Frame: ', frame_number)
-        print('Number of Sheep: ', len(agents))
 
 
 def gen_function():
@@ -182,6 +189,7 @@ def run():
     )
 
     # create initial list of agents
+    # set seed to always create the same agents
     random.seed(0)
     agents = []
     for _ in range(num_agents):

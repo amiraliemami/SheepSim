@@ -101,8 +101,8 @@ class Agent():
 
 		# private attributes
 		if init_coords is None:
-			self._x = random.randint(0,300)
-			self._y = random.randint(0,300)
+			self._x = random.randint(0,299)
+			self._y = random.randint(0,299)
 		else:
 			self._x = init_coords[0]
 			self._y = init_coords[1]
@@ -347,7 +347,7 @@ class Agent():
 		"""Checks if age has reached the maximum age (integer, default 100) and returns a bool answer."""
 		if type(max_age) != int:
 			raise TypeError("max_age must be an integer.")
-		return (self._age > max_age)
+		return (self._age >= max_age)
 
 	def increment_age(self):
 		"""Increments the agent's age on which it was called."""
