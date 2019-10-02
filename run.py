@@ -20,29 +20,6 @@ import tkinter as tk
 ### global variable to control animation start/stop
 carry_on = True
 
-#### function for importing the environment from file
-def import_environment(path='data/in.txt'):
-    """Imports the 300x300 pixel environment from the given file path.
-    
-    Arguments:
-        path (str): path to environment file (default 'data/in.txt')
-    Returns
-        environment (matrix of numbers): list of list of numbers imported from the file
-    Raises:
-        IOError: if file not found at the given path
-    """
-    environment = []
-    with open(path) as f:
-        for line in f:
-            parsed_line = line.split(',')
-            rowlist = []
-            for value in parsed_line:
-                rowlist.append(int(value))
-            environment.append(rowlist)
-    #print('Max of environment: ',max(max(environment))) 
-    # we find that max is 245. Choose 250 as max grass level for imshow().
-    return environment
-
 
 #### functions for running the model and GUI: moving, eating, mating, aging, dying
 
@@ -168,7 +145,7 @@ def run():
     carry_on = True
 
     # re-import the clean environment for every run of the simulation
-    environment = import_environment()
+    environment = af.import_environment()
 
     # read parameters from the GUI widgets
     optimised_movement = opt_var.get()
@@ -307,7 +284,7 @@ fig = plt.figure(figsize=(15, 15))
 fig.set_facecolor('#F0F0F0')
 fig.clear()
 # plot environment to fill empty space/give a sense of the simulation pre-run
-environment = import_environment()
+environment = af.import_environment()
 plt.imshow(environment, cmap='YlGn', vmin=0, vmax=250)
 plt.xlim(0,300)
 plt.ylim(0,300)
