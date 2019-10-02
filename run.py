@@ -182,13 +182,14 @@ def run():
 
 
 def run_kill_toggle():
-    if run_button.config("text")[-1] == 'Run':
+    current_text = run_button.config("text")[-1]
+    if current_text == 'Start' or current_text == 'Restart':
         run()
         run_button.config(text='Kill')
-    elif run_button.config("text")[-1] == 'Kill':
+    elif current_text == 'Kill':
         global carry_on
         carry_on = False
-        run_button.config(text='Run')
+        run_button.config(text='Restart')
 
 
 #### TKINTER GUI ##############################################################
@@ -260,8 +261,8 @@ defaults_button = tk.Button(left_frame, text="Defaults", command=set_defaults)
 defaults_button.place(relx=0.1, rely=0.935, relwidth=0.37, relheight=0.07)
 
 # run button
-run_button = tk.Button(left_frame, text="Run", font=100, command=run_kill_toggle, relief="raised")
-run_button.place(relx=0.54, rely=0.92, relwidth=0.36, relheight=0.09)
+run_button = tk.Button(left_frame, text="Start", font=100, command=run_kill_toggle)
+run_button.place(relx=0.54, rely=0.92, relwidth=0.4, relheight=0.09)
 
 
 # fill plotting panel (right_frame) ##########
