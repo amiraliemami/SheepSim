@@ -92,7 +92,7 @@ def update(frame_number, max_age, optimised_movement, breed, min_age_for_preg, p
         return
 
     # shuffle agents before each iteration to try to avoid artifacts caused by order of execution
-    random.shuffle(agents)
+    #random.shuffle(agents)
 
     # make an empty list to populate with sheep that die this round, if any
     the_dead = []
@@ -109,14 +109,11 @@ def update(frame_number, max_age, optimised_movement, breed, min_age_for_preg, p
             # check if this sheep is at max age, and let it die peacefully if so.
             the_dead.append(agent)
             plt.scatter(agent.get_x(),agent.get_y(),s=s,c=c,marker='1') # Plot him as a skeleton
-            print('plotted skeleton',s)
         else:
             # if still alive, let him live and PERFORM ACTIONS
 
             # plot it (first round, plots initial position)
             plt.scatter(agent.get_x(),agent.get_y(),s=s,c=c,marker='*')
-            print('plotted sheep',s)
-            #print('POSITON:  ',agent.get_x(),agent.get_y())
 
             # change sick_enabled to True to activate throwing up
             agent.eat(max_grass_per_turn=20, sick_enabled=False)
