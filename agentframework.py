@@ -2,6 +2,8 @@
 Module requirements:
 - 'numpy'
 - 'random'
+
+Includes function for importing the environment: import_environment(path)
 """
 
 #### NECESSARY MODULES AND FUNCTIONS
@@ -23,6 +25,29 @@ def perturb(x):
 		raise TypeError("Can only perturb a number.")
 
 	return (x + random.choice([-1,1])) % 300
+
+def import_environment(path='data/in.txt'):
+    """Imports the 300x300 pixel environment from the given file path.
+    
+    Arguments:
+        path (str): path to environment file (default 'data/in.txt')
+    Returns
+        environment (matrix of numbers): list of list of numbers imported from the file
+    Raises:
+        IOError: if file not found at the given path
+    """
+    environment = []
+    with open(path) as f:
+        for line in f:
+            parsed_line = line.split(',')
+            rowlist = []
+            for value in parsed_line:
+                rowlist.append(int(value))
+            environment.append(rowlist)
+    #print('Max of environment: ',max(max(environment))) 
+    # we find that max is 245. Choose 250 as max grass level for imshow() in the main python script
+    return environment
+
 
 #### AGENT CLASS
 class Agent():

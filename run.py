@@ -17,6 +17,8 @@ import matplotlib.animation as anim
 
 import tkinter as tk
 
+### global variable to control animation start/stop
+carry_on = True
 
 #### function for importing the environment from file
 def import_environment(path='data/in.txt'):
@@ -66,8 +68,6 @@ def update_labels(frame_for_display,num_agents_for_display):
     frame_label.configure(text=frame_text)
 
 
-# variable to control animation start/stop
-carry_on = True
 def update(frame_number,num_agents, max_age, optimised_movement, breed, min_age_for_preg, preg_duration, agents, environment):
     """To be used by FuncAnimation from matplotlib to update the simulation.
     
