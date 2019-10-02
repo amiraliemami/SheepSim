@@ -3,7 +3,9 @@ Module requirements:
 - 'numpy'
 - 'random'
 
-Includes function for importing the environment: import_environment(path)
+Includes:
+- Agent class
+- function for importing the environment: import_environment(path)
 """
 
 #### NECESSARY MODULES AND FUNCTIONS
