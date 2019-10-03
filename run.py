@@ -71,8 +71,8 @@ def update(frame_number, max_age, optimised_movement, breed, min_age_for_preg, p
     # update the frame number and number of sheep displayed in the GUI
     update_labels(frame_number-1,len(agents))
     ##### print number of sheep to console
-    print('Frame: ', frame_number-1)
-    print('Number of Sheep: ', len(agents))
+    # print('Frame: ', frame_number-1)
+    # print('Number of Sheep: ', len(agents))
 
     # re-plot environment at the start of every update to show developments during last update
     fig.clear()
