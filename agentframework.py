@@ -25,7 +25,7 @@ def perturb(x):
 	if type(x) not in [float, int]:
 		raise TypeError("Can only perturb a number.")
 
-	return (x + random.choice([-1,1])) % 300
+	return ((x + random.choice([-1,1])) % 300)
 
 def import_environment(path='data/in.txt'):
     """Imports the 300x300 pixel environment from the given file path.
@@ -217,6 +217,7 @@ class Agent():
 		if type(max_grass_per_turn) not in [float, int]:
 			raise TypeError("max_grass_per_turn must be a number.")
 
+		print('position: [y,x] = ',self._y,self._x)
 		grass_available = self.environment[self._y][self._x]
 		# eat max_grass_per_turn if grass abundant
 		if grass_available >= max_grass_per_turn:
@@ -328,8 +329,8 @@ class Agent():
 										agent.set_pregnancy(1)
         
 		elif pregnancy == preg_duration:
-			# Give birth to another sheep to the right if pregnancy duration reached
-			self.agents.append(Agent(self.environment,self.agents,[self._x+1,self._y]))
+			# Give birth to another sheep to the right (mod 300 to cover edge cases) if pregnancy duration reached
+			self.agents.append(Agent(self.environment,self.agents,[(self._x+1) % 300, self._y]))
 			# reset pregnancy after giving birth, ready for the next
 			self._pregnancy = 0
 		

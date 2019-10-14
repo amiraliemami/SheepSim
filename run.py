@@ -256,39 +256,41 @@ separator_line0.place(relx=0.05,rely=0.08,relheight=0.001,relwidth=0.9)
 
 # number of agents slide
 n_slider = tk.Scale(left_frame, from_=1, to=120, orient=tk.HORIZONTAL,label='Number of Agents')
-n_slider.place(relx=0.05,rely=0.095,relwidth=0.9, relheight=0.18)
+n_slider.place(relx=0.05,rely=0.085,relwidth=0.9, relheight=0.18)
 # max age slider
 max_age_slider = tk.Scale(left_frame, from_=1, to=100, orient=tk.HORIZONTAL,label='Life Expectancy')
-max_age_slider.place(relx=0.05,rely=0.24,relwidth=0.9, relheight=0.18)
+max_age_slider.place(relx=0.05,rely=0.22,relwidth=0.9, relheight=0.18)
 
 # line
 separator_line = tk.Frame(left_frame,bg='grey')
-separator_line.place(relx=0.05,rely=0.35,relheight=0.001,relwidth=0.9)
+separator_line.place(relx=0.05,rely=0.37,relheight=0.001,relwidth=0.9)
 
 # optimised eating checkbox
 opt_var = tk.IntVar(root)
 optimised_chck = tk.Checkbutton(left_frame, variable = opt_var, text='Optimised Eating')
-optimised_chck.place(relx=0.05,rely=0.4,relwidth=0.9,relheight=0.06)
-
-# optimised eating checkbox
+optimised_chck.place(relx=0.05,rely=0.39,relwidth=0.9,relheight=0.06)
+# seed dropdown label
+seed_label = tk.Label(left_frame, text="Seed:")
+seed_label.place(relx=0.07,rely=0.46,relwidth=0.3,relheight=0.06)
+# seed dropdown
 seed_var = tk.StringVar(root)
 seed_dropdown = tk.OptionMenu(left_frame, seed_var, 'Off', '5995', '0', '10', '100')
-seed_dropdown.place(relx=0.05,rely=0.4,relwidth=0.9,relheight=0.06)
+seed_dropdown.place(relx=0.37,rely=0.46,relwidth=0.5,relheight=0.06)
 
 # line
 separator_line = tk.Frame(left_frame,bg='grey')
-separator_line.place(relx=0.05,rely=0.47,relheight=0.001,relwidth=0.9)
+separator_line.place(relx=0.05,rely=0.54,relheight=0.001,relwidth=0.9)
 
 # reproduction checkbox
 babies_var = tk.IntVar(root)
 optimised_chck = tk.Checkbutton(left_frame, variable = babies_var, text='Reproduction')
-optimised_chck.place(relx=-0.01,rely=0.475,relwidth=0.9,relheight=0.1)
+optimised_chck.place(relx=-0.01,rely=0.55,relwidth=0.9,relheight=0.06)
 # min age for pregnancy slider
 min_preg_age_slider = tk.Scale(left_frame, from_=0, to=50, orient=tk.HORIZONTAL,label='Fertility Age')
-min_preg_age_slider.place(relx=0.05,rely=0.57,relwidth=0.9,relheight=0.18)
+min_preg_age_slider.place(relx=0.05,rely=0.62,relwidth=0.9,relheight=0.18)
 # pregnancy duration slider
 preg_duration_slider = tk.Scale(left_frame, from_=1, to=50, orient=tk.HORIZONTAL,label='Pregnancy Duration')
-preg_duration_slider.place(relx=0.05,rely=0.73,relwidth=0.9,relheight=0.17)
+preg_duration_slider.place(relx=0.05,rely=0.75,relwidth=0.9,relheight=0.17)
 
 # set defaults
 def set_defaults():
