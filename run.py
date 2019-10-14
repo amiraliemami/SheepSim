@@ -159,7 +159,7 @@ def run():
     environment = af.import_environment()
 
     # read parameters from the GUI widgets
-    optimised_movement = opt_var.get()
+    optimised_movement = (graze_var.get() == 'Optimum') # convert str to bool
     seed = seed_var.get()
     breed = babies_var.get()
     max_age = max_age_slider.get()
@@ -172,7 +172,7 @@ def run():
     '\n#### Run started with parameters:\n\
     {} agents\n\
     {} max age\n\
-    {} movement\n\
+    Grazing: {}\n\
     Seeding: {}\n\
     {} breeding\n\
     {} minimum age for pregnancy\n\
@@ -180,7 +180,7 @@ def run():
         .format(
         num_agents,
         max_age,
-        ('Optimised' if optimised_movement else 'Random'),
+        ('Optimum' if optimised_movement else 'Random'),
         seed,
         ('Enabled' if breed else 'Disabled'),
         min_age_for_preg,
@@ -265,17 +265,26 @@ max_age_slider.place(relx=0.05,rely=0.22,relwidth=0.9, relheight=0.18)
 separator_line = tk.Frame(left_frame,bg='grey')
 separator_line.place(relx=0.05,rely=0.37,relheight=0.001,relwidth=0.9)
 
-# optimised eating checkbox
-opt_var = tk.IntVar(root)
-optimised_chck = tk.Checkbutton(left_frame, variable = opt_var, text='Optimised Eating')
-optimised_chck.place(relx=0.05,rely=0.39,relwidth=0.9,relheight=0.06)
+                                    # optimised eating checkbox
+                                    # graze_var = tk.IntVar(root)
+                                    # optimised_chck = tk.Checkbutton(left_frame, variable = graze_var, text='Optimised Eating')
+                                    # optimised_chck.place(relx=0.05,rely=0.39,relwidth=0.9,relheight=0.06)
+
+# optimised grazing dropdown label
+seed_label = tk.Label(left_frame, text="Grazing:")
+seed_label.place(relx=0.05,rely=0.39,relwidth=0.3,relheight=0.06)
+# optimised grazing dropdown
+graze_var = tk.StringVar(root)
+optimised_dropdown = tk.OptionMenu(left_frame, graze_var, 'Optimum', 'Random')
+optimised_dropdown.place(relx=0.36,rely=0.39,relwidth=0.57,relheight=0.06)
+
 # seed dropdown label
 seed_label = tk.Label(left_frame, text="Seed:")
-seed_label.place(relx=0.07,rely=0.46,relwidth=0.3,relheight=0.06)
+seed_label.place(relx=0.08,rely=0.46,relwidth=0.3,relheight=0.06)
 # seed dropdown
 seed_var = tk.StringVar(root)
 seed_dropdown = tk.OptionMenu(left_frame, seed_var, 'Off', '5995', '0', '10', '100')
-seed_dropdown.place(relx=0.37,rely=0.46,relwidth=0.5,relheight=0.06)
+seed_dropdown.place(relx=0.36,rely=0.46,relwidth=0.57,relheight=0.06)
 
 # line
 separator_line = tk.Frame(left_frame,bg='grey')
@@ -298,7 +307,7 @@ def set_defaults():
     n_slider.set(50)
     max_age_slider.set(30)
     max_age_slider.set(30)
-    opt_var.set(1)
+    graze_var.set('Optimum')
     seed_var.set('5995')
     babies_var.set(1)
     min_preg_age_slider.set(20)

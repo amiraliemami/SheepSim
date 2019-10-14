@@ -175,7 +175,6 @@ class Agent():
 		"""
 
 		if optimised:
-
 			# initialise
 			x_current, y_current = self._x % 300, self._y % 300
 			x_best, y_best = x_current, y_current
@@ -217,7 +216,6 @@ class Agent():
 		if type(max_grass_per_turn) not in [float, int]:
 			raise TypeError("max_grass_per_turn must be a number.")
 
-		print('position: [y,x] = ',self._y,self._x)
 		grass_available = self.environment[self._y][self._x]
 		# eat max_grass_per_turn if grass abundant
 		if grass_available >= max_grass_per_turn:
