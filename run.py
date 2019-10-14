@@ -160,6 +160,7 @@ def run():
 
     # read parameters from the GUI widgets
     optimised_movement = opt_var.get()
+    seed = seed_var.get()
     breed = babies_var.get()
     max_age = max_age_slider.get()
     min_age_for_preg = min_preg_age_slider.get()
@@ -172,6 +173,7 @@ def run():
     {} agents\n\
     {} max age\n\
     {} movement\n\
+    Seeding: {}\n\
     {} breeding\n\
     {} minimum age for pregnancy\n\
     {} duration of pregnancy\n'\
@@ -179,6 +181,7 @@ def run():
         num_agents,
         max_age,
         ('Optimised' if optimised_movement else 'Random'),
+        seed,
         ('Enabled' if breed else 'Disabled'),
         min_age_for_preg,
         preg_duration
@@ -186,8 +189,9 @@ def run():
     )
 
     # create initial list of agents
-    # set seed to always create the same agents
-    random.seed(0)
+    # if seed chosen seed to always create the same agents
+    if seed != 'Off':
+        random.seed(int(seed))
     agents = []
     for _ in range(num_agents):
         agents.append(af.Agent(environment,agents)) 
@@ -232,7 +236,7 @@ def start_kill_toggle():
 root = tk.Tk()
 root.title('Sheep Sim - Amir')
 
-canvas = tk.Canvas(root, height=470, width=660)
+canvas = tk.Canvas(root, height=510, width=670)
 canvas.pack()
 left_frame = tk.Frame(root, bd=5)
 left_frame.place(relx=0.15, rely=0.05, relwidth=0.25, relheight=0.9, anchor='n')
@@ -242,7 +246,7 @@ right_frame.place(relx=0.64, rely=0.02, relwidth=0.68, relheight=0.96, anchor='n
 # fill options panel (lef_frame) ##########
 
 # title
-main_title = tk.Label(left_frame, text="Sheep  (°ꈊ°)  Sim")
+main_title = tk.Label(left_frame, text="Sheep Sim (°ꈊ°)")
 main_title.place(relx=0,rely=-0.02,relwidth=1,relheight=0.08)
 main_title.config(font=("Poor Richard", 16))
 
@@ -256,10 +260,20 @@ n_slider.place(relx=0.05,rely=0.095,relwidth=0.9, relheight=0.18)
 # max age slider
 max_age_slider = tk.Scale(left_frame, from_=1, to=100, orient=tk.HORIZONTAL,label='Life Expectancy')
 max_age_slider.place(relx=0.05,rely=0.24,relwidth=0.9, relheight=0.18)
+
+# line
+separator_line = tk.Frame(left_frame,bg='grey')
+separator_line.place(relx=0.05,rely=0.35,relheight=0.001,relwidth=0.9)
+
 # optimised eating checkbox
 opt_var = tk.IntVar(root)
 optimised_chck = tk.Checkbutton(left_frame, variable = opt_var, text='Optimised Eating')
 optimised_chck.place(relx=0.05,rely=0.4,relwidth=0.9,relheight=0.06)
+
+# optimised eating checkbox
+seed_var = tk.StringVar(root)
+seed_dropdown = tk.OptionMenu(left_frame, seed_var, 'Off', '5995', '0', '10', '100')
+seed_dropdown.place(relx=0.05,rely=0.4,relwidth=0.9,relheight=0.06)
 
 # line
 separator_line = tk.Frame(left_frame,bg='grey')
@@ -283,6 +297,7 @@ def set_defaults():
     max_age_slider.set(30)
     max_age_slider.set(30)
     opt_var.set(1)
+    seed_var.set('5995')
     babies_var.set(1)
     min_preg_age_slider.set(20)
     preg_duration_slider.set(10)
