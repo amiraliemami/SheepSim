@@ -261,29 +261,27 @@ n_slider.place(relx=0.05,rely=0.085,relwidth=0.9, relheight=0.18)
 max_age_slider = tk.Scale(left_frame, from_=1, to=120, orient=tk.HORIZONTAL,label='Life Expectancy')
 max_age_slider.place(relx=0.05,rely=0.22,relwidth=0.9, relheight=0.18)
 
-# line
-separator_line = tk.Frame(left_frame,bg='grey')
-separator_line.place(relx=0.05,rely=0.37,relheight=0.001,relwidth=0.9)
-
-# optimised grazing dropdown label
-seed_label = tk.Label(left_frame, text="Grazing:")
-seed_label.place(relx=0.05,rely=0.39,relwidth=0.3,relheight=0.06)
-# optimised grazing dropdown
-graze_var = tk.StringVar(root)
-optimised_dropdown = tk.OptionMenu(left_frame, graze_var, 'Optimum', 'Random')
-optimised_dropdown.place(relx=0.36,rely=0.39,relwidth=0.57,relheight=0.06)
-
 # seed dropdown label
-seed_label = tk.Label(left_frame, text="Seed:")
-seed_label.place(relx=0.08,rely=0.46,relwidth=0.3,relheight=0.06)
+seed_label = tk.Label(left_frame, text="Spawn Seed:")
+seed_label.place(relx=0.075,rely=0.37,relwidth=0.41,relheight=0.06)
 # seed dropdown
 seed_var = tk.StringVar(root)
 seed_dropdown = tk.OptionMenu(left_frame, seed_var, 'Off', '5995', '0', '10', '100')
-seed_dropdown.place(relx=0.36,rely=0.46,relwidth=0.57,relheight=0.06)
+seed_dropdown.place(relx=0.52,rely=0.37,relwidth=0.41,relheight=0.06)
+
+# optimised grazing dropdown label
+seed_label = tk.Label(left_frame, text="Grazing:")
+seed_label.place(relx=0.05,rely=0.45,relwidth=0.3,relheight=0.06)
+# optimised grazing dropdown
+graze_var = tk.StringVar(root)
+optimised_dropdown = tk.OptionMenu(left_frame, graze_var, 'Optimum', 'Random')
+optimised_dropdown.place(relx=0.36,rely=0.45,relwidth=0.57,relheight=0.06)
+
 
 # line
 separator_line = tk.Frame(left_frame,bg='grey')
 separator_line.place(relx=0.05,rely=0.54,relheight=0.001,relwidth=0.9)
+
 
 # reproduction checkbox
 babies_var = tk.IntVar(root)
@@ -300,7 +298,7 @@ preg_duration_slider.place(relx=0.05,rely=0.75,relwidth=0.9,relheight=0.17)
 def set_defaults():
     """Requires the GUI widgets to exist before it is called."""
     n_slider.set(60)
-    max_age_slider.set(1000)
+    max_age_slider.set(60)
     graze_var.set('Optimum')
     seed_var.set('5995')
     babies_var.set(1)
@@ -333,11 +331,12 @@ plt.axis('off')
 anim_placeholder = matplotlib.backends.backend_tkagg.FigureCanvasTkAgg(fig, master=right_frame)
 anim_placeholder._tkcanvas.place(relx=0,rely=0,relwidth=1,relheight=1)
 
-# show number of agents beneath the animation window, these will be updated by the update_labels() function within the update() function
-n_label = tk.Label(right_frame,text="",anchor=tk.E)
-n_label.place(relx=0.4,rely=0.9,relwidth=0.5,relheight=0.05)
-frame_label = tk.Label(right_frame, text="",anchor=tk.W)
-frame_label.place(relx=0.12,rely=0.9,relwidth=0.5,relheight=0.05)
+# show number of agents and frame number beneath the animation window
+# these will be updated by the update_labels() function within the update() function
+n_label = tk.Label(right_frame,text="",anchor=tk.W)
+n_label.place(relx=0.12,rely=0.9,relwidth=0.5,relheight=0.05)
+frame_label = tk.Label(right_frame, text="",anchor=tk.E)
+frame_label.place(relx=0.4,rely=0.9,relwidth=0.5,relheight=0.05)
 
 # start gui
 root.mainloop()
