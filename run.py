@@ -258,17 +258,12 @@ separator_line0.place(relx=0.05,rely=0.08,relheight=0.001,relwidth=0.9)
 n_slider = tk.Scale(left_frame, from_=1, to=120, orient=tk.HORIZONTAL,label='Number of Agents')
 n_slider.place(relx=0.05,rely=0.085,relwidth=0.9, relheight=0.18)
 # max age slider
-max_age_slider = tk.Scale(left_frame, from_=1, to=100, orient=tk.HORIZONTAL,label='Life Expectancy')
+max_age_slider = tk.Scale(left_frame, from_=1, to=120, orient=tk.HORIZONTAL,label='Life Expectancy')
 max_age_slider.place(relx=0.05,rely=0.22,relwidth=0.9, relheight=0.18)
 
 # line
 separator_line = tk.Frame(left_frame,bg='grey')
 separator_line.place(relx=0.05,rely=0.37,relheight=0.001,relwidth=0.9)
-
-                                    # optimised eating checkbox
-                                    # graze_var = tk.IntVar(root)
-                                    # optimised_chck = tk.Checkbutton(left_frame, variable = graze_var, text='Optimised Eating')
-                                    # optimised_chck.place(relx=0.05,rely=0.39,relwidth=0.9,relheight=0.06)
 
 # optimised grazing dropdown label
 seed_label = tk.Label(left_frame, text="Grazing:")
@@ -304,9 +299,8 @@ preg_duration_slider.place(relx=0.05,rely=0.75,relwidth=0.9,relheight=0.17)
 # set defaults
 def set_defaults():
     """Requires the GUI widgets to exist before it is called."""
-    n_slider.set(50)
-    max_age_slider.set(30)
-    max_age_slider.set(30)
+    n_slider.set(60)
+    max_age_slider.set(1000)
     graze_var.set('Optimum')
     seed_var.set('5995')
     babies_var.set(1)

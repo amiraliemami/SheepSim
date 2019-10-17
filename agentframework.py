@@ -274,7 +274,7 @@ class Agent():
 
 		If both self and other sheep are of age, have enough food store, are close enough, and are also of opposite sexes, the female one will get pregnant. 
 		Pregnancies progress with each iteration of the simulation and once the correct duration is reached, a new sheep (new instance of the Agent class) 
-		is initiated immediately to the right of the mother. 
+		is initiated 5 positions to the right of the mother. 
 
 		NOTES:
 		- At each run of this mating function on an agent (i.e. agent.mating()), that agent looks around it for possible mates. Thus must be run on each agent per update of the simulation.
@@ -327,8 +327,8 @@ class Agent():
 										agent.set_pregnancy(1)
         
 		elif pregnancy == preg_duration:
-			# Give birth to another sheep to the right (mod 300 to cover edge cases) if pregnancy duration reached
-			self.agents.append(Agent(self.environment,self.agents,[(self._x+1) % 300, self._y]))
+			# Give birth to another sheep 5 positions to the right (mod 300 to cover edge cases) if pregnancy duration reached
+			self.agents.append(Agent(self.environment, self.agents, [(self._x + 5) % 300, self._y]))
 			# reset pregnancy after giving birth, ready for the next
 			self._pregnancy = 0
 		
