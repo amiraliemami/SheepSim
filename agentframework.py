@@ -74,7 +74,7 @@ class Agent():
 		Get methods: 
 			get_x, get_y, get_store, get_pregnancy, get_sex, get_age
 		Action methods: 
-			move, eat, share_neighbours, mating
+			move, eat, share_neighbours, mate
 		Other methods:
 			is_dead, increment_age, distance_to
 	"""
@@ -269,7 +269,7 @@ class Agent():
 
 	######### EXTRAS - Mating, Aging and Dying #################################################################################################
 
-	def mating(self, preg_duration=10, min_age=20, min_dist=10, min_store=50):
+	def mate(self, preg_duration=10, min_age=20, min_dist=10, min_store=50):
 		"""Enables mating for the sheep, meaning that female sheep get pregnant if they come close enough to male sheep and thus give birth to new sheep after a given pegnancy duration.
 
 		If both self and other sheep are of age, have enough food store, are close enough, and are also of opposite sexes, the female one will get pregnant. 

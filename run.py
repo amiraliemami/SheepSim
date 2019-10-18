@@ -127,7 +127,7 @@ def update(frame_number, max_age, optimised_movement, breed, min_age_for_preg, p
             # perform actions
             agent.move(optimised=optimised_movement)
             if breed:
-                agent.mating(preg_duration,min_age_for_preg)
+                agent.mate(preg_duration,min_age_for_preg)
             #agent.share_with_neighbours(20) # un-comment to activate sharing with neighbours.
 
             # age it
