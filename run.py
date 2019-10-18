@@ -98,7 +98,7 @@ def update(frame_number, max_age, optimised_movement, breed, min_age_for_preg, p
     # but the next frame might be the opposite.
     # this could have been solved by drawing the sheep based on IDs
     # but this unnecessarily complicates the code.
-    
+
     #random.shuffle(agents)
 
     # make an empty list to populate with sheep that die this round, if any
@@ -107,8 +107,8 @@ def update(frame_number, max_age, optimised_movement, breed, min_age_for_preg, p
     # run through each sheep and perform actions and plot it on the environment
     for agent in agents:
 
-        # set colour based on gender
-        c = ('black' if agent.get_gender() == 'm' else 'white')
+        # set colour based on sex
+        c = ('black' if agent.get_sex() == 'm' else 'white')
         # set size relative to maximum age (oldest = biggest)
         s = ((agent.get_age()+1)/(max_age+1))*100
 
