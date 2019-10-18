@@ -91,7 +91,14 @@ def update(frame_number, max_age, optimised_movement, breed, min_age_for_preg, p
         carry_on = False
         return
 
-    # shuffle agents before each iteration to try to avoid artifacts caused by order of execution
+    # shuffle agents - DISABLED - Since no systematic errors can be seen
+    # and also the shuffling causes the order at which sheep are drawn to
+    # the screen to change, meaning that if two sheep are overlapping,
+    # they flicker with sheep 1 being drawn first, and 2 second,
+    # but the next frame might be the opposite.
+    # this could have been solved by drawing the sheep based on IDs
+    # but this unnecessarily complicates the code.
+    
     #random.shuffle(agents)
 
     # make an empty list to populate with sheep that die this round, if any
