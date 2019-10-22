@@ -77,7 +77,7 @@ def update(frame_number, max_age, optimised_movement, breed, min_age_for_preg, p
     fig.clear()
     plt.imshow(environment, cmap='YlGn', vmin=0, vmax=250)
     plt.xlim(0,300)
-    plt.ylim(0,300)
+    plt.ylim(300,0) # 300 to 0 to get the correct orientation
     plt.axis('off')
 
     # simulation stopping conditions. Exit function using 'return'.
@@ -330,8 +330,6 @@ fig.clear()
 # plot environment to fill empty space/give a sense of the simulation pre-run
 environment = af.import_environment()
 plt.imshow(environment, cmap='YlGn', vmin=0, vmax=250)
-plt.xlim(0,300)
-plt.ylim(0,300)
 plt.axis('off')
 
 anim_placeholder = matplotlib.backends.backend_tkagg.FigureCanvasTkAgg(fig, master=right_frame)
