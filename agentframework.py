@@ -69,12 +69,12 @@ class Agent():
 		_age (integer): Number of runs the sheep has lived for. Initiates at 0.
 
 	Methods:
-		Set methods: 
+		set_ methods: 
 			set_x, set_y, set_store, set_pregnancy
-		Get methods: 
+		get_ methods: 
 			get_x, get_y, get_store, get_pregnancy, get_sex, get_age
-		Action methods: 
-			move, eat, share_neighbours, mating
+		"Action" methods: 
+			move, eat, share_neighbours, mate
 		Other methods:
 			is_dead, increment_age, distance_to
 	"""

@@ -1,6 +1,5 @@
 #!/usr/bin/python
 
-
 #### Imports
 
 import agentframework as af
