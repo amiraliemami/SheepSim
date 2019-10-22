@@ -266,6 +266,8 @@ class Agent():
 					avg = (self._store + agent.get_store())/2
 					self._store = avg
 					agent.set_store(avg)
+		
+		#print(neighbourhood_size) # to check
 
 	######### EXTRAS - Mating, Aging and Dying #################################################################################################
 
