@@ -97,6 +97,10 @@ class Agent():
 			_age (integer): Number of runs the sheep has lived for. Initiates at 0.
 			environment (list): store given environment as internal attribute
 			agents (list): store given agents as internal attribute
+
+		Raises:
+			ValueError: if init_coords list is not of length 2
+			ValueError: if init_coords not within 0 to 300 range
 		"""
 
 		# private attributes
@@ -104,13 +108,21 @@ class Agent():
 			self._x = random.randint(0,299)
 			self._y = random.randint(0,299)
 		else:
-			self._x = init_coords[0]
-			self._y = init_coords[1]
+			if len(init_coords) != 2:
+				raise ValueError("init_coords must be two coordinates.")
+			elif init_coords[0] < 0 or init_coords[0] > 300 or init_coords[1] < 0 or init_coords[1] > 300:
+				raise ValueError("init_coords entries must be within 0 and 300.")
+			else:
+				self._x = init_coords[0]
+				self._y = init_coords[1]
 
 		if sex is None:
 			self._sex = random.choice(['m','f'])
 		else:
-			self._sex = sex
+			if sex not in {'m','f'}:
+				raise ValueError("sex must be 'f' or 'm'.")
+			else:
+				self._sex = sex
 
 		self._store = 0
 		self._pregnancy = 0
