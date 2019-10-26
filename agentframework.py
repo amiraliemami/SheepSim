@@ -101,6 +101,7 @@ class Agent():
 		Raises:
 			ValueError: if init_coords list is not of length 2
 			ValueError: if init_coords not within 0 to 300 range
+			ValueError: if sex is not 'f' or 'm'
 		"""
 
 		# private attributes
@@ -165,7 +166,7 @@ class Agent():
 		"""Returns the private _pregnancy attribute"""
 		return self._pregnancy
 
-	def get_sex(self): # read-only
+	def get_sex(self): # read-only - no set_ option
 		"""Returns the private _sex attribute. Note: This attribute does not have a set method - it is read-only."""
 		return self._sex
 
