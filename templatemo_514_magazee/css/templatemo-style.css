@@ -1,24 +1,17 @@
 /*
-
 Magazee Template
-
 http://www.templatemo.com/tm-514-magazee
-
 */
-
-#access {
-    margin-bottom: 5px;
-  }
 
 body {
 	font-family: 'Open Sans', Helvetica, Arial, sans-serif;
-	font-size: 18px;
+	font-size: 16px;
     color: #666666;
     background-color: #f4f4f4;
 }
 
 p, q { line-height: 1.5; }
-h2 { font-size: 1.8rem; }
+h2 { font-size: 1.6rem; }
 
 .tm-site-name {
     font-size: 4rem;
