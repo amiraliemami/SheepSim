@@ -8,14 +8,9 @@ https://amiraliemami.github.io/leedsmodule/
 
 ## Workbook
 
-Practicals 1 to 9 are presented in a Jupyter Notebook, included in the repository and also hosted [here](https://nbviewer.jupyter.org/github/amiraliemami/leedsmodule/blob/master/Jupyter%20Workbook.ipynb).
+Practicals 1 to 9 are presented in a Jupyter Notebook, included in the repository and also [hosted here](https://nbviewer.jupyter.org/github/amiraliemami/leedsmodule/blob/master/Jupyter%20Workbook.ipynb).
 
 ## Model and GUI
-
-#### UML Diagram
-
-![alt text](https://www.geog.leeds.ac.uk/courses/computing/practicals/python/agent-framework/part5/images/UML.jpg)
-
 
 The final model and extras are presented by ```model.py```, using ```agentframework.py``` for definition of the agents and their attributes and methods.
 
@@ -24,15 +19,19 @@ To run the model and load the GUI, run the following:
 python model.py
 ```
 
-Extra features of model:
+### Extra features
 
-- Death - sheep die after reaching maximum life expectancy (adjustable in GUI, default 60)
-- Optimised movement - move to position which has most grass, instead of random
-- Seeding for spawning - random or set, allowing repeated experiments
-- Reproduction - female sheep (white) can be impregnated by male sheep (black) if both sheep have sufficient store (default 50), are close enough (default within 20), and are of fertility age (adjustable in GUI, default 20)
-- Pregnancy takes time - female sheep get pregnant, and after a number of turns (adjustable in GUI, default 10), give birth to a new sheep nearby.
-- Defaults button - reset all values to default
-- Start/Kill/Restart button - can stop and restart simulation (even with changed parameters) without having to rerun the script.
+1. Death - sheep die after reaching maximum life expectancy (adjustable in GUI, default 60)
+2. Optimised movement - move to position which has most grass, instead of random
+3. Seeding for spawning - random or set, allowing repeated experiments
+4. Reproduction - female sheep (white) can be impregnated by male sheep (black) if both sheep have sufficient store (default 50), are close enough (default within 20), and are of fertility age (adjustable in GUI, default 20)
+5. Pregnancy takes time - female sheep get pregnant, and after a number of turns (adjustable in GUI, default 10), give birth to a new sheep nearby.
+6. Defaults button - reset all values to default
+7. Start/Kill/Restart button - can stop and restart simulation (even with changed parameters) without having to rerun the script.
+
+#### UML Diagram
+
+![alt text](https://www.geog.leeds.ac.uk/courses/computing/practicals/python/agent-framework/part5/images/UML.jpg)
 
 ## Testing
 
