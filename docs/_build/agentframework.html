@@ -1,0 +1,317 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>agentframework module &#8212; Sheep Sim 1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="module-agentframework">
+<span id="agentframework-module"></span><h1>agentframework module<a class="headerlink" href="#module-agentframework" title="Permalink to this headline">¶</a></h1>
+<p>Module requirements:
+- ‘numpy’
+- ‘random’</p>
+<p>Includes:
+- Agent class
+- function for importing the environment: import_environment(path)</p>
+<dl class="class">
+<dt id="agentframework.Agent">
+<em class="property">class </em><code class="descclassname">agentframework.</code><code class="descname">Agent</code><span class="sig-paren">(</span><em>environment: list</em>, <em>agents: list</em>, <em>init_coords=None</em>, <em>sex=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/agentframework.html#Agent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#agentframework.Agent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Provides the framework for sheep agents and their associated actions.</p>
+<dl class="docutils">
+<dt>Arguments:</dt>
+<dd>environment (matrix): list of lists of numbers corresponding to grass height at each pixel of environment
+agents (list): list of Agent objects in the simulation
+init_coords (2-tuple of integers): Determines (x,y) at which this agent is spawned. If None, random x and y are chosen between 0 and 300. (default None)
+sex (str): ‘m’ or ‘f’, the sheep’s sex (default: None, causes _sex below to be set randomely).</dd>
+<dt>Attributes:</dt>
+<dd>_x (integer): The sheep’s x coordinate, between 0 and 300
+_y (integer): The sheep’s y coordinate, between 0 and 300
+_sex (str): ‘m’ or ‘f’, the sheep’s sex (default: random if sex argument is None)
+_store (integer): Amount of grass eaten and stored by the sheep. Initiates at 0.
+_pregnancy (integer): Stage of pregnancy the sheep is at. Initiates at 0.
+_age (integer): Number of runs the sheep has lived for. Initiates at 0.</dd>
+<dt>Methods:</dt>
+<dd><dl class="first last docutils">
+<dt><a href="#id1"><span class="problematic" id="id2">set_</span></a> methods: </dt>
+<dd>set_x, set_y, set_store, set_pregnancy</dd>
+<dt><a href="#id3"><span class="problematic" id="id4">get_</span></a> methods: </dt>
+<dd>get_x, get_y, get_store, get_pregnancy, get_sex, get_age</dd>
+<dt>“Action” methods: </dt>
+<dd>move, eat, share_neighbours, mate</dd>
+<dt>Other methods:</dt>
+<dd>is_dead, increment_age, distance_to</dd>
+</dl>
+</dd>
+</dl>
+<dl class="method">
+<dt id="agentframework.Agent.distance_to">
+<code class="descname">distance_to</code><span class="sig-paren">(</span><em>other</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/agentframework.html#Agent.distance_to"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#agentframework.Agent.distance_to" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given another agent, return the Euclidean distance between self and the given agent.</p>
+<dl class="docutils">
+<dt>Arguments:</dt>
+<dd>other (Agent class): Other sheep to get distance to.</dd>
+<dt>Returns:</dt>
+<dd>Euclidean distance (float) to the other sheep.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="agentframework.Agent.eat">
+<code class="descname">eat</code><span class="sig-paren">(</span><em>max_grass_per_turn=20</em>, <em>sick_enabled=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/agentframework.html#Agent.eat"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#agentframework.Agent.eat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calling this will cause the sheep to “eat grass” from the coordinate it is standing on in the environment.</p>
+<p>If the environment has value equal to or more than max_grass_per_turn at the coordinate at which the sheep is currently standing, the sheep will increase its
+store by max_grass_per_turn, and the environment’s value here will decrease by max_grass_per_turn. If the value here is less than max_grass_per_turn, the sheep 
+will add this value to its store and reduce the environment to 0 at this spot. If environment is at 0 at this coordinate, the sheep will not eat.</p>
+<dl class="docutils">
+<dt>Arguments:</dt>
+<dd><dl class="first docutils">
+<dt>max_grass_per_turn (int or float): the maximum amount each sheep can eat per turn, if current coordinate has this available. Otherwise, the sheep consumes</dt>
+<dd>what’s left of the grass beneath it (default 20)</dd>
+</dl>
+<p class="last">sick_enabled (bool): if True, sheep sick up 50 onto their current coordinate in the environment if their store reaches 100 (default False)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="agentframework.Agent.get_age">
+<code class="descname">get_age</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/agentframework.html#Agent.get_age"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#agentframework.Agent.get_age" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the private _age attribute</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="agentframework.Agent.get_pregnancy">
+<code class="descname">get_pregnancy</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/agentframework.html#Agent.get_pregnancy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#agentframework.Agent.get_pregnancy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the private _pregnancy attribute</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="agentframework.Agent.get_sex">
+<code class="descname">get_sex</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/agentframework.html#Agent.get_sex"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#agentframework.Agent.get_sex" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the private _sex attribute. Note: This attribute does not have a set method - it is read-only.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="agentframework.Agent.get_store">
+<code class="descname">get_store</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/agentframework.html#Agent.get_store"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#agentframework.Agent.get_store" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the private _store attribute</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="agentframework.Agent.get_x">
+<code class="descname">get_x</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/agentframework.html#Agent.get_x"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#agentframework.Agent.get_x" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the private _x attribute</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="agentframework.Agent.get_y">
+<code class="descname">get_y</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/agentframework.html#Agent.get_y"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#agentframework.Agent.get_y" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the private _y attribute</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="agentframework.Agent.increment_age">
+<code class="descname">increment_age</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/agentframework.html#Agent.increment_age"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#agentframework.Agent.increment_age" title="Permalink to this definition">¶</a></dt>
+<dd><p>Increments the agent’s age on which it was called.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="agentframework.Agent.is_dead">
+<code class="descname">is_dead</code><span class="sig-paren">(</span><em>max_age=100</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/agentframework.html#Agent.is_dead"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#agentframework.Agent.is_dead" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if age has reached the maximum age (integer, default 100) and returns a bool answer.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="agentframework.Agent.mate">
+<code class="descname">mate</code><span class="sig-paren">(</span><em>preg_duration=10</em>, <em>min_age=20</em>, <em>min_dist=10</em>, <em>min_store=50</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/agentframework.html#Agent.mate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#agentframework.Agent.mate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Enables mating for the sheep, meaning that female sheep get pregnant if they come close enough to male sheep and thus give birth to new sheep after a given pegnancy duration.</p>
+<p>If both self and other sheep are of age, have enough food store, are close enough, and are also of opposite sexes, the female one will get pregnant. 
+Pregnancies progress with each iteration of the simulation and once the correct duration is reached, a new sheep (new instance of the Agent class) 
+is initiated 5 positions to the right of the mother.</p>
+<p>NOTES:
+- At each run of this mating function on an agent (i.e. agent.mating()), that agent looks around it for possible mates. Thus must be run on each agent per update of the simulation.
+- A pregnant sheep cannot get re-pregnant until it gives birth.</p>
+<dl class="docutils">
+<dt>Arguments:</dt>
+<dd>preg_duration (integer): number of turns that a pregnancy lasts from conception to giving birth (default 10)
+min_age (integer): both sheep (male and female) must be of this age or more to be able to mate (default 20)
+min_dist (integer or float): must be closer than this distance to be able to mate (default 10)
+min_store (integer or float): both sheep must have this much store or more to be able to mate (default 50)</dd>
+<dt>Raises:</dt>
+<dd>ValueError: if pregnancy value becomes negative or goes above preg_duration</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="agentframework.Agent.move">
+<code class="descname">move</code><span class="sig-paren">(</span><em>optimised=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/agentframework.html#Agent.move"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#agentframework.Agent.move" title="Permalink to this definition">¶</a></dt>
+<dd><p>Moves the sheep it is called on one step.</p>
+<p>Can be random (random walk, optimised=False), or towards the direction of most grass unless current position has
+more than surrounding areas, in which case the sheep does not move (greedy search, optimised=True).</p>
+<dl class="docutils">
+<dt>Arguments:</dt>
+<dd>optimised (bool): 
+If False, sheep moves randomely to a neighbouring pixel. If True, sheep moves towards
+direction of most grass, or does not move if current pixel has most grass (default True)</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="agentframework.Agent.set_age">
+<code class="descname">set_age</code><span class="sig-paren">(</span><em>val: int</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/agentframework.html#Agent.set_age"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#agentframework.Agent.set_age" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the private _age attribute to given integer.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="agentframework.Agent.set_pregnancy">
+<code class="descname">set_pregnancy</code><span class="sig-paren">(</span><em>val: int</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/agentframework.html#Agent.set_pregnancy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#agentframework.Agent.set_pregnancy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the private _pregnancy attribute to given integer.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="agentframework.Agent.set_store">
+<code class="descname">set_store</code><span class="sig-paren">(</span><em>val: int</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/agentframework.html#Agent.set_store"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#agentframework.Agent.set_store" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the private _store attribute to given integer.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="agentframework.Agent.set_x">
+<code class="descname">set_x</code><span class="sig-paren">(</span><em>x: int</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/agentframework.html#Agent.set_x"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#agentframework.Agent.set_x" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the private _x attribute to given integer.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="agentframework.Agent.set_y">
+<code class="descname">set_y</code><span class="sig-paren">(</span><em>y: int</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/agentframework.html#Agent.set_y"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#agentframework.Agent.set_y" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the private _y attribute to given integer.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="agentframework.Agent.share_with_neighbours">
+<code class="descname">share_with_neighbours</code><span class="sig-paren">(</span><em>neighbourhood_size=20</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/agentframework.html#Agent.share_with_neighbours"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#agentframework.Agent.share_with_neighbours" title="Permalink to this definition">¶</a></dt>
+<dd><p>Share store with nearby sheep by splitting resources with them.</p>
+<p>Check if any other sheep are within a given radius of self, and if so, share stores by setting the value of the stores for self and
+the other sheep to the average of the stores between the two.</p>
+<dl class="docutils">
+<dt>Arguments:</dt>
+<dd>neighbourhood_size (integer or float): Radius below which sharing is triggered (default 20)</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="agentframework.import_environment">
+<code class="descclassname">agentframework.</code><code class="descname">import_environment</code><span class="sig-paren">(</span><em>path='data/in.txt'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/agentframework.html#import_environment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#agentframework.import_environment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Imports the 300x300 pixel environment from the given file path.</p>
+<dl class="docutils">
+<dt>Arguments:</dt>
+<dd>path (str): path to environment file (default ‘data/in.txt’)</dd>
+<dt>Returns</dt>
+<dd>environment (matrix of numbers): list of list of numbers imported from the file</dd>
+<dt>Raises:</dt>
+<dd>IOError: if file not found at the given path</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="agentframework.perturb">
+<code class="descclassname">agentframework.</code><code class="descname">perturb</code><span class="sig-paren">(</span><em>x</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/agentframework.html#perturb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#agentframework.perturb" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a number, returns a perturbed version of it with equal chance of increase or decrease by 1, mod300.</p>
+<dl class="docutils">
+<dt>Arguments:</dt>
+<dd>x (integer or float): a number</dd>
+<dt>Returns:</dt>
+<dd>Either (x+1)mod300 or (x-1)mod300, with equal probability.</dd>
+<dt>Raises:</dt>
+<dd>TypeError: if non-number is passed as argument.</dd>
+</dl>
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="docs_index.html">Sheep Sim</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="docs_index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Amir Emami.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.9</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
+      
+      |
+      <a href="_sources/agentframework.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
