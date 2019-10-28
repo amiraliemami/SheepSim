@@ -136,11 +136,17 @@ class Agent():
     # functions for accessing private attributes
 	def set_x(self,x:int):
 		"""Sets the private _x attribute to given integer."""
-		self._x = x
+		if x < 0 or x > 299:
+			raise ValueError("x must be within 0 and 299.")
+		else:
+			self._x = x
 
 	def set_y(self,y:int):
 		"""Sets the private _y attribute to given integer."""
-		self._y = y
+		if y < 0 or y > 299:
+			raise ValueError("y must be within 0 and 299.")
+		else:
+			self._y = y
 
 	def set_store(self,val:int):
 		"""Sets the private _store attribute to given integer."""
@@ -148,7 +154,17 @@ class Agent():
 
 	def set_pregnancy(self,val:int):
 		"""Sets the private _pregnancy attribute to given integer."""
-		self._pregnancy = val
+		if val < 0:
+			raise ValueError("Pregnancy cannot be negative.")
+		else:
+			self._pregnancy = val
+
+	def set_age(self,val:int):
+		"""Sets the private _age attribute to given integer."""
+		if val < 0:
+			raise ValueError("Age cannot be negative.")
+		else:
+			self._age = val
 
 	def get_x(self):
 		"""Returns the private _x attribute"""
@@ -228,6 +244,8 @@ class Agent():
 
 		if type(max_grass_per_turn) not in [float, int]:
 			raise TypeError("max_grass_per_turn must be a number.")
+		elif max_grass_per_turn < 0:
+			raise ValueError("max_grass_per_turn cannot be negative.")
 
 		grass_available = self.environment[self._y][self._x]
 		# eat max_grass_per_turn if grass abundant
@@ -270,6 +288,8 @@ class Agent():
 
 		if type(neighbourhood_size) not in [float, int]:
 			raise TypeError("neighbourhood_size must be a number.")	
+		elif neighbourhood_size < 0:
+			raise ValueError("neighbourhood_size cannot be negative.")
 
 		for agent in self.agents:
 			# do not perform action with oneself (not necessary as avg of x and x is x, but is good practice in case we generalise, 
@@ -313,6 +333,8 @@ class Agent():
 			raise TypeError("min_dist must be a number.")
 		if type(min_store) not in [float, int]:
 			raise TypeError("min_store must be a number.")
+		if min_store < 0 or min_dist < 0 or min_age < 0 or preg_duration < 0:
+			raise ValueError("No parameter can be negative.")
 
 		# add 1 to preg_duration since the iteration in which the baby is conceived counts as +1 in the agentframework
 		# this ensures that if (min_age_for_preg + preg_duration > max_age) then no babies are born
@@ -365,4 +387,4 @@ class Agent():
 
 	def increment_age(self):
 		"""Increments the agent's age on which it was called."""
-		self._age += 1
+		self.set_age(self.get_age()+1)
