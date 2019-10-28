@@ -37,7 +37,7 @@ h2 { font-size: 1.6rem; }
 
 .tm-section,
 .tm-section-min-h {
-    min-height: 400px;
+    min-height: 250px;
 }
 
 .tm-flex-center {
@@ -114,27 +114,6 @@ h2 { font-size: 1.6rem; }
 
 .tm-contact-form textarea {
     height: 205px;
-}
-
-.tm-pricing-table {
-    border: 1px solid #009999;
-    width: 100%;
-    max-width: 340px;
-}
-
-.tm-pricing-header {
-    padding: 20px;
-}
-
-.tm-pricing-body {
-    padding-bottom: 35px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.tm-pricing-header-title {
-    font-size: 1.6rem;
 }
 
 .tm-feature-list {
