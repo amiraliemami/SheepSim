@@ -1,6 +1,6 @@
 # Sheep Sim (°ꈊ°)
 
-Submission for Assessnent 1 of GEOG5995 at the University of Leeds
+Submission for Assessment 1 of GEOG5995 at the University of Leeds
 
 ## Website
 
