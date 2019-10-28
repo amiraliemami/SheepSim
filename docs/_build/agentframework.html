@@ -46,16 +46,16 @@
 <p>Provides the framework for sheep agents and their associated actions.</p>
 <dl class="docutils">
 <dt>Arguments:</dt>
-<dd>environment (matrix): list of lists of numbers corresponding to grass height at each pixel of environment
-agents (list): list of Agent objects in the simulation
-init_coords (2-tuple of integers): Determines (x,y) at which this agent is spawned. If None, random x and y are chosen between 0 and 300. (default None)
+<dd>environment (matrix): list of lists of numbers corresponding to grass height at each pixel of environment<br>
+agents (list): list of Agent objects in the simulation<br>
+init_coords (2-tuple of integers): Determines (x,y) at which this agent is spawned. If None, random x and y are chosen between 0 and 300. (default None)<br>
 sex (str): ‘m’ or ‘f’, the sheep’s sex (default: None, causes _sex below to be set randomely).</dd>
 <dt>Attributes:</dt>
-<dd>_x (integer): The sheep’s x coordinate, between 0 and 300
-_y (integer): The sheep’s y coordinate, between 0 and 300
-_sex (str): ‘m’ or ‘f’, the sheep’s sex (default: random if sex argument is None)
-_store (integer): Amount of grass eaten and stored by the sheep. Initiates at 0.
-_pregnancy (integer): Stage of pregnancy the sheep is at. Initiates at 0.
+<dd>_x (integer): The sheep’s x coordinate, between 0 and 300<br>
+_y (integer): The sheep’s y coordinate, between 0 and 300<br>
+_sex (str): ‘m’ or ‘f’, the sheep’s sex (default: random if sex argument is None)<br>
+_store (integer): Amount of grass eaten and stored by the sheep. Initiates at 0.<br>
+_pregnancy (integer): Stage of pregnancy the sheep is at. Initiates at 0.<br>
 _age (integer): Number of runs the sheep has lived for. Initiates at 0.</dd>
 <dt>Methods:</dt>
 <dd><dl class="first last docutils">
@@ -160,9 +160,9 @@ is initiated 5 positions to the right of the mother.</p>
 - A pregnant sheep cannot get re-pregnant until it gives birth.</p>
 <dl class="docutils">
 <dt>Arguments:</dt>
-<dd>preg_duration (integer): number of turns that a pregnancy lasts from conception to giving birth (default 10)
-min_age (integer): both sheep (male and female) must be of this age or more to be able to mate (default 20)
-min_dist (integer or float): must be closer than this distance to be able to mate (default 10)
+<dd>preg_duration (integer): number of turns that a pregnancy lasts from conception to giving birth (default 10)<br>
+min_age (integer): both sheep (male and female) must be of this age or more to be able to mate (default 20)<br>
+min_dist (integer or float): must be closer than this distance to be able to mate (default 10)<br>
 min_store (integer or float): both sheep must have this much store or more to be able to mate (default 50)</dd>
 <dt>Raises:</dt>
 <dd>ValueError: if pregnancy value becomes negative or goes above preg_duration</dd>

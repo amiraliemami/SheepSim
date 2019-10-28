@@ -8,7 +8,7 @@ https://amiraliemami.github.io/leedsmodule/
 
 ## Workbook
 
-Practicals 1 to 9 are presented in a Jupyter Notebook, included in the repository and also [hosted here](https://nbviewer.jupyter.org/github/amiraliemami/leedsmodule/blob/master/Jupyter%20Workbook.ipynb).
+Practicals 1 to 9 are presented in a Jupyter Notebook, included in the repository and also [hosted here](https://nbviewer.jupyter.org/github/amiraliemami/leedsmodule/blob/master/Jupyter%20Workbook.ipynb). This is also linked to in the website.
 
 ## Model and GUI
 
@@ -50,6 +50,8 @@ Other tests that were run during the development process:
 6. ```move()```, ```eat()```, and ```mate()``` were checked against their behaviours in the simulation
 
 ## Documentation
+
+The documentation for this simulation can be found below (also linked to in the website):
 
 link.com
 
