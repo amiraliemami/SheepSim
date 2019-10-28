@@ -74,7 +74,7 @@ class Agent():
 		get_ methods: 
 			get_x, get_y, get_store, get_pregnancy, get_sex, get_age
 		"Action" methods: 
-			move, eat, share_neighbours, mate
+			move, eat, share_with_neighbours, mate
 		Other methods:
 			is_dead, increment_age, distance_to
 	"""
