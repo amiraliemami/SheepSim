@@ -12,7 +12,10 @@ Practicals 1 to 9 are presented in a Jupyter Notebook, included in the repositor
 
 ## Model and GUI
 
-#### ------- object diagram -------
+#### UML Diagram
+
+![alt text](https://www.geog.leeds.ac.uk/courses/computing/practicals/python/agent-framework/part5/images/UML.jpg)
+
 
 The final model and extras are presented by ```model.py```, using ```agentframework.py``` for definition of the agents and their attributes and methods.
 
