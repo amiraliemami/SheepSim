@@ -2,13 +2,7 @@
 
 Submission for practical 1 of GEOG5995 at the University of Leeds
 
-## Installation
-
-Use the package manager [pip](https://pip.pypa.io/en/stable/) to install foobar.
-
-```bash
-pip install foobar
-```
+## [Website](https://amiraliemami.github.io/leedsmodule/)
 
 ## Usage
 
