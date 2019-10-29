@@ -33,11 +33,11 @@
             
   <div class="section" id="module-agentframework">
 <span id="agentframework-module"></span><h1>agentframework module<a class="headerlink" href="#module-agentframework" title="Permalink to this headline">¶</a></h1>
-<p>Module requirements:
-- ‘numpy’
-- ‘random’</p>
-<p>Includes:
-- Agent class
+<p>Module requirements:<br>
+- numpy<br>
+- random</p>
+<p>Includes:<br>
+- Agent class<br>
 - function for importing the environment: import_environment(path)</p>
 <dl class="class">
 <dt id="agentframework.Agent">
@@ -155,8 +155,8 @@ will add this value to its store and reduce the environment to 0 at this spot. I
 <p>If both self and other sheep are of age, have enough food store, are close enough, and are also of opposite sexes, the female one will get pregnant. 
 Pregnancies progress with each iteration of the simulation and once the correct duration is reached, a new sheep (new instance of the Agent class) 
 is initiated 5 positions to the right of the mother.</p>
-<p>NOTES:
-- At each run of this mating function on an agent (i.e. agent.mating()), that agent looks around it for possible mates. Thus must be run on each agent per update of the simulation.
+<p>NOTES:<br>
+- At each run of this mating function on an agent (i.e. agent.mating()), that agent looks around it for possible mates. Thus must be run on each agent per update of the simulation.<br>
 - A pregnant sheep cannot get re-pregnant until it gives birth.</p>
 <dl class="docutils">
 <dt>Arguments:</dt>
