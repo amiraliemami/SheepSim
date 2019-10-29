@@ -20,6 +20,10 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400">   <!-- Google web font "Open Sans" -->
+  <link rel="stylesheet" href="../../css/bootstrap.min.css">                                 <!-- https://getbootstrap.com/ -->
+  <link rel="stylesheet" href="../../css/templatemo-style.css">                              <!-- Templatemo style -->
+
   </head><body>
   
 
@@ -58,9 +62,9 @@ _pregnancy (integer): Stage of pregnancy the sheep is at. Initiates at 0.<br>
 _age (integer): Number of runs the sheep has lived for. Initiates at 0.</dd>
 <dt>Methods:</dt>
 <dd><dl class="first last docutils">
-<dt><a href="#id1"><span class="problematic" id="id2">set_</span></a> methods: </dt>
+<dt>set_methods: </dt>
 <dd>set_x, set_y, set_store, set_pregnancy</dd>
-<dt><a href="#id3"><span class="problematic" id="id4">get_</span></a> methods: </dt>
+<dt>get_ methods: </dt>
 <dd>get_x, get_y, get_store, get_pregnancy, get_sex, get_age</dd>
 <dt>“Action” methods: </dt>
 <dd>move, eat, share_with_neighbours, mate</dd>
@@ -251,6 +255,7 @@ the other sheep to the average of the stores between the two.</p>
 <dd>Either (x+1)mod300 or (x-1)mod300, with equal probability.</dd>
 <dt>Raises:</dt>
 <dd>TypeError: if non-number is passed as argument.</dd>
+<br>
 </dl>
 </dd></dl>
 
