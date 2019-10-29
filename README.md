@@ -60,3 +60,7 @@ The documentation for this simulation can be found below (also linked to in the 
 
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
+
+Website is based on the "514_magazee" template by templatemo - no license file was provided by them, but the following is from the template's description:
+
+"You are allowed to download, edit and use this Magazee HTML CSS layout for your commercial or non-commercial sites".
