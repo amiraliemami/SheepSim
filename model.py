@@ -343,4 +343,4 @@ frame_label = tk.Label(right_frame, text="",anchor=tk.E)
 frame_label.place(relx=0.4,rely=0.9,relwidth=0.5,relheight=0.05)
 
 # start gui
-#root.mainloop()
+root.mainloop()
