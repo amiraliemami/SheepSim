@@ -31,7 +31,7 @@ python model.py
 
 #### UML Diagram
 
-![alt text](https://www.geog.leeds.ac.uk/courses/computing/practicals/python/agent-framework/part5/images/UML.jpg)
+![alt text](https://amiraliemami.github.io/leedsmodule/images/uml.png)
 
 ## Testing
 
