@@ -1,6 +1,4 @@
 
-<!-- helloo -->
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -37,7 +35,7 @@
 <span id="model-module"></span><h1>model module<a class="headerlink" href="#module-model" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="model.gen_function">
-<code class="descclassname">model.</code><code class="descname">gen_function</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/model.html#gen_function"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#model.gen_function" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">model.</code><code class="descname">gen_function</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/model.html#gen_function"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#model.gen_function" title="Permalink to this definition">¶</a></dt>
 <dd><p>To be used by FuncAnimation from matplotlib to progress the simulation.
 Maximum number of frames chosen to be 2,000.</p>
 <dl class="docutils">
@@ -48,20 +46,20 @@ Maximum number of frames chosen to be 2,000.</p>
 
 <dl class="function">
 <dt id="model.run">
-<code class="descclassname">model.</code><code class="descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/model.html#run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#model.run" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">model.</code><code class="descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/model.html#run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#model.run" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reads in parameters from silders and checkboxes and initiates the animation to be plotted. 
 Used by run_stop_toggle to initiate simulation on buttonpress.</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="model.set_defaults">
-<code class="descclassname">model.</code><code class="descname">set_defaults</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/model.html#set_defaults"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#model.set_defaults" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">model.</code><code class="descname">set_defaults</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/model.html#set_defaults"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#model.set_defaults" title="Permalink to this definition">¶</a></dt>
 <dd><p>Requires the GUI widgets to exist before it is called.</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="model.start_kill_toggle">
-<code class="descclassname">model.</code><code class="descname">start_kill_toggle</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/model.html#start_kill_toggle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#model.start_kill_toggle" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">model.</code><code class="descname">start_kill_toggle</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="modules/model.html#start_kill_toggle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#model.start_kill_toggle" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function to be used by the run_button to start, kill, and restart the simulation. Implements the following functionality:</p>
 <ol class="arabic simple">
 <li>If button is pressed for the first time, the simulation is run() and the button text changes to “Kill” and its colour to normal.</li>
@@ -74,7 +72,7 @@ Used by run_stop_toggle to initiate simulation on buttonpress.</p>
 
 <dl class="function">
 <dt id="model.update">
-<code class="descclassname">model.</code><code class="descname">update</code><span class="sig-paren">(</span><em>frame_number</em>, <em>max_age</em>, <em>optimised_movement</em>, <em>breed</em>, <em>min_age_for_preg</em>, <em>preg_duration</em>, <em>agents</em>, <em>environment</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/model.html#update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#model.update" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">model.</code><code class="descname">update</code><span class="sig-paren">(</span><em>frame_number</em>, <em>max_age</em>, <em>optimised_movement</em>, <em>breed</em>, <em>min_age_for_preg</em>, <em>preg_duration</em>, <em>agents</em>, <em>environment</em><span class="sig-paren">)</span><a class="reference internal" href="modules/model.html#update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#model.update" title="Permalink to this definition">¶</a></dt>
 <dd><p>To be used by FuncAnimation from matplotlib to update the simulation.</p>
 <p>Arguments passed through by the run() function which calls this update() function.</p>
 <dl class="docutils">
@@ -94,7 +92,7 @@ environment (list of list of numbers)</dd>
 
 <dl class="function">
 <dt id="model.update_labels">
-<code class="descclassname">model.</code><code class="descname">update_labels</code><span class="sig-paren">(</span><em>frame_for_display</em>, <em>num_agents_for_display</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/model.html#update_labels"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#model.update_labels" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">model.</code><code class="descname">update_labels</code><span class="sig-paren">(</span><em>frame_for_display</em>, <em>num_agents_for_display</em><span class="sig-paren">)</span><a class="reference internal" href="modules/model.html#update_labels"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#model.update_labels" title="Permalink to this definition">¶</a></dt>
 <dd><p>To be used within the update() function to update the display of frame number and number of sheep.</p>
 <dl class="docutils">
 <dt>Arguments:</dt>
