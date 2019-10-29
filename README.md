@@ -2,6 +2,9 @@
 
 Submission for Assessment 1 of GEOG5995 at the University of Leeds
 
+![alt text](https://amiraliemami.github.io/leedsmodule/images/demo.gif)
+
+
 ## Website
 
 https://amiraliemami.github.io/leedsmodule/
