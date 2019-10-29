@@ -94,6 +94,11 @@ h2 { font-size: 1.6rem; }
 .tm-font-thin { font-weight: 300; }
 .tm-max-w-400 { max-width: 400px; }
 
+
+.img-border {
+    border:5px solid #353535
+}
+
 .form-control::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
     color: #666666;
     opacity: 1; /* Firefox */
