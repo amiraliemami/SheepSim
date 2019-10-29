@@ -24,12 +24,13 @@ python model.py
 ### Extra features
 
 1. Death - sheep die after reaching maximum life expectancy (adjustable in GUI, default 60)
-2. Optimised movement - move to position which has most grass, instead of random
-3. Seeding for spawning - random or set, allowing repeated experiments
-4. Sexes and Reproduction - female sheep (white) can be impregnated by male sheep (black) if both sheep have sufficient store (default 50), are close enough (default within 20), and are of fertility age (adjustable in GUI, default 20)
-5. Pregnancy takes time - female sheep get pregnant, and after a number of turns (adjustable in GUI, default 10), give birth to a new sheep nearby.
-6. Defaults button - reset all values to default
-7. Start/Kill/Restart button - can stop and restart simulation (even with changed parameters) without having to rerun the script.
+2. Size is relative to age, maximum reached at death
+3. Optimised movement - move to position which has most grass, instead of random
+4. Seeding for spawning - random or set, allowing repeated experiments
+5. Sexes and Reproduction - female sheep (white) can be impregnated by male sheep (black) if both sheep have sufficient store (default 50), are close enough (default within 20), and are of fertility age (adjustable in GUI, default 20)
+6. Pregnancy takes time - female sheep get pregnant, and after a number of turns (adjustable in GUI, default 10), give birth to a new sheep nearby.
+7. Defaults button - reset all values to default
+8. Start/Kill/Restart button - can stop and restart simulation (even with changed parameters) without having to rerun the script.
 
 #### UML Diagram
 
