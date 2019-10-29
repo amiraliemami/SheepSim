@@ -24,6 +24,7 @@ python model.py
 ### Extra features
 
 1. Death - sheep die after reaching maximum life expectancy (adjustable in GUI, default 60)
+1.1 Size is relative to age, maximum reached at death
 2. Optimised movement - move to position which has most grass, instead of random
 3. Seeding for spawning - random or set, allowing repeated experiments
 4. Sexes and Reproduction - female sheep (white) can be impregnated by male sheep (black) if both sheep have sufficient store (default 50), are close enough (default within 20), and are of fertility age (adjustable in GUI, default 20)
