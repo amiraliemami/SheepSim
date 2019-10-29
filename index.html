@@ -1,19 +1,131 @@
-<HTML>
-<TITLE>
-Amir - GEOG5995
-</TITLE>
-<BODY>
-    <h2>Hello world!</h2>
-    
-    <form action="https://nbviewer.jupyter.org/github/amiraliemami/leedsmodule/blob/master/Jupyter%20Workbook.ipynb">
-        <input type="submit" value="Jupyter Notebook on nbviewer" />
-    </form>
-    
-    <form action="https://github.com/amiraliemami/leedsmodule">
-        <input type="submit" value="GitHub Page" />
-    </form>
+<!DOCTYPE html>
+<html lang="en">
 
-    <form action="https://amiraliemami.github.io/leedsmodule/docs/build/modules.html">
-        <input type="submit" value="Documentation" />
-    </form>
-</HTML>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Amir Emami</title>
+  <!-- Magazee Template http://www.templatemo.com/tm-514-magazee -->
+  <!-- load CSS -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400">    <!-- Google web font "Open Sans" -->
+  <link rel="stylesheet" href="css/bootstrap.min.css">                                        <!-- https://getbootstrap.com/ -->
+  <link rel="stylesheet" href="css/templatemo-style.css">                                     <!-- Templatemo style -->
+
+  <script>
+    var renderPage = true;
+
+    if(navigator.userAgent.indexOf('MSIE')!==-1
+      || navigator.appVersion.indexOf('Trident/') > 0){
+        /* Microsoft Internet Explorer detected in. */
+        alert("Please view this in a modern browser such as Chrome or Microsoft Edge.");
+        renderPage = false;
+    }
+  </script>
+
+</head>
+
+<body>
+  <!-- Loader -->
+  <div id="loader-wrapper">
+    <!-- <div id="loader"></div> -->
+    <!-- <div class="loader-section section-left"></div>
+    <div class="loader-section section-right"></div> -->
+  </div>
+
+ <div class="container">
+
+  <!-- 1st section -->
+  <section class="row tm-section">
+   <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6 p-0">
+    <div class="tm-flex-center p-5 tm-bg-color-secondary tm-section-min-h">
+      <h1 class="tm-text-color-white" style="text-align: center;">Amir Emami <br> ~ GEOG5995 ~</h1>
+    </div>
+  </div>
+  <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6">
+    <div class="tm-flex-center p-5">
+      <p class="mb-4">This is Amir Emami's submission for assessment 1 of GEOG5995.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 2nd section -->
+<section class="row tm-section tm-col-md-reverse">
+ <div class="col-sm-12 col-md-12">
+  <div class="tm-flex-center p-5">
+    <div class="tm-md-flex-center">
+      <h2 class="tm-text-color-primary mb-4">Agent Based Modelling</h2>
+      <q class="tm-quote">
+        An agent-based model (ABM) is a class of computational models for simulating 
+        the actions and interactions of autonomous agents (both individual or collective entities such 
+        as organizations or groups) with a view to assessing their effects on the system as a whole.</q>
+      <br><br>
+      <a href="https://en.wikipedia.org/wiki/Agent-based_model" target="_blank" class="btn btn-primary float-lg-right tm-md-align-center">Wikipedia</a>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- 3rd Section -->
+<section class="row tm-section tm-mb-30">
+  <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6 p-0">
+    <img src="img/image-01.jpg" alt="Image" class="img-fluid">
+  </div>
+  <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6">
+    <div class="tm-flex-center p-5">
+      <div class="tm-flex-col">
+        <h2 class="tm-align-left">Jupyter Notebook Workbook</h2>
+        <p>
+          Practicals 1 to 9 can be found in the workbook below:
+        </p>
+        <a href="https://nbviewer.jupyter.org/github/amiraliemami/leedsmodule/blob/master/Jupyter%20Workbook.ipynb" class="btn btn-primary tm-md-align-center">Notebook</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 4th Section -->
+<section class="row tm-section tm-mb-30">
+ <div class="col-sm-12 col-md-12 col-lg-8 col-xl-8">
+  <div class="tm-flex-center pl-5 pr-5 pt-5 pb-5">
+    <div class="tm-md-flex-center">
+     <h2 class="mb-4 tm-text-color-primary">Github Repo</h2>
+     The github repository containing all of the material can be found below.
+     <br><br>
+     <a href="https://github.com/amiraliemami/leedsmodule" class="btn btn-primary tm-md-align-center">github repo</a>
+    </div>
+ </div>
+</div>
+<div class="col-sm-12 col-md-12 col-lg-4 col-xl-4 text-xl-right text-md-center text-center mt-5 mt-lg-0 pr-lg-0">
+ <img src="img/image-02.jpg" alt="Image" class="img-fluid">
+</div>
+</section>
+
+
+<!-- Footer -->
+<div class="row">
+  <div class="col-lg-12">
+    <p class="text-center small tm-copyright-text mb-0">Copyright &copy; <span class="tm-current-year">2019</span> Amir Emami | Based on <a href="https://templatemo.com/live/templatemo_514_magazee" target="_blank">template</a> by <a href="http://templatemo.com" target="_blank">Template Mo</a></p>
+  </div>
+</div>
+</div>
+
+<!-- load JS -->
+<script src="js/jquery-3.2.1.slim.min.js"></script>  <!-- https://jquery.com/ -->
+<script>
+
+  /* DOM is ready
+  ------------------------------------------------*/
+  $(function(){
+
+    if(renderPage) {
+      $('body').addClass('loaded');
+    }
+
+    $('.tm-current-year').text(new Date().getFullYear());  // Update year in copyright
+  });
+
+</script>
+
+</body>
+</html>
