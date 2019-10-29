@@ -37,7 +37,7 @@ h2 { font-size: 1.6rem; }
 
 .tm-section,
 .tm-section-min-h {
-    min-height: 250px;
+    min-height: 100px;
 }
 
 .tm-flex-center {
