@@ -2,7 +2,7 @@
 
 Submission for Assessment 1 of GEOG5995 at the University of Leeds
 
-<img src="https://amiraliemami.github.io/leedsmodule/images/demo.gif" width="500" align="center"/>
+<img src="https://amiraliemami.github.io/leedsmodule/images/demo.gif" width="500">
 
 ## Website
 
@@ -33,7 +33,7 @@ python model.py
 
 #### UML Diagram
 
-<img src="https://amiraliemami.github.io/leedsmodule/images/uml.png" width="600" align="center"/>
+<img src="https://amiraliemami.github.io/leedsmodule/images/uml.png" width="600">
 
 ## Testing
 
