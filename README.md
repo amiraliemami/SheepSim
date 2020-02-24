@@ -6,7 +6,7 @@ Submission for Assessment 1 of GEOG5995 at the University of Leeds
 
 ## Website
 
-https://amiraliemami.github.io/leedsmodule/
+https://amiraliemami.github.io/SheepSim
 
 ## Workbook
 
