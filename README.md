@@ -34,7 +34,7 @@ python model.py
 
 #### UML Diagram
 
-<img src="https://amiraliemami.github.io/leedsmodule/images/uml.png" width="600">
+<img src="https://amiraliemami.github.io/SheepSim/images/uml.png" width="600">
 
 ## Testing
 
