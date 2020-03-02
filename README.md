@@ -2,7 +2,7 @@
 
 Submission for Assessment 1 of GEOG5995 at the University of Leeds
 
-<img src="https://amiraliemami.github.io/leedsmodule/images/demo.gif" width="500">
+<img src="https://amiraliemami.github.io/SheepSim/images/demo.gif" width="500">
 
 ## Website
 
