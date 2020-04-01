@@ -10,7 +10,7 @@ https://amiraliemami.github.io/SheepSim
 
 ## Workbook
 
-Practicals 1 to 9 are presented in a Jupyter Notebook, included in the repository and also [hosted here](https://nbviewer.jupyter.org/github/amiraliemami/leedsmodule/blob/master/Jupyter%20Workbook.ipynb). This is also linked to in the website.
+Practicals 1 to 9 are presented in a Jupyter Notebook, included in the repository and also [hosted here](https://nbviewer.jupyter.org/github/amiraliemami/SheepSim/blob/master/Jupyter%20Workbook.ipynb). This is also linked to in the website.
 
 ## Model and GUI
 
@@ -56,7 +56,7 @@ Other tests that were run during the development process:
 
 The documentation for this simulation can be found below (also linked to in the website):
 
-[Docs](https://amiraliemami.github.io/leedsmodule/docs/build/modules.html)
+[Docs](https://amiraliemami.github.io/heepSim/docs/build/modules.html)
 
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
